@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10/15–10/18 機車旅行｜Google Maps API 版</title>
+<style>
+:root{
+  --bg:#f5f2ea;--paper:#fffdf8;--ink:#1f2924;--muted:#66736b;--line:#d9ded8;
+  --green:#214f3c;--green2:#47705c;--orange:#b66a3d;--blue:#50758a;--gold:#8f703a;
+  --danger:#9c463c;--shadow:0 16px 40px rgba(32,50,42,.08);--radius:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Microsoft JhengHei","Noto Sans TC","Segoe UI",sans-serif;
+  line-height:1.7;
+}
+button,input{font:inherit}
+a{color:inherit}
+.shell{width:min(1260px,calc(100% - 28px));margin:auto}
+.hero{
+  padding:52px 0 42px;color:white;
+  background:linear-gradient(135deg,#173d2e 0%,#2e6248 52%,#72592e 100%);
+}
+.kicker{
+  display:inline-block;border:1px solid rgba(255,255,255,.3);border-radius:999px;
+  padding:7px 12px;font-size:.86rem;font-weight:800;letter-spacing:.08em;
+}
+h1{font-size:clamp(2.25rem,5vw,4.6rem);line-height:1.05;margin:18px 0 14px}
+.hero p{max-width:900px;color:rgba(255,255,255,.84);margin:0}
+.metrics{display:flex;gap:9px;flex-wrap:wrap;margin-top:24px}
+.metric{padding:9px 12px;border:1px solid rgba(255,255,255,.2);border-radius:12px;background:rgba(255,255,255,.08);font-size:.9rem}
+
+.api-panel{
+  margin-top:-24px;position:relative;z-index:5;background:var(--paper);border:1px solid var(--line);
+  border-radius:20px;padding:20px;box-shadow:var(--shadow)
+}
+.api-panel h2{margin:0 0 3px;font-size:1.12rem}
+.api-panel p{margin:0 0 13px;color:var(--muted);font-size:.9rem}
+.btn{
+  border:0;border-radius:12px;padding:12px 15px;font-weight:800;cursor:pointer;
+  background:var(--green);color:#fff;white-space:nowrap
+}
+.btn.secondary{background:#fff;color:var(--green);border:1px solid var(--green)}
+.btn.danger{background:#fff;color:var(--danger);border:1px solid #d9aba5}
+.api-note{font-size:.82rem;color:var(--muted);margin-top:9px}
+.status{margin-top:10px;padding:9px 11px;border-radius:10px;font-size:.88rem;display:none}
+.status.ok{display:block;background:#e8f4eb;color:#28543a}
+.status.warn{display:block;background:#fff1db;color:#73551c}
+.status.err{display:block;background:#fdecea;color:#853c34}
+
+.sticky{
+  position:sticky;top:0;z-index:900;background:rgba(245,242,234,.9);
+  backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.06);margin-top:18px
+}
+.nav{display:flex;gap:7px;overflow:auto;padding:9px 0}
+.nav button{
+  border:0;background:transparent;color:var(--muted);border-radius:999px;padding:9px 13px;font-weight:800;cursor:pointer;white-space:nowrap
+}
+.nav button.active,.nav button:hover{background:var(--green);color:#fff}
+
+main{padding:30px 0 64px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:25px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 6px 18px rgba(30,45,38,.04)}
+.card small{color:var(--muted);font-weight:800}
+.card strong{display:block;margin:4px 0;font-size:1.05rem}
+.card p{margin:0;color:var(--muted);font-size:.89rem}
+
+.section-title{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:30px 0 14px}
+.section-title h2{margin:0;font-size:1.5rem}
+.section-title p{margin:0;color:var(--muted);font-size:.9rem}
+
+.map-box{background:var(--paper);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
+.map-tabs{display:flex;gap:7px;flex-wrap:wrap;padding:14px;border-bottom:1px solid var(--line)}
+.map-tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font-weight:800;color:var(--muted);cursor:pointer}
+.map-tab.active{background:var(--green);border-color:var(--green);color:#fff}
+#map{height:610px;background:#e7ece8;display:grid;place-items:center}
+.map-placeholder{text-align:center;max-width:540px;padding:28px;color:var(--muted)}
+.map-placeholder strong{display:block;color:var(--ink);font-size:1.1rem;margin-bottom:5px}
+.map-bottom{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}
+.map-desc{color:var(--muted);font-size:.88rem}
+.map-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.linkbtn{
+  display:inline-flex;align-items:center;justify-content:center;text-decoration:none;
+  border-radius:10px;padding:8px 11px;font-size:.85rem;font-weight:800;
+  background:var(--green);color:#fff
+}
+.linkbtn.light{background:white;color:var(--green);border:1px solid var(--green)}
+
+.day{margin-top:38px;background:var(--paper);border:1px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:var(--shadow)}
+.dayhead{padding:24px 26px;color:white;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end}
+.day[data-day="1"] .dayhead{background:linear-gradient(135deg,#49684d,#6f896b)}
+.day[data-day="2"] .dayhead{background:linear-gradient(135deg,#844a32,#b36a45)}
+.day[data-day="3"] .dayhead{background:linear-gradient(135deg,#405f71,#69889a)}
+.day[data-day="4"] .dayhead{background:linear-gradient(135deg,#6d542c,#9a7b42)}
+.dayhead h2{margin:3px 0;font-size:clamp(1.45rem,3vw,2.2rem)}
+.dayhead p{margin:0;color:rgba(255,255,255,.82)}
+.badge{padding:9px 12px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);border-radius:13px;font-size:.87rem}
+.daybody{padding:22px}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:22px}
+.timeline{position:relative}
+.timeline:before{content:"";position:absolute;left:77px;top:10px;bottom:10px;width:2px;background:var(--line)}
+.event{display:grid;grid-template-columns:66px 1fr;gap:23px;position:relative;padding-bottom:17px}
+.event:after{content:"";position:absolute;left:72px;top:10px;width:11px;height:11px;border-radius:50%;background:var(--paper);border:3px solid var(--green)}
+.time{text-align:right;font-weight:900;color:var(--green);font-variant-numeric:tabular-nums;padding-top:3px}
+.ev{border:1px solid var(--line);border-radius:14px;background:white;padding:12px 14px}
+.ev h3{margin:0 0 3px;font-size:.98rem}
+.ev p{margin:0;color:var(--muted);font-size:.89rem}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pill{font-size:.75rem;padding:3px 8px;border-radius:999px;background:#edf3ee;color:var(--green);font-weight:800}
+.pill.meal{background:#fff0e6;color:#9b562f}
+.pill.risk{background:#fce9e6;color:#8c4138}
+.side{display:grid;gap:13px;align-content:start}
+.info{border:1px solid var(--line);border-radius:16px;background:#fff;padding:15px}
+.info h3{margin:0 0 9px;font-size:1rem}
+.mealrow{padding:11px 0;border-top:1px solid var(--line)}
+.mealrow:first-of-type{border-top:0;padding-top:0}
+.mealrow small{display:block;color:var(--muted);font-weight:800}
+.mealrow strong{display:block;margin:1px 0}
+.order{color:var(--orange);font-size:.88rem;font-weight:800}
+.reason{color:var(--muted);font-size:.84rem;margin-top:2px}
+.stay{background:#edf3ee}
+.alert{margin-top:12px;background:#fff1e2;border-left:4px solid var(--orange);padding:11px 12px;border-radius:0 10px 10px 0;font-size:.87rem}
+
+footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem}
+@media(max-width:900px){
+  .grid,.map-bottom{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .map-actions{justify-content:flex-start}
+  #map{height:480px}
+}
+@media(max-width:560px){
+  .shell{width:min(100% - 18px,1260px)}
+  .cards{grid-template-columns:1fr}
+  .daybody{padding:14px}
+  .timeline:before{left:56px}
+  .event{grid-template-columns:47px 1fr;gap:19px}
+  .event:after{left:51px}
+  .time{font-size:.8rem}
+  #map{height:410px}
+    .dayhead{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="shell">
+    <div class="kicker">2026 · 10/15–10/18 · TWO RIDERS</div>
+    <h1>四天三夜<br>台灣山海機車縱走</h1>
+    <p>東勢集合，經台21進埔里；第二天走力行、合歡山與中橫到花蓮；第三天沿花東縱谷到池上；第四天走南橫返回台南。</p>
+    <div class="metrics">
+      <span class="metric">2 人機車旅行</span>
+      <span class="metric">埔里／花蓮／池上 3 晚</span>
+      <span class="metric">深度旅行、拍照休息優先</span>
+      <span class="metric">正式用餐原則 1.5 小時</span>
+    </div>
+  </div>
+</header>
+
+
+<div class="shell">
+  <section class="api-panel">
+    <h2>Google Maps API 狀態</h2>
+    <p>此版本採「API Key 直接寫入 HTML」方式，適合部署到 GitHub Pages。設定完成後，開啟網頁會自動載入 Google Maps，不需要再次輸入。</p>
+    <div id="apiStatus" class="status warn">尚未設定 API Key。請用文字編輯器開啟本 HTML，搜尋 <strong>PASTE_YOUR_API_KEY_HERE</strong>，替換成你的 Google Maps JavaScript API Key。</div>
+    <div class="api-note">
+      安全建議：Google Cloud → API Key → 應用程式限制選「網站（HTTP referrers）」；正式部署到 GitHub Pages 後，只允許你的 GitHub Pages 網址，API restrictions 只保留「Maps JavaScript API」。
+    </div>
+  </section>
+</div>
+
+
+<div class="sticky">
+  <div class="shell nav">
+    <button class="active" data-to="overview">總覽</button>
+    <button data-to="d1">10/15 東勢→埔里</button>
+    <button data-to="d2">10/16 埔里→花蓮</button>
+    <button data-to="d3">10/17 花蓮→池上</button>
+    <button data-to="d4">10/18 南橫→台南</button>
+  </div>
+</div>
+
+<main class="shell">
+<section id="overview">
+  <div class="cards">
+    <div class="card"><small>DAY 1</small><strong>兩地出發，東勢集合</strong><p>10:30 寮下啜喝咖啡；國姓午餐、糯米石橋、埔里二月咖啡。</p></div>
+    <div class="card"><small>DAY 2</small><strong>力行、武嶺與中橫</strong><p>06:00 提早出發，將多出的時間留給拍照、慢騎與施工緩衝。</p></div>
+    <div class="card"><small>DAY 3</small><strong>花東縱谷到池上</strong><p>太巴塱、玉里麵，下午銜接已安排的池上電動車導覽。</p></div>
+    <div class="card"><small>DAY 4</small><strong>南橫回台南</strong><p>08:00 出發，優先銜接向陽施工放行，再走埡口、天池與寶來。</p></div>
+  </div>
+
+  <div class="section-title">
+    <div><h2>Google Maps 互動地圖</h2><p>地圖載入後可切換四天路線、縮放與點擊景點標記。</p></div>
+    <p>每日線條為行程示意；真正導航使用下方 Google Maps 按鈕。</p>
+  </div>
+
+  <div class="map-box">
+    <div class="map-tabs">
+      <button class="map-tab active" data-day="all">全程</button>
+      <button class="map-tab" data-day="1">10/15</button>
+      <button class="map-tab" data-day="2">10/16</button>
+      <button class="map-tab" data-day="3">10/17</button>
+      <button class="map-tab" data-day="4">10/18</button>
+    </div>
+    <div id="map">
+      <div class="map-placeholder">
+        <strong>尚未載入 Google Maps</strong>
+        請在上方貼入 API Key，按「儲存並載入 Google 地圖」。
+      </div>
+    </div>
+    <div class="map-bottom">
+      <div class="map-desc" id="mapDesc">全程總覽：東勢 → 埔里 → 力行 → 武嶺 → 花蓮 → 池上 → 南橫 → 台南。</div>
+      <div class="map-actions" id="mapActions"></div>
+    </div>
+  </div>
+</section>
+
+<section class="day" id="d1" data-day="1">
+<header class="dayhead"><div><div>DAY 1 · 10/15（四）</div><h2>台南／新北 → 東勢 → 國姓 → 埔里</h2><p>兩人分頭完成長途騎乘，10:30 於東勢正式會合。</p></div><div class="badge">共同集合<br><strong>10:30 寮下啜</strong></div></header>
+<div class="daybody"><div class="grid">
+<div class="timeline">
+  <div class="event"><div class="time">05:30</div><div class="ev"><h3>騎士 A｜台南歸仁出發</h3><p>由台南市歸仁區民生北街 169 號出發。03:45–05:15 早餐與裝備確認。</p></div></div>
+  <div class="event"><div class="time">05:45</div><div class="ev"><h3>騎士 B｜新北永安市場站出發</h3><p>04:00–05:30 早餐與裝備確認，途中預留短休。</p></div></div>
+  <div class="event"><div class="time">10:30</div><div class="ev"><h3>寮下啜 COFFEEZU｜集合休息</h3><p>只安排 1 小時喝咖啡與整理裝備，不作正式午餐。</p><div class="pills"><span class="pill meal">10:30–11:30</span></div></div></div>
+  <div class="event"><div class="time">11:30</div><div class="ev"><h3>東勢共同出發</h3><p>台8 → 天冷 → 台21，往國姓。</p></div></div>
+  <div class="event"><div class="time">12:30</div><div class="ev"><h3>國姓午餐｜私房客家美食餐廳</h3><p>正式用餐 1.5 小時。</p><div class="pills"><span class="pill meal">12:30–14:00</span></div></div></div>
+  <div class="event"><div class="time">14:10</div><div class="ev"><h3>北港溪糯米石橋</h3><p>古橋、溪谷與客庄地景，停留約 30 分鐘。</p></div></div>
+  <div class="event"><div class="time">15:40</div><div class="ev"><h3>埔里｜入住小島好樂</h3><p>放行李、休息後簡單慢遊埔里市區。</p></div></div>
+  <div class="event"><div class="time">17:45</div><div class="ev"><h3>二月咖啡 埔里店｜晚餐</h3><p>安排 1.5 小時，吃完直接回住宿休息。</p><div class="pills"><span class="pill meal">17:45–19:15</span></div></div></div>
+</div>
+<div class="side">
+  <div class="info"><h3>用餐建議</h3>
+    <div class="mealrow"><small>A 早餐</small><strong>歸仁在地豆漿早餐店</strong><div class="order">飯糰／燒餅蛋＋蛋餅＋無糖豆漿</div><div class="reason">長途騎乘前用澱粉與蛋白質做完整補給。</div></div>
+    <div class="mealrow"><small>B 早餐</small><strong>永和豆漿大王（宜安路）</strong><div class="order">燒餅蛋或飯糰＋豆漿</div><div class="reason">鄰近永安市場站，能配合早出發。</div></div>
+    <div class="mealrow"><small>咖啡</small><strong>寮下啜 COFFEEZU</strong><div class="order">黑咖啡／拿鐵＋小甜點</div><div class="reason">功能是集合與恢復，不在這裡吃正餐。</div></div>
+    <div class="mealrow"><small>午餐</small><strong>私房客家美食餐廳</strong><div class="order">客家小炒／鹹豬肉＋梅汁過貓＋招牌豆腐＋白飯</div><div class="reason">直接把國姓客庄飲食納入旅行主題。</div></div>
+    <div class="mealrow"><small>晚餐</small><strong>二月咖啡 埔里店</strong><div class="order">清炒蒜辣蛤蠣蘆筍林昆尼＋波隆那肉醬義大利麵</div><div class="reason">一份清爽、一份較有飽足感，適合隔日凌晨起床前的晚餐。</div></div>
+  </div>
+  <div class="info stay"><h3>住宿｜小島好樂</h3><p>埔里。10/16 需要非常早起，第一晚不再追加夜間景點。</p></div>
+</div>
+</div></div>
+</section>
+
+<section class="day" id="d2" data-day="2">
+<header class="dayhead"><div><div>DAY 2 · 10/16（五）</div><h2>埔里 → 力行吊橋 → 武嶺 → 中橫 → 花蓮</h2><p>把每段多抓的時間真正留給拍照、停車與山路延誤。</p></div><div class="badge">特別提早<br><strong>06:00 出發</strong></div></header>
+<div class="daybody"><div class="grid">
+<div class="timeline">
+  <div class="event"><div class="time">04:00</div><div class="ev"><h3>埔里早餐｜上禾味</h3><p>04:00–05:30；05:40 再買外帶飯糰。</p></div></div>
+  <div class="event"><div class="time">06:00</div><div class="ev"><h3>埔里 → 霧社 → 清境 → 翠峰</h3><p>抓到 07:45，已比理想導航時間更寬鬆。</p></div></div>
+  <div class="event"><div class="time">07:45</div><div class="ev"><h3>翠峰 → 力行吊橋</h3><p>力行產業道路直接抓約 1 小時 20 分，不追導航。</p></div></div>
+  <div class="event"><div class="time">09:05</div><div class="ev"><h3>力行吊橋｜拍照休息</h3><p>停 30 分鐘，09:35 折返。</p></div></div>
+  <div class="event"><div class="time">10:55</div><div class="ev"><h3>返回翠峰｜快速午餐補給</h3><p>飯糰、香蕉、能量棒與水，控制 15 分鐘。</p><div class="pills"><span class="pill meal">10:55–11:10</span><span class="pill risk">唯一不抓 1.5 小時的午餐</span></div></div></div>
+  <div class="event"><div class="time">11:35</div><div class="ev"><h3>鳶峰｜賞景 15 分鐘</h3><p>路況順就停足；延誤則可縮短。</p></div></div>
+  <div class="event"><div class="time">12:05</div><div class="ev"><h3>昆陽｜短停 10 分鐘</h3><p>欣賞高山坡面與公路景觀。</p></div></div>
+  <div class="event"><div class="time">12:30</div><div class="ev"><h3>武嶺｜停 20 分鐘</h3><p>12:50 離開，開始往大禹嶺、關原。</p></div></div>
+  <div class="event"><div class="time">13:55</div><div class="ev"><h3>關原｜關鍵時間點</h3><p>關原以東不再主動停車拍照，目標銜接豁然亭下午放行。</p><div class="pills"><span class="pill risk">時間紅線</span></div></div></div>
+  <div class="event"><div class="time">16:15</div><div class="ev"><h3>天祥｜等待與休息</h3><p>利用交管等待喝水、伸展，準備最後一波放行。</p></div></div>
+  <div class="event"><div class="time">17:00</div><div class="ev"><h3>天祥 → 太魯閣口</h3><p>配合 17:00–18:00 最後放行。</p></div></div>
+  <div class="event"><div class="time">19:00</div><div class="ev"><h3>花蓮｜入住步裡微旅</h3><p>19:30–21:00 晚餐。</p></div></div>
+</div>
+<div class="side">
+  <div class="info"><h3>用餐建議</h3>
+    <div class="mealrow"><small>早餐</small><strong>上禾味（永和豆漿）</strong><div class="order">飯糰／燒餅蛋＋蛋餅＋熱豆漿</div><div class="reason">午餐很簡單，因此早餐要吃足。</div></div>
+    <div class="mealrow"><small>外帶午餐</small><strong>正統飯糰</strong><div class="order">每人 1 個飯糰＋香蕉／能量棒＋水</div><div class="reason">耐攜帶、不用餐具，最適合交管日。</div></div>
+    <div class="mealrow"><small>晚餐</small><strong>湘念快炒</strong><div class="order">金沙豆腐／中卷＋塔香蛤蜊＋炒青菜＋白飯／炒飯</div><div class="reason">高山長途後補熱食、鹽分、蛋白質與澱粉。</div></div>
+  </div>
+  <div class="info stay"><h3>住宿｜步裡微旅</h3><p>花蓮市。</p><div class="alert"><strong>交管：</strong>本日最重要的是約 13:55 抵達關原，並銜接豁然亭與天祥放行。</div></div>
+</div>
+</div></div>
+</section>
+
+<section class="day" id="d3" data-day="3">
+<header class="dayhead"><div><div>DAY 3 · 10/17（六）</div><h2>花蓮 → 太巴塱 → 玉里 → 池上</h2><p>上午只安排一個文化停點，下午完整保留給池上電動車導覽。</p></div><div class="badge">正常出發<br><strong>09:00</strong></div></header>
+<div class="daybody"><div class="grid">
+<div class="timeline">
+  <div class="event"><div class="time">07:00</div><div class="ev"><h3>花蓮早餐｜山東豆漿大王</h3><p>07:00–08:30，完整 1.5 小時。</p></div></div>
+  <div class="event"><div class="time">09:00</div><div class="ev"><h3>花蓮出發｜台9南下</h3><p>縱谷慢騎，時間估算已保留道路緩衝。</p></div></div>
+  <div class="event"><div class="time">10:10</div><div class="ev"><h3>太巴塱部落</h3><p>停約 40 分鐘，認識阿美族聚落地景。</p></div></div>
+  <div class="event"><div class="time">11:40</div><div class="ev"><h3>玉里午餐｜傳統美食玉里麵</h3><p>11:40–13:10，完整 1.5 小時。</p></div></div>
+  <div class="event"><div class="time">13:10</div><div class="ev"><h3>玉里 → 富里 → 池上</h3><p>不再插入其他景點。</p></div></div>
+  <div class="event"><div class="time">14:20</div><div class="ev"><h3>賢情玉緻民宿｜抵達池上</h3><p>寄放行李／入住，接續下午電動車導覽。</p></div></div>
+  <div class="event"><div class="time">下午</div><div class="ev"><h3>池上電動車導覽</h3><p>既定行程。</p></div></div>
+  <div class="event"><div class="time">18:00</div><div class="ev"><h3>池上晚餐｜如初丼</h3><p>18:00–19:30，建議事前預約。</p></div></div>
+</div>
+<div class="side">
+  <div class="info"><h3>用餐建議</h3>
+    <div class="mealrow"><small>早餐</small><strong>山東豆漿大王</strong><div class="order">酸菜蛋餅／燒餅蛋＋餡餅或鍋貼＋胚芽豆漿</div><div class="reason">具有花蓮地方早餐感。</div></div>
+    <div class="mealrow"><small>午餐</small><strong>傳統美食玉里麵</strong><div class="order">玉里乾麵＋豬肝連／嘴邊肉＋餛飩湯</div><div class="reason">玉里麵是縱谷最具辨識度的地方飲食之一。</div></div>
+    <div class="mealrow"><small>晚餐</small><strong>如初丼</strong><div class="order">香煎雞／醬燒雞＋蔥鹽豬</div><div class="reason">直接用池上米做主食，比觀光飯包更符合深度旅行。</div></div>
+  </div>
+  <div class="info stay"><h3>住宿｜賢情玉緻民宿</h3><p>池上鄉新興村松吉路 49 號。晚上先整理隔日南橫裝備。</p></div>
+</div>
+</div></div>
+</section>
+
+<section class="day" id="d4" data-day="4">
+<header class="dayhead"><div><div>DAY 4 · 10/18（日）</div><h2>池上 → 南橫 → 寶來 → 台南</h2><p>先處理施工與高山管制，再到寶來完整吃午餐。</p></div><div class="badge">施工日提早<br><strong>08:00</strong></div></header>
+<div class="daybody"><div class="grid">
+<div class="timeline">
+  <div class="event"><div class="time">06:00</div><div class="ev"><h3>池上早餐｜QQ飯糰</h3><p>06:00–07:30，07:30 後整理行李、加滿油。</p></div></div>
+  <div class="event"><div class="time">08:00</div><div class="ev"><h3>池上 → 海端 → 霧鹿 → 利稻 → 向陽</h3><p>不安排固定停點，優先銜接施工放行。</p></div></div>
+  <div class="event"><div class="time">09:40</div><div class="ev"><h3>向陽工區附近</h3><p>目標使用 09:50–10:40 放行窗口。</p><div class="pills"><span class="pill risk">施工放行</span></div></div></div>
+  <div class="event"><div class="time">11:20</div><div class="ev"><h3>南橫埡口｜拍照休息</h3><p>停約 20 分鐘。</p></div></div>
+  <div class="event"><div class="time">12:20</div><div class="ev"><h3>天池｜短停</h3><p>停約 20 分鐘，不走長步道。</p></div></div>
+  <div class="event"><div class="time">14:10</div><div class="ev"><h3>寶來午餐｜寶來小吃部</h3><p>14:10–15:40，完整 1.5 小時。</p></div></div>
+  <div class="event"><div class="time">15:40</div><div class="ev"><h3>寶來 → 六龜 → 甲仙 → 玉井 → 台南</h3><p>後段不再排正式景點；中途視體力短休。</p></div></div>
+  <div class="event"><div class="time">19:00</div><div class="ev"><h3>台南｜旅行結束</h3><p>晚餐依實際抵達時間與體力決定。</p></div></div>
+</div>
+<div class="side">
+  <div class="info"><h3>用餐建議</h3>
+    <div class="mealrow"><small>早餐</small><strong>QQ飯糰</strong><div class="order">飯糰＋蛋類＋豆漿</div><div class="reason">南橫餐飲有限，早餐必須吃足。</div></div>
+    <div class="mealrow"><small>午餐</small><strong>寶來小吃部</strong><div class="order">蜜汁梅子雞／梅子排骨＋過貓拌梅醬＋梅醬豆腐＋白飯</div><div class="reason">寶來梅子料理具有明確地方特色，也適合完成高山路段後恢復體力。</div></div>
+    <div class="mealrow"><small>晚餐</small><strong>台南抵達後自由安排</strong><div class="order">依時間與體力決定</div><div class="reason">不把最後一餐綁死，可保留施工與天候彈性。</div></div>
+  </div>
+  <div class="info stay"><h3>南橫原則</h3><p>先過向陽施工與高山路段，再於寶來安排完整午餐。</p></div>
+</div>
+</div></div>
+</section>
+</main>
+
+<footer><div class="shell">行程地圖為規劃用途；實際騎乘請依當日天候、道路施工、交管與機車可通行狀態調整。此版本可直接部署至 GitHub Pages。</div></footer>
+
+<script>
+// ---------- Google Maps API Key handling ----------
+// ★★★ 請只修改下一行 ★★★
+// 把 PASTE_YOUR_API_KEY_HERE 替換成你自己的 Google Maps JavaScript API Key。
+const GOOGLE_MAPS_API_KEY = "8zmKnPFLmAYqzMd-hmW7AL7k8Dk=";
+
+const statusBox = document.getElementById("apiStatus");
+
+function setStatus(msg, type="warn"){
+  statusBox.className = "status " + type;
+  statusBox.innerHTML = msg;
+}
+
+function loadGoogleMaps(){
+  const key = GOOGLE_MAPS_API_KEY.trim();
+
+  if(!key || key === "PASTE_YOUR_API_KEY_HERE"){
+    setStatus(
+      '尚未設定 API Key。請用文字編輯器開啟本 HTML，搜尋 <strong>PASTE_YOUR_API_KEY_HERE</strong>，替換成你的 Google Maps JavaScript API Key。',
+      "warn"
+    );
+    return;
+  }
+
+  setStatus("正在載入 Google Maps…","warn");
+
+  const script = document.createElement("script");
+  script.src =
+    "https://maps.googleapis.com/maps/api/js?key=" +
+    encodeURIComponent(key) +
+    "&callback=initTripMap&loading=async";
+  script.async = true;
+  script.defer = true;
+  script.onerror = () => {
+    setStatus(
+      "Google Maps 載入失敗。請確認 API Key、Maps JavaScript API、Billing，以及 GitHub Pages 的 HTTP referrer 限制設定。",
+      "err"
+    );
+  };
+  document.head.appendChild(script);
+}
+
+window.gm_authFailure = function(){
+  setStatus(
+    "Google Maps 驗證失敗。常見原因：API Key 錯誤、Maps JavaScript API 未啟用、Billing 未啟用，或 HTTP referrer 限制不符合目前網址。",
+    "err"
+  );
+};
+
+// ---------- itinerary / route data ----------
+const routes = {
+  1:{
+    title:"10/15｜東勢 → 國姓 → 埔里",
+    color:"#5d7f62",
+    points:[
+      ["寮下啜 COFFEEZU",24.2578,120.8298,"10:30 集合","寮下啜COFFEEZU"],
+      ["國姓午餐",24.0635,120.9245,"12:30 客家料理","私房客家美食餐廳 國姓"],
+      ["北港溪糯米石橋",24.05847,120.90646,"14:10","北港溪糯米石橋"],
+      ["小島好樂",23.9696,120.9648,"15:40 入住","小島好樂 埔里"],
+      ["二月咖啡 埔里店",23.9728,120.9687,"17:45 晚餐","二月咖啡 埔里店"]
+    ],
+    path:[
+      {lat:24.2578,lng:120.8298},{lat:24.184,lng:120.907},{lat:24.0635,lng:120.9245},
+      {lat:24.05847,lng:120.90646},{lat:23.9696,lng:120.9648},{lat:23.9728,lng:120.9687}
+    ]
+  },
+  2:{
+    title:"10/16｜埔里 → 力行 → 武嶺 → 中橫 → 花蓮",
+    color:"#a15d3d",
+    points:[
+      ["小島好樂",23.9696,120.9648,"06:00 出發","小島好樂 埔里"],
+      ["翠峰",24.1045,121.1832,"07:45","翠峰 南投 台14甲"],
+      ["力行吊橋",24.160286,121.213991,"09:05","力行吊橋 南投"],
+      ["鳶峰",24.1178,121.2328,"11:35","鳶峰觀景台"],
+      ["昆陽",24.1211,121.2650,"12:05","昆陽 南投"],
+      ["武嶺",24.1370,121.2754,"12:30","武嶺"],
+      ["大禹嶺",24.1840,121.3090,"中橫入口","大禹嶺"],
+      ["關原",24.1792,121.3440,"13:55","關原 花蓮"],
+      ["天祥",24.1819,121.4930,"16:15","天祥 太魯閣"],
+      ["太魯閣口",24.1593,121.6218,"約18:00","太魯閣牌樓"],
+      ["步裡微旅",23.9993,121.6030,"約19:00","步裡微旅 花蓮"]
+    ],
+    path:[
+      {lat:23.9696,lng:120.9648},{lat:24.0224,lng:121.1322},{lat:24.1045,lng:121.1832},
+      {lat:24.160286,lng:121.213991},{lat:24.1045,lng:121.1832},{lat:24.1178,lng:121.2328},
+      {lat:24.1211,lng:121.2650},{lat:24.1370,lng:121.2754},{lat:24.1840,lng:121.3090},
+      {lat:24.1792,lng:121.3440},{lat:24.1819,lng:121.4930},{lat:24.1593,lng:121.6218},
+      {lat:23.9993,lng:121.6030}
+    ]
+  },
+  3:{
+    title:"10/17｜花蓮 → 太巴塱 → 玉里 → 池上",
+    color:"#54758b",
+    points:[
+      ["步裡微旅",23.9993,121.6030,"09:00 出發","步裡微旅 花蓮"],
+      ["太巴塱部落",23.66011,121.4484,"10:10","太巴塱部落"],
+      ["傳統美食玉里麵",23.3322,121.3153,"11:40 午餐","傳統美食玉里麵"],
+      ["賢情玉緻民宿",23.1172,121.2028,"14:20","賢情玉緻民宿"],
+      ["如初丼",23.1235,121.2190,"18:00 晚餐","如初丼 池上"]
+    ],
+    path:[
+      {lat:23.9993,lng:121.6030},{lat:23.66011,lng:121.4484},{lat:23.3322,lng:121.3153},
+      {lat:23.1172,lng:121.2028},{lat:23.1235,lng:121.2190}
+    ]
+  },
+  4:{
+    title:"10/18｜池上 → 南橫 → 寶來 → 台南",
+    color:"#8b6b35",
+    points:[
+      ["賢情玉緻民宿",23.1172,121.2028,"08:00 出發","賢情玉緻民宿"],
+      ["海端",23.1012,121.1766,"進入台20","海端車站"],
+      ["霧鹿峽谷",23.1762,121.0460,"南橫東段","霧鹿峽谷"],
+      ["利稻",23.1847,120.9657,"高山聚落","利稻 台東"],
+      ["向陽",23.2575,120.9842,"09:40","向陽國家森林遊樂區"],
+      ["南橫埡口",23.2669,120.9484,"11:20","南橫埡口"],
+      ["天池",23.2852,120.9010,"12:20","南橫天池"],
+      ["寶來小吃部",23.1088,120.7026,"14:10 午餐","寶來小吃部"],
+      ["台南",22.9998,120.2269,"約19:00","台南市"]
+    ],
+    path:[
+      {lat:23.1172,lng:121.2028},{lat:23.1012,lng:121.1766},{lat:23.1762,lng:121.0460},
+      {lat:23.1847,lng:120.9657},{lat:23.2575,lng:120.9842},{lat:23.2669,lng:120.9484},
+      {lat:23.2852,lng:120.9010},{lat:23.1088,lng:120.7026},{lat:23.08,lng:120.53},
+      {lat:23.125,lng:120.42},{lat:22.9998,lng:120.2269}
+    ]
+  }
+};
+
+function gmapSearch(q){
+  return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
+}
+function gmapDir(origin,destination,waypoints=[]){
+  let u="https://www.google.com/maps/dir/?api=1&travelmode=two-wheeler"
+    +"&origin="+encodeURIComponent(origin)+"&destination="+encodeURIComponent(destination);
+  if(waypoints.length) u+="&waypoints="+encodeURIComponent(waypoints.join("|"));
+  return u;
+}
+function updateActionLinks(day){
+  const a=document.getElementById("mapActions");
+  if(day==="all"){
+    a.innerHTML='<a class="linkbtn light" href="#d1">從第一天開始看</a>';
+    return;
+  }
+  let html="";
+  if(day==="1"){
+    html+=`<a class="linkbtn" target="_blank" href="${gmapDir("寮下啜COFFEEZU","小島好樂 埔里",["私房客家美食餐廳 國姓","北港溪糯米石橋"])}">Google Maps：東勢→埔里</a>`;
+  }
+  if(day==="2"){
+    html+=`<a class="linkbtn" target="_blank" href="${gmapDir("小島好樂 埔里","武嶺",["翠峰 南投","力行吊橋 南投","鳶峰觀景台","昆陽 南投"])}">導航 A：埔里→武嶺</a>`;
+    html+=`<a class="linkbtn" target="_blank" href="${gmapDir("武嶺","步裡微旅 花蓮",["大禹嶺","關原 花蓮","天祥 太魯閣","太魯閣牌樓"])}">導航 B：武嶺→花蓮</a>`;
+  }
+  if(day==="3"){
+    html+=`<a class="linkbtn" target="_blank" href="${gmapDir("步裡微旅 花蓮","賢情玉緻民宿",["太巴塱部落","傳統美食玉里麵"])}">Google Maps：花蓮→池上</a>`;
+  }
+  if(day==="4"){
+    html+=`<a class="linkbtn" target="_blank" href="${gmapDir("賢情玉緻民宿","寶來小吃部",["海端車站","霧鹿峽谷","利稻 台東","向陽國家森林遊樂區","南橫埡口","南橫天池"])}">導航 A：池上→寶來</a>`;
+    html+=`<a class="linkbtn" target="_blank" href="${gmapDir("寶來小吃部","台南市",["六龜","甲仙","玉井"])}">導航 B：寶來→台南</a>`;
+  }
+  a.innerHTML=html;
+}
+updateActionLinks("all");
+
+let map=null, overlays=[], currentDay="all";
+
+function initTripMap(){
+  const mapEl=document.getElementById("map");
+  map = new google.maps.Map(mapEl,{
+    center:{lat:23.72,lng:121.03},zoom:8,
+    mapTypeControl:true,streetViewControl:false,fullscreenControl:true,
+    gestureHandling:"greedy"
+  });
+  renderRoute("all");
+  setStatus("Google Maps 已成功載入。你可以切換每日路線並點擊景點標記。","ok");
+}
+
+function clearOverlays(){
+  overlays.forEach(o=>o.setMap(null));
+  overlays=[];
+}
+
+function renderRoute(day){
+  currentDay=day;
+  if(!map) return;
+  clearOverlays();
+  const days=day==="all"?["1","2","3","4"]:[day];
+  const bounds=new google.maps.LatLngBounds();
+
+  days.forEach(d=>{
+    const r=routes[d];
+    const line=new google.maps.Polyline({
+      path:r.path,geodesic:true,strokeColor:r.color,strokeOpacity:.85,strokeWeight:5,map:map
+    });
+    overlays.push(line);
+    r.path.forEach(p=>bounds.extend(p));
+
+    r.points.forEach(([name,lat,lng,sub,q])=>{
+      const pos={lat,lng};
+      const marker=new google.maps.Marker({position:pos,map,title:name});
+      const info=new google.maps.InfoWindow({
+        content:`<div style="min-width:190px;font-family:Microsoft JhengHei,sans-serif">
+          <strong>${name}</strong><br><span style="color:#667">${sub}</span><br>
+          <a href="${gmapSearch(q)}" target="_blank" rel="noopener">在 Google Maps 開啟 ↗</a>
+        </div>`
+      });
+      marker.addListener("click",()=>info.open({anchor:marker,map}));
+      overlays.push(marker);
+      bounds.extend(pos);
+    });
+  });
+  map.fitBounds(bounds,60);
+}
+
+window.initTripMap=initTripMap;
+
+
+
+loadGoogleMaps();
+
+// tabs
+document.querySelectorAll(".map-tab").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".map-tab").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    const day=b.dataset.day;
+    const desc=document.getElementById("mapDesc");
+    desc.textContent=day==="all"?"全程總覽：東勢 → 埔里 → 力行 → 武嶺 → 花蓮 → 池上 → 南橫 → 台南。":routes[day].title;
+    updateActionLinks(day);
+    if(map) renderRoute(day);
+  });
+});
+document.querySelectorAll(".nav button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    document.getElementById(b.dataset.to).scrollIntoView({behavior:"smooth",block:"start"});
+  });
+});
+</script>
+</body>
+</html>
