@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>10/15–10/18 機車旅行｜戰情版 V6</title>
+<title>10/15–10/18 機車旅行｜戰情版 V9</title>
 <style>
 :root{
-  --bg:#f5f2ea;--paper:#fffdf8;--ink:#1f2924;--muted:#66736b;--line:#d9ded8;
-  --green:#214f3c;--green2:#47705c;--orange:#b66a3d;--blue:#50758a;--gold:#8f703a;
-  --danger:#9c463c;--shadow:0 16px 40px rgba(32,50,42,.08);--radius:22px;
+  --bg:#FFF5F5;--paper:#FFFFFF;--ink:#4A4A4A;--muted:#7A6F72;--line:#E9D7DA;
+  --green:#E2B4BD;--green2:#D89FAA;--orange:#F7D6D0;--blue:#C9A5AD;--gold:#E7C8C0;
+  --danger:#B46F7D;--shadow:0 16px 40px rgba(74,74,74,.08);--radius:22px;
 }
 /* GitHub 分享版：API Key 已寫入 HTML 後，不顯示技術狀態方框 */
 .api-panel { display:none !important; }
@@ -24,17 +24,26 @@ button,input{font:inherit}
 a{color:inherit}
 .shell{width:min(1260px,calc(100% - 28px));margin:auto}
 .hero{
-  padding:52px 0 42px;color:white;
-  background:linear-gradient(135deg,#173d2e 0%,#2e6248 52%,#72592e 100%);
+  padding:52px 0 42px;
+  color:#FFFFFF;
+  background:#4A4A4A;
 }
 .kicker{
-  display:inline-block;border:1px solid rgba(255,255,255,.3);border-radius:999px;
+  display:inline-block;border:1px solid rgba(255,255,255,.30);border-radius:999px;
   padding:7px 12px;font-size:.86rem;font-weight:800;letter-spacing:.08em;
+  background:rgba(255,255,255,.08);color:#FFFFFF;
 }
 h1{font-size:clamp(2.25rem,5vw,4.6rem);line-height:1.05;margin:18px 0 14px}
-.hero p{max-width:900px;color:rgba(255,255,255,.84);margin:0}
+.hero p{max-width:900px;color:rgba(255,255,255,.86);margin:0}
 .metrics{display:flex;gap:9px;flex-wrap:wrap;margin-top:24px}
-.metric{padding:9px 12px;border:1px solid rgba(255,255,255,.2);border-radius:12px;background:rgba(255,255,255,.08);font-size:.9rem}
+.metric{
+  padding:9px 12px;
+  border:1px solid rgba(255,255,255,.20);
+  border-radius:12px;
+  background:rgba(255,255,255,.08);
+  color:#FFFFFF;
+  font-size:.9rem;
+}
 
 .api-panel{
   margin-top:-24px;position:relative;z-index:5;background:var(--paper);border:1px solid var(--line);
@@ -55,8 +64,8 @@ h1{font-size:clamp(2.25rem,5vw,4.6rem);line-height:1.05;margin:18px 0 14px}
 .status.err{display:block;background:#fdecea;color:#853c34}
 
 .sticky{
-  position:sticky;top:0;z-index:900;background:rgba(245,242,234,.9);
-  backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.06);margin-top:0
+  position:sticky;top:0;z-index:900;background:rgba(255,245,245,.92);
+  backdrop-filter:blur(12px);border-bottom:1px solid rgba(74,74,74,.07);margin-top:0
 }
 .nav{display:flex;gap:7px;overflow:auto;padding:9px 0}
 .nav button{
@@ -99,7 +108,7 @@ main{padding:30px 0 64px}
 .day[data-day="3"] .dayhead{background:linear-gradient(135deg,#405f71,#69889a)}
 .day[data-day="4"] .dayhead{background:linear-gradient(135deg,#6d542c,#9a7b42)}
 .dayhead h2{margin:3px 0;font-size:clamp(1.45rem,3vw,2.2rem)}
-.dayhead p{margin:0;color:rgba(255,255,255,.82)}
+.dayhead p{margin:0;color:rgba(255,245,245,.90)}
 .badge{padding:9px 12px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);border-radius:13px;font-size:.87rem}
 .daybody{padding:22px}
 .grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:22px}
@@ -107,23 +116,23 @@ main{padding:30px 0 64px}
 .timeline:before{content:"";position:absolute;left:77px;top:10px;bottom:10px;width:2px;background:var(--line)}
 .event{display:grid;grid-template-columns:66px 1fr;gap:23px;position:relative;padding-bottom:17px}
 .event:after{content:"";position:absolute;left:72px;top:10px;width:11px;height:11px;border-radius:50%;background:var(--paper);border:3px solid var(--green)}
-.time{text-align:right;font-weight:900;color:var(--green);font-variant-numeric:tabular-nums;padding-top:3px}
+.time{text-align:right;font-weight:900;color:#6B555B;font-variant-numeric:tabular-nums;padding-top:3px}
 .ev{border:1px solid var(--line);border-radius:14px;background:white;padding:12px 14px}
 .ev h3{margin:0 0 3px;font-size:.98rem}
-.ev p{margin:0;color:var(--muted);font-size:.89rem}
+.ev p{margin:0;color:#625A5D;font-size:.89rem}
 .pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.pill{font-size:.75rem;padding:3px 8px;border-radius:999px;background:#edf3ee;color:var(--green);font-weight:800}
-.pill.meal{background:#fff0e6;color:#9b562f}
-.pill.risk{background:#fce9e6;color:#8c4138}
+.pill{font-size:.75rem;padding:3px 8px;border-radius:999px;background:#FBEFF1;color:#65565A;font-weight:800}
+.pill.meal{background:#FFF1EE;color:#754F56}
+.pill.risk{background:#F8E6E9;color:#804E59}
 .side{display:grid;gap:13px;align-content:start}
 .info{border:1px solid var(--line);border-radius:16px;background:#fff;padding:15px}
 .info h3{margin:0 0 9px;font-size:1rem}
 .mealrow{padding:11px 0;border-top:1px solid var(--line)}
 .mealrow:first-of-type{border-top:0;padding-top:0}
-.mealrow small{display:block;color:var(--muted);font-weight:800}
+.mealrow small{display:block;color:#6F6366;font-weight:800}
 .mealrow strong{display:block;margin:1px 0}
-.order{color:var(--orange);font-size:.88rem;font-weight:800}
-.reason{color:var(--muted);font-size:.84rem;margin-top:2px}
+.order{color:#6B555B;font-size:.88rem;font-weight:800}
+.reason{color:#665C5F;font-size:.84rem;margin-top:2px}
 .stay{background:#edf3ee}
 .alert{margin-top:12px;background:#fff1e2;border-left:4px solid var(--orange);padding:11px 12px;border-radius:0 10px 10px 0;font-size:.87rem}
 
@@ -146,7 +155,7 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
     .dayhead{grid-template-columns:1fr}
 }
 
-/* ===== 戰情版 V6 ===== */
+/* ===== 戰情版 V8.1 ===== */
 .ops-board{
   background:var(--paper);border:1px solid var(--line);border-radius:24px;
   padding:20px;box-shadow:var(--shadow);margin-bottom:26px
@@ -163,17 +172,17 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 .ops-tab.active{background:var(--green);color:#fff;border-color:var(--green)}
 .ops-main{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
 .ops-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
-.ops-metric{background:#f4f6f2;border:1px solid #dde4dd;border-radius:14px;padding:12px}
+.ops-metric{background:#FFF9F9;border:1px solid #EADADD;border-radius:14px;padding:12px}
 .ops-metric small{display:block;color:var(--muted);font-weight:800;font-size:.75rem}
 .ops-metric strong{display:block;margin-top:3px;font-size:.98rem}
-.ops-critical{background:#fff0ed;border:1px solid #e6bbb5;border-radius:15px;padding:13px 14px;margin-bottom:10px}
+.ops-critical{background:#FBEAEC;border:1px solid #e6bbb5;border-radius:15px;padding:13px 14px;margin-bottom:10px}
 .ops-critical small{display:block;color:var(--danger);font-weight:900}
 .ops-critical strong{display:block;margin-top:3px}
-.ops-fuel{background:#fff8e8;border:1px solid #e8d49e;border-radius:15px;padding:13px 14px;margin-bottom:10px}
-.ops-fuel small{display:block;color:#7b6226;font-weight:900}
+.ops-fuel{background:#FFF5F5;border:1px solid #E8C8CE;border-radius:15px;padding:13px 14px;margin-bottom:10px}
+.ops-fuel small{display:block;color:#8B7378;font-weight:900}
 .ops-fuel strong{display:block;margin-top:3px}
-.ops-planb{background:#edf3f6;border:1px solid #cbd9df;border-radius:15px;padding:13px 14px}
-.ops-planb small{display:block;color:#46697a;font-weight:900}
+.ops-planb{background:#FDF3F5;border:1px solid #DFCBCD;border-radius:15px;padding:13px 14px}
+.ops-planb small{display:block;color:#7A6F72;font-weight:900}
 .ops-planb strong{display:block;margin-top:3px}
 .quick-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .quick-link{
@@ -188,27 +197,27 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
   display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:18px
 }
 .day-ops .ops-mini{
-  border:1px solid var(--line);background:#f7f8f5;border-radius:13px;padding:11px
+  border:1px solid var(--line);background:#FFF9F9;border-radius:13px;padding:11px
 }
 .day-ops .ops-mini small{display:block;color:var(--muted);font-size:.72rem;font-weight:900}
 .day-ops .ops-mini strong{display:block;margin-top:2px;font-size:.9rem}
-.day-ops .red{background:#fff0ed;border-color:#e4bab4}
+.day-ops .red{background:#FBEAEC;border-color:#E2B4BD}
 .day-ops .red small{color:var(--danger)}
-.day-ops .gold{background:#fff8e8;border-color:#e8d49e}
-.day-ops .gold small{color:#7b6226}
-.day-ops .blue{background:#edf3f6;border-color:#cbd9df}
-.day-ops .blue small{color:#46697a}
+.day-ops .gold{background:#FFF5F5;border-color:#E8C8CE}
+.day-ops .gold small{color:#8B7378}
+.day-ops .blue{background:#FDF3F5;border-color:#DFCBCD}
+.day-ops .blue small{color:#7A6F72}
 .marker-legend{display:flex;flex-wrap:wrap;gap:10px;padding:0 16px 14px;color:var(--muted);font-size:.78rem}
 .legend-item{display:flex;align-items:center;gap:5px}
-.legend-dot{width:11px;height:11px;border-radius:50%;display:inline-block;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.14)}
+.legend-dot{width:11px;height:11px;border-radius:50%;display:inline-block;border:2px solid #fff;box-shadow:0 0 0 1px rgba(74,74,74,.16)}
 .food-tools,.stay-tools{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px}
 .tool-link{
   display:inline-flex;text-decoration:none;border:1px solid var(--line);border-radius:9px;
-  padding:5px 8px;font-size:.75rem;font-weight:800;color:var(--green);background:#fff
+  padding:5px 8px;font-size:.75rem;font-weight:800;color:#6B555B;background:#fff
 }
 .route-caution{
-  margin:12px 0 0;background:#fff9ef;border:1px dashed #d9bf83;border-radius:12px;
-  padding:10px 12px;color:#6c5a33;font-size:.82rem
+  margin:12px 0 0;background:#FFF8F8;border:1px dashed #DEC1C6;border-radius:12px;
+  padding:10px 12px;color:#7A6F72;font-size:.82rem
 }
 @media(max-width:900px){
   .ops-main{grid-template-columns:1fr}
@@ -226,10 +235,10 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 .weather-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}
 .weather-head h3{margin:0;font-size:1rem}
 .weather-head small{display:block;color:var(--muted);margin-top:2px}
-.weather-source{font-size:.72rem;color:var(--green);text-decoration:none;font-weight:800;white-space:nowrap}
+.weather-source{font-size:.72rem;color:#6B555B;text-decoration:none;font-weight:900;white-space:nowrap}
 .weather-grid{display:grid;gap:8px}
 .weather-row{
-  border:1px solid #e1e6e2;border-radius:12px;padding:10px;background:#fafbf9;
+  border:1px solid #E9D7DA;border-radius:12px;padding:10px;background:#FFFBFB;
   display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center
 }
 .weather-place{font-weight:900}
@@ -240,14 +249,26 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 .weather-alerts{margin-top:10px;display:grid;gap:6px}
 .weather-alert{
   border-radius:10px;padding:8px 10px;font-size:.8rem;font-weight:800;
-  background:#fff0ed;color:#883f37;border:1px solid #e5bcb6
+  background:#FBEAEC;color:#9B5D69;border:1px solid #E2B4BD
 }
 .weather-ok{
   border-radius:10px;padding:8px 10px;font-size:.8rem;
-  background:#edf5ee;color:#356044;border:1px solid #cee0d1
+  background:#FFF4F5;color:#7A5D64;border:1px solid #E6C9CF
 }
+
+.weather-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap;margin-top:8px}
+.weather-refresh{border:1px solid var(--line);background:#fff;color:#5E5155;border-radius:999px;padding:6px 10px;font-size:.72rem;font-weight:900;cursor:pointer}
+.weather-refresh:hover{background:#FFF5F5}
+.weather-eta{display:inline-flex;align-items:center;gap:5px;margin-top:4px;font-size:.72rem;font-weight:900;color:#765D64}
+.weather-meta{margin-top:9px;font-size:.72rem;color:#74686B;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.weather-icon{width:28px;height:28px;vertical-align:middle;margin-right:4px}
+.weather-official{margin-top:10px;border:1px solid #D8B8BE;background:#FFF3F5;border-radius:12px;padding:9px 10px}
+.weather-official strong{display:block;color:#744D56;font-size:.82rem}
+.weather-official small{display:block;color:#6C5D60;margin-top:3px;line-height:1.5}
+.weather-mode{font-size:.68rem;font-weight:900;border-radius:999px;padding:3px 7px;background:#F6E8EB;color:#69575B}
+.weather-config{border:1px dashed #C8AAB0;background:#FFF8F9;border-radius:12px;padding:11px;color:#66585C;font-size:.8rem;line-height:1.6}
 .weather-loading,.weather-unavailable{
-  border:1px dashed #cfd8d1;border-radius:12px;padding:14px;color:var(--muted);font-size:.85rem
+  border:1px dashed #DFCBCD;border-radius:12px;padding:14px;color:var(--muted);font-size:.85rem
 }
 .contact-line{
   margin-top:6px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;
@@ -257,10 +278,10 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 .contact-btn{
   display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;
   padding:4px 7px;font-size:.72rem;font-weight:900;border:1px solid var(--line);
-  color:var(--green);background:#fff
+  color:#6B555B;background:#fff
 }
 .contact-note{
-  margin-top:14px;padding:9px 11px;border-radius:10px;background:#f4f5f1;
+  margin-top:14px;padding:9px 11px;border-radius:10px;background:#FFF9F9;
   color:var(--muted);font-size:.75rem
 }
 
@@ -268,13 +289,13 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 /* ===== V5 旅行足跡 ===== */
 .footprint-section{margin-top:36px;scroll-margin-top:90px}
 .footprint-hero{
-  background:linear-gradient(135deg,#173c2f,#315e4a);
+  background:linear-gradient(135deg,#4A4A4A,#6E5D61);
   color:#fff;border-radius:24px;padding:22px;box-shadow:var(--shadow);margin-bottom:14px
 }
 .footprint-hero h2{margin:0 0 6px;font-size:1.45rem}
-.footprint-hero p{margin:0;color:rgba(255,255,255,.82)}
+.footprint-hero p{margin:0;color:rgba(255,245,245,.90)}
 .privacy-strip{
-  margin-top:12px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);
+  margin-top:12px;border:1px solid rgba(255,245,245,.28);background:rgba(255,245,245,.12);
   border-radius:13px;padding:10px 12px;font-size:.82rem
 }
 .fp-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-bottom:14px}
@@ -298,12 +319,12 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 }
 .fp-status{
   margin-top:10px;border-radius:11px;padding:9px 11px;font-size:.8rem;
-  background:#f4f5f1;color:var(--muted);border:1px solid var(--line)
+  background:#FFF9F9;color:var(--muted);border:1px solid var(--line)
 }
-.fp-status.ok{background:#edf5ee;color:#356044;border-color:#cee0d1}
-.fp-status.err{background:#fff0ed;color:#883f37;border-color:#e5bcb6}
+.fp-status.ok{background:#FFF4F5;color:#7A5D64;border-color:#E6C9CF}
+.fp-status.err{background:#FBEAEC;color:#9B5D69;border-color:#E2B4BD}
 .fp-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:11px}
-.fp-stat{background:#f6f7f4;border:1px solid #e0e5df;border-radius:12px;padding:10px}
+.fp-stat{background:#f6f7f4;border:1px solid #E9D7DA;border-radius:12px;padding:10px}
 .fp-stat small{display:block;color:var(--muted);font-size:.7rem;font-weight:900}
 .fp-stat strong{display:block;margin-top:2px;font-size:.96rem}
 .fp-daytabs{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 11px}
@@ -316,7 +337,7 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
   background:var(--paper);border:1px solid var(--line);border-radius:20px;
   overflow:hidden;box-shadow:var(--shadow);margin-bottom:14px
 }
-#footprintMap{height:520px;background:#e8ece8}
+#footprintMap{height:520px;background:#F6EDEE}
 .fp-map-placeholder{
   height:100%;display:flex;align-items:center;justify-content:center;text-align:center;
   padding:24px;color:var(--muted)
@@ -327,8 +348,8 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 }
 .fp-legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.78rem}
 .fp-line{display:inline-flex;align-items:center;gap:5px}
-.fp-line::before{content:"";width:22px;height:4px;border-radius:999px;background:#98a09c}
-.fp-line.actual::before{background:#214f3c}
+.fp-line::before{content:"";width:22px;height:4px;border-radius:999px;background:#C9B8BC}
+.fp-line.actual::before{background:#E2B4BD}
 .fp-controls{display:flex;gap:7px;flex-wrap:wrap}
 .fp-btn{
   border:1px solid var(--line);background:#fff;color:var(--green);
@@ -344,17 +365,17 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 .fp-lower{display:grid;grid-template-columns:.9fr 1.1fr;gap:14px}
 .fp-track-list,.fp-stop-list{display:grid;gap:7px;margin-top:10px}
 .fp-track-item,.fp-stop{
-  border:1px solid var(--line);background:#fafbf9;border-radius:11px;padding:9px 10px;
+  border:1px solid var(--line);background:#FFFBFB;border-radius:11px;padding:9px 10px;
   display:flex;justify-content:space-between;gap:10px;align-items:flex-start
 }
 .fp-track-item strong,.fp-stop strong{display:block;font-size:.86rem}
 .fp-track-item small,.fp-stop small{display:block;color:var(--muted);font-size:.72rem;margin-top:2px}
 .fp-empty{
-  margin-top:10px;border:1px dashed #cfd8d1;border-radius:11px;padding:13px;
+  margin-top:10px;border:1px dashed #DFCBCD;border-radius:11px;padding:13px;
   color:var(--muted);font-size:.82rem
 }
 .fp-playbar{
-  margin-top:11px;padding:10px;border-radius:11px;background:#f4f6f3;
+  margin-top:11px;padding:10px;border-radius:11px;background:#FFF9F9;
   display:flex;gap:8px;align-items:center;flex-wrap:wrap
 }
 .fp-playtime{font-variant-numeric:tabular-nums;font-weight:900;font-size:.82rem}
@@ -382,11 +403,9 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 }
 .overview-card-link:hover{border-color:#b6c4bb;transform:translateY(-1px)}
 .overview-card-link:focus-visible{
-  outline:3px solid rgba(33,79,60,.18);outline-offset:2px
+  outline:3px solid rgba(226,180,189,.30);outline-offset:2px
 }
-.card-go{
-  display:inline-block;margin-top:9px;font-size:.78rem;font-weight:900;color:var(--green)
-}
+.card-go{display:inline-block;margin-top:9px;font-size:.78rem;font-weight:900;color:#6B555B}
 .view-titlebar{
   display:flex;justify-content:space-between;align-items:center;gap:10px;
   margin:0 0 12px
@@ -400,6 +419,119 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
   .nav{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
   .nav::-webkit-scrollbar{display:none}
   .nav button{white-space:nowrap;flex:0 0 auto}
+}
+
+
+/* ===== V7 類 Relive 旅行照片回放 ===== */
+.fp-photo-upload-note{
+  margin-top:10px;padding:9px 11px;border-radius:10px;background:#FFF9F9;
+  color:var(--muted);font-size:.76rem
+}
+.fp-map-stage{position:relative}
+.fp-playback-photo{
+  display:none;position:absolute;z-index:20;left:14px;bottom:14px;
+  width:min(340px,calc(100% - 28px));background:rgba(20,28,24,.94);color:#fff;
+  border-radius:16px;overflow:hidden;box-shadow:0 16px 36px rgba(74,74,74,.22);
+  backdrop-filter:blur(8px)
+}
+.fp-playback-photo.show{display:block;animation:photoPop .22s ease-out}
+@keyframes photoPop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.fp-playback-photo img{
+  display:block;width:100%;height:190px;object-fit:cover;background:#4A4A4A
+}
+.fp-playback-photo-body{padding:10px 12px}
+.fp-playback-photo-title{font-weight:900;font-size:.95rem}
+.fp-playback-photo-meta{font-size:.76rem;color:rgba(255,245,245,.84);margin-top:3px}
+.fp-playback-photo-count{
+  display:inline-flex;margin-top:7px;border-radius:999px;padding:3px 7px;
+  background:rgba(255,245,245,.18);font-size:.7rem;font-weight:800
+}
+.fp-photo-summary{
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:9px;
+  color:var(--muted);font-size:.76rem
+}
+.fp-photo-summary strong{color:var(--ink)}
+.fp-photo-strip{
+  display:flex;gap:7px;overflow-x:auto;margin-top:10px;padding-bottom:2px
+}
+.fp-photo-thumb{
+  width:72px;height:58px;flex:0 0 auto;border-radius:9px;overflow:hidden;
+  border:2px solid transparent;background:#F5E9EB;padding:0;cursor:pointer
+}
+.fp-photo-thumb.active{border-color:var(--green)}
+.fp-photo-thumb img{width:100%;height:100%;object-fit:cover}
+.fp-photo-preview{
+  margin-top:10px;border:1px solid var(--line);border-radius:12px;
+  min-height:170px;background:#FDF6F7;display:flex;align-items:center;justify-content:center;
+  overflow:hidden
+}
+.fp-photo-preview img{width:100%;max-height:320px;object-fit:contain;background:#4A4A4A}
+.fp-photo-preview-empty{padding:18px;text-align:center;color:var(--muted);font-size:.8rem}
+.fp-photo-controls{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.fp-photo-info{font-size:.74rem;color:var(--muted)}
+@media(max-width:620px){
+  .fp-playback-photo{left:10px;bottom:10px;width:calc(100% - 20px)}
+  .fp-playback-photo img{height:160px}
+}
+
+/* ===== V8 雙旅人 + 旅行電影 ===== */
+.owner-switch,.memory-switch{
+  display:flex;gap:7px;flex-wrap:wrap;margin-top:10px
+}
+.owner-btn,.memory-btn{
+  border:1px solid var(--line);background:#fff;color:var(--muted);
+  border-radius:999px;padding:7px 11px;font-size:.78rem;font-weight:900;cursor:pointer
+}
+.owner-btn.active,.memory-btn.active{
+  background:var(--green);color:#fff;border-color:var(--green)
+}
+.owner-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:24px;height:24px;border-radius:999px;padding:0 9px;
+  font-size:.68rem;font-weight:900;background:#FFF4F5;color:var(--green);
+  border:1px solid #E5CDD2
+}
+.owner-badge.b{background:#FDF3F5;color:#7A6F72;border-color:#E5CDD2}
+.owner-badge.shared{background:#FFF2F2;color:#8B7378;border-color:#E8D0D4}
+.fp-import-owner{
+  margin-top:10px;padding:10px 11px;border-radius:11px;background:#FFF9F9;
+  border:1px solid var(--line);font-size:.78rem;color:var(--muted)
+}
+.fp-import-owner strong{color:var(--ink)}
+.dual-route-legend{
+  display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:.76rem
+}
+.dual-line{display:inline-flex;align-items:center;gap:5px}
+.dual-line::before{content:"";width:22px;height:4px;border-radius:999px;background:#E2B4BD}
+.dual-line.b::before{background:#F7D6D0}
+.dual-line.plan::before{background:#4A4A4A;opacity:.35}
+.movie-panel{
+  margin-top:14px;background:var(--paper);border:1px solid var(--line);
+  border-radius:20px;padding:16px;box-shadow:var(--shadow)
+}
+.movie-panel h3{margin:0 0 5px}
+.movie-panel p{margin:0;color:var(--muted);font-size:.84rem}
+.movie-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+.movie-stage{
+  background:#4A4A4A;border-radius:16px;overflow:hidden;aspect-ratio:16/9;
+  display:flex;align-items:center;justify-content:center
+}
+#movieCanvas{width:100%;height:100%;display:block;background:#4A4A4A}
+.movie-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.movie-status{
+  margin-top:8px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;
+  font-size:.76rem;color:var(--muted);background:#FFF9F9
+}
+.movie-script{display:grid;gap:7px}
+.movie-script-item{
+  border:1px solid var(--line);border-radius:11px;padding:9px 10px;background:#FFFBFB
+}
+.movie-script-item strong{display:block;font-size:.84rem}
+.movie-script-item small{display:block;color:var(--muted);font-size:.72rem;margin-top:2px}
+@media(max-width:900px){.movie-grid{grid-template-columns:1fr}}
+
+@media print{
+  .fp-playback-photo,.fp-photo-controls{display:none!important}
 }
 
 @media print{
@@ -454,13 +586,55 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
     <button data-to="d3">10/17 花蓮→池上</button>
     <button data-to="d4">10/18 南橫→台南</button>
     <button data-to="footprint">旅行足跡</button>
+    <button data-to="movieStudio">旅行電影</button>
   </div>
 </div>
 
 <main class="shell">
 <section id="overview" class="page-view active-view">
 
-<section class="ops-board" id="opsBoard">
+<div class="map-box">
+    <div class="map-tabs">
+      <button class="map-tab active" data-day="all">全程</button>
+      <button class="map-tab" data-day="1">10/15</button>
+      <button class="map-tab" data-day="2">10/16</button>
+      <button class="map-tab" data-day="3">10/17</button>
+      <button class="map-tab" data-day="4">10/18</button>
+    </div>
+    <div id="map">
+      <div class="map-placeholder">
+        <strong>尚未載入 Google Maps</strong>
+        若地圖未顯示，請確認 HTML 內的 Google Maps API Key、GitHub Pages HTTP referrer 與 Maps JavaScript API 設定。
+      </div>
+    </div>
+
+    <div class="marker-legend">
+      <span class="legend-item"><span class="legend-dot" style="background:#D89FAA"></span>景點</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#F0C8C1"></span>餐飲</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#C9A5AD"></span>住宿</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#E2B4BD"></span>加油／補給</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#B46F7D"></span>交管／時間紅線</span>
+    </div>
+
+    <div class="map-bottom">
+      <div><div class="map-desc" id="mapDesc">全程總覽：東勢 → 埔里 → 力行折返 → 埔里 → 武嶺 → 花蓮 → 池上 → 南橫 → 台南。</div><div class="route-caution">路線線條為行程規劃示意；實際導航請使用右側 Google Maps 按鈕，並以當日官方道路管制為準。</div></div>
+      <div class="map-actions" id="mapActions"></div>
+    </div>
+  </div>
+
+  <div class="cards">
+    <button class="card overview-card-link" type="button" data-openview="d1"><small>DAY 1</small><strong>東勢集合，當天完成力行</strong><p>10:30 寮下啜喝咖啡；埔里快速補給後上霧社、翠峰與力行吊橋，再折返埔里。</p><span class="card-go">查看完整行程 →</span></button>
+    <button class="card overview-card-link" type="button" data-openview="d2"><small>DAY 2</small><strong>合歡山與中橫慢騎</strong><p>力行已在前一天完成，07:30 從埔里出發，沿鳶峰、昆陽、武嶺進中橫，時間更從容。</p><span class="card-go">查看完整行程 →</span></button>
+    <button class="card overview-card-link" type="button" data-openview="d3"><small>DAY 3</small><strong>花東縱谷到池上</strong><p>太巴塱、玉里麵，下午銜接已安排的池上電動車導覽。</p><span class="card-go">查看完整行程 →</span></button>
+    <button class="card overview-card-link" type="button" data-openview="d4"><small>DAY 4</small><strong>南橫回台南</strong><p>08:00 出發，優先銜接向陽施工放行，再走埡口、天池與寶來。</p><span class="card-go">查看完整行程 →</span></button>
+  </div>
+
+  <div class="section-title">
+    <div><h2>Google Maps 互動地圖</h2><p>地圖載入後可切換四天路線、縮放與點擊景點標記。</p></div>
+    <p>每日線條為行程示意；真正導航使用下方 Google Maps 按鈕。</p>
+  </div>
+
+  <section class="ops-board" id="opsBoard">
   <div class="ops-head">
     <div>
       <h2>旅行戰情室</h2>
@@ -481,47 +655,6 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
     <div id="weatherContent"></div>
   </div>
 </section>
-
-  <div class="cards">
-    <button class="card overview-card-link" type="button" data-openview="d1"><small>DAY 1</small><strong>東勢集合，當天完成力行</strong><p>10:30 寮下啜喝咖啡；埔里快速補給後上霧社、翠峰與力行吊橋，再折返埔里。</p><span class="card-go">查看完整行程 →</span></button>
-    <button class="card overview-card-link" type="button" data-openview="d2"><small>DAY 2</small><strong>合歡山與中橫慢騎</strong><p>力行已在前一天完成，07:30 從埔里出發，沿鳶峰、昆陽、武嶺進中橫，時間更從容。</p><span class="card-go">查看完整行程 →</span></button>
-    <button class="card overview-card-link" type="button" data-openview="d3"><small>DAY 3</small><strong>花東縱谷到池上</strong><p>太巴塱、玉里麵，下午銜接已安排的池上電動車導覽。</p><span class="card-go">查看完整行程 →</span></button>
-    <button class="card overview-card-link" type="button" data-openview="d4"><small>DAY 4</small><strong>南橫回台南</strong><p>08:00 出發，優先銜接向陽施工放行，再走埡口、天池與寶來。</p><span class="card-go">查看完整行程 →</span></button>
-  </div>
-
-  <div class="section-title">
-    <div><h2>Google Maps 互動地圖</h2><p>地圖載入後可切換四天路線、縮放與點擊景點標記。</p></div>
-    <p>每日線條為行程示意；真正導航使用下方 Google Maps 按鈕。</p>
-  </div>
-
-  <div class="map-box">
-    <div class="map-tabs">
-      <button class="map-tab active" data-day="all">全程</button>
-      <button class="map-tab" data-day="1">10/15</button>
-      <button class="map-tab" data-day="2">10/16</button>
-      <button class="map-tab" data-day="3">10/17</button>
-      <button class="map-tab" data-day="4">10/18</button>
-    </div>
-    <div id="map">
-      <div class="map-placeholder">
-        <strong>尚未載入 Google Maps</strong>
-        若地圖未顯示，請確認 HTML 內的 Google Maps API Key、GitHub Pages HTTP referrer 與 Maps JavaScript API 設定。
-      </div>
-    </div>
-
-    <div class="marker-legend">
-      <span class="legend-item"><span class="legend-dot" style="background:#3f7a4e"></span>景點</span>
-      <span class="legend-item"><span class="legend-dot" style="background:#d2763d"></span>餐飲</span>
-      <span class="legend-item"><span class="legend-dot" style="background:#527a9a"></span>住宿</span>
-      <span class="legend-item"><span class="legend-dot" style="background:#b18b2f"></span>加油／補給</span>
-      <span class="legend-item"><span class="legend-dot" style="background:#b8483e"></span>交管／時間紅線</span>
-    </div>
-
-    <div class="map-bottom">
-      <div><div class="map-desc" id="mapDesc">全程總覽：東勢 → 埔里 → 力行折返 → 埔里 → 武嶺 → 花蓮 → 池上 → 南橫 → 台南。</div><div class="route-caution">路線線條為行程規劃示意；實際導航請使用右側 Google Maps 按鈕，並以當日官方道路管制為準。</div></div>
-      <div class="map-actions" id="mapActions"></div>
-    </div>
-  </div>
 </section>
 
 <section class="day page-view" id="d1" data-day="1">
@@ -532,8 +665,8 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 <div class="day-ops" data-dayops="1"></div>
 <div class="grid">
 <div class="timeline">
-  <div class="event"><div class="time">05:30</div><div class="ev"><h3>騎士 A｜台南歸仁出發</h3><p>由台南市歸仁區民生北街 169 號出發。03:45–05:15 早餐與裝備確認。</p></div></div>
-  <div class="event"><div class="time">05:45</div><div class="ev"><h3>騎士 B｜新北永安市場站出發</h3><p>04:00–05:30 早餐與裝備確認，途中預留短休。</p></div></div>
+  <div class="event"><div class="time">05:30</div><div class="ev"><h3>葛澔瑀｜台南歸仁出發</h3><p>由台南市歸仁區民生北街 169 號出發。03:45–05:15 早餐與裝備確認。</p></div></div>
+  <div class="event"><div class="time">05:45</div><div class="ev"><h3>林洺宥｜新北永安市場站出發</h3><p>04:00–05:30 早餐與裝備確認，途中預留短休。</p></div></div>
   <div class="event"><div class="time">10:30</div><div class="ev"><h3>寮下啜 COFFEEZU｜集合休息</h3><p>喝咖啡、整理裝備與休息 1 小時，不安排正式午餐。</p><div class="pills"><span class="pill meal">10:30–11:30</span></div></div></div>
   <div class="event"><div class="time">11:30</div><div class="ev"><h3>東勢共同出發 → 台8 → 天冷 → 台21 → 埔里</h3><p>這段已把一般道路、紅綠燈與實際騎乘緩衝算進去，約 13:00 抵埔里。</p></div></div>
   <div class="event"><div class="time">13:00</div><div class="ev"><h3>埔里｜加油＋快速午餐補給</h3><p>13:00–13:25，先把油加滿，再吃飯糰、香蕉或簡單補給。這餐因力行時程改為快速補給。</p><div class="pills"><span class="pill meal">13:00–13:25</span><span class="pill risk">本日午餐例外</span></div></div></div>
@@ -663,6 +796,14 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
     <div class="fp-card">
       <h3>匯入旅行紀錄</h3>
       <p>你可以直接使用 Google Maps Timeline 匯出的 JSON；若未來有 GPX，也可以一起匯入。支援一次選多個檔案。</p>
+      <div class="fp-import-owner">
+        <strong>本次匯入資料屬於：</strong>
+        <div class="owner-switch">
+          <button class="owner-btn active" type="button" data-import-owner="A">林洺宥</button>
+          <button class="owner-btn" type="button" data-import-owner="B">葛澔瑀</button>
+        </div>
+      </div>
+
       <div class="fp-upload-row">
         <label class="fp-upload">
           匯入 Timeline JSON
@@ -672,9 +813,16 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
           匯入 GPX
           <input id="gpxFileInput" type="file" accept=".gpx,application/gpx+xml,application/xml,text/xml" multiple>
         </label>
+        <label class="fp-upload secondary">
+          匯入旅行照片
+          <input id="photoFileInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple>
+        </label>
       </div>
       <div class="fp-help">
         Google Timeline 新版常見資料結構為 <strong>semanticSegments</strong>；本頁也兼容舊式 <strong>timelineObjects</strong> 與 <strong>locations</strong> 結構。匯入完整歷史資料時，只會在畫面上使用 2026/10/15–10/18 的旅行區段。
+      </div>
+      <div class="fp-photo-upload-note">
+        照片會優先用 EXIF 的「拍攝時間＋GPS」與停留點配對；若沒有 GPS，就以拍攝時間配對。照片同樣只儲存在目前瀏覽器，不會自動上傳到 GitHub。
       </div>
       <div id="fpStatus" class="fp-status">尚未匯入旅行紀錄。</div>
     </div>
@@ -689,12 +837,20 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
         <div class="fp-stat"><small>最高海拔</small><strong id="fpElevation">—</strong></div>
         <div class="fp-stat"><small>停留點</small><strong id="fpStops">—</strong></div>
         <div class="fp-stat"><small>已匯入檔案</small><strong id="fpFiles">0</strong></div>
+        <div class="fp-stat"><small>旅行照片</small><strong id="fpPhotoTotal">0</strong></div>
       </div>
     </div>
   </div>
 
   <div class="fp-map-wrap">
     <div style="padding:13px 14px 0">
+      
+      <div class="memory-switch" id="memorySwitch">
+        <button class="memory-btn active" type="button" data-memory-mode="shared">共同回憶</button>
+        <button class="memory-btn" type="button" data-memory-mode="A">林洺宥</button>
+        <button class="memory-btn" type="button" data-memory-mode="B">葛澔瑀</button>
+      </div>
+
       <div class="fp-daytabs">
         <button class="fp-daytab active" data-fpday="all">四天全部</button>
         <button class="fp-daytab" data-fpday="1">10/15</button>
@@ -703,13 +859,24 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
         <button class="fp-daytab" data-fpday="4">10/18</button>
       </div>
     </div>
-    <div id="footprintMap">
-      <div class="fp-map-placeholder">Google Maps 載入後，這裡會顯示「原定路線 vs 實際旅行足跡」。</div>
+    <div class="fp-map-stage">
+      <div id="footprintMap">
+        <div class="fp-map-placeholder">Google Maps 載入後，這裡會顯示「原定路線 vs 實際旅行足跡」。</div>
+      </div>
+      <div id="fpPlaybackPhoto" class="fp-playback-photo" aria-live="polite">
+        <img id="fpPlaybackPhotoImg" alt="旅行停留照片">
+        <div class="fp-playback-photo-body">
+          <div id="fpPlaybackPhotoTitle" class="fp-playback-photo-title">停留點照片</div>
+          <div id="fpPlaybackPhotoMeta" class="fp-playback-photo-meta"></div>
+          <div id="fpPlaybackPhotoCount" class="fp-playback-photo-count"></div>
+        </div>
+      </div>
     </div>
     <div class="fp-map-tools">
-      <div class="fp-legend">
-        <span class="fp-line">原定行程</span>
-        <span class="fp-line actual">實際足跡</span>
+      <div class="dual-route-legend">
+        <span class="dual-line plan">原定行程</span>
+        <span class="dual-line">林洺宥足跡</span>
+        <span class="dual-line b">葛澔瑀足跡</span>
       </div>
       <div class="fp-controls">
         <button id="fpFitBtn" class="fp-btn" type="button">縮放至軌跡</button>
@@ -744,20 +911,71 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
       <div id="fpStopList" class="fp-stop-list">
         <div class="fp-empty">匯入資料後顯示。</div>
       </div>
+      <div class="fp-photo-summary">
+        <strong>停留點照片</strong>
+        <span id="fpPhotoSummary">尚未匯入照片</span>
+      </div>
+      <div id="fpPhotoPreview" class="fp-photo-preview">
+        <div class="fp-photo-preview-empty">點擊停留點，或播放旅行時間軸時，這裡會顯示配對照片。</div>
+      </div>
+      <div id="fpPhotoStrip" class="fp-photo-strip"></div>
+      <div class="fp-photo-controls">
+        <button id="fpPhotoPrev" class="fp-btn" type="button" disabled>上一張</button>
+        <button id="fpPhotoNext" class="fp-btn" type="button" disabled>下一張</button>
+        <span id="fpPhotoInfo" class="fp-photo-info">0 張</span>
+        <button id="fpPhotoClear" class="fp-btn danger" type="button">清除照片</button>
+      </div>
       <div class="fp-note">Roads API 的「貼合道路」尚未在此版本自動啟用；目前先保留原始 Timeline／GPX 足跡，避免在未設定安全 Proxy 前把完整位置資料傳出瀏覽器。</div>
     </div>
   </div>
 </section>
+<section id="movieStudio" class="movie-panel page-view">
+  <div class="view-titlebar">
+    <button class="view-back" type="button" data-openview="footprint">← 返回旅行足跡</button>
+  </div>
+  <h3>旅行電影</h3>
+  <p>把實際足跡、停留點與照片組成一段類 Relive 的旅行回憶。可先預覽，再輸出 WebM。</p>
+
+  <div class="memory-switch" style="margin-top:12px">
+    <button class="memory-btn active" type="button" data-movie-mode="shared">共同回憶</button>
+    <button class="memory-btn" type="button" data-movie-mode="A">林洺宥</button>
+    <button class="memory-btn" type="button" data-movie-mode="B">葛澔瑀</button>
+  </div>
+
+  <div class="movie-grid">
+    <div>
+      <div class="movie-stage"><canvas id="movieCanvas" width="1280" height="720"></canvas></div>
+      <div class="movie-controls">
+        <button id="moviePreviewBtn" class="fp-btn primary" type="button">▶ 預覽旅行電影</button>
+        <button id="movieStopBtn" class="fp-btn" type="button">停止</button>
+        <button id="movieExportBtn" class="fp-btn" type="button">輸出 WebM</button>
+      </div>
+      <div id="movieStatus" class="movie-status">尚未開始。先匯入至少一位騎士的 Timeline／GPX 與照片。</div>
+    </div>
+    <div>
+      <div class="movie-script">
+        <div class="movie-script-item"><strong>開場</strong><small>日期、四天旅行標題與模式（林洺宥／葛澔瑀／共同）</small></div>
+        <div class="movie-script-item"><strong>路線回放</strong><small>車輛沿實際軌跡前進；共同模式會同時顯示 葛澔瑀、林洺宥。</small></div>
+        <div class="movie-script-item"><strong>停留點</strong><small>抵達停留點時暫停並帶出該騎士拍攝的照片。</small></div>
+        <div class="movie-script-item"><strong>結尾</strong><small>顯示總里程、四天日期與旅行回憶摘要。</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 </main>
 
-<footer><div class="shell">行程地圖為規劃用途；實際騎乘請依當日天候、道路施工、交管與機車可通行狀態調整。戰情版 V6 採分頁切換介面，可直接部署至 GitHub Pages；旅行足跡資料預設只儲存在使用者自己的瀏覽器。</div></footer>
+<footer><div class="shell">行程地圖為規劃用途；實際騎乘請依當日天候、道路施工、交管與機車可通行狀態調整。戰情版 V8.1 採雙旅人資料分流，支援林洺宥、葛澔瑀與共同回憶模式，並可在瀏覽器本機預覽與輸出 WebM 旅行電影。</div></footer>
 
 <script>
 // ---------- Google Maps API Key handling ----------
 // ★★★ 請只修改下一行 ★★★
 // 把 PASTE_YOUR_API_KEY_HERE 替換成你自己的 Google Maps JavaScript API Key。
 const GOOGLE_MAPS_API_KEY = "AIzaSyCw20w6C1zUicvAxUOclMX86-ltuATCQjc";
+
+// Google Weather API 透過安全 Proxy 呼叫，不要把 Weather API Key 放進這個 HTML。
+const GOOGLE_WEATHER_PROXY_URL = "https://trip-weather-proxy.zaft00660.workers.dev/";
 
 const statusBox = document.getElementById("apiStatus");
 
@@ -806,7 +1024,7 @@ window.gm_authFailure = function(){
 const routes = {
   1:{
     title:"10/15｜東勢 → 埔里 → 力行吊橋 → 埔里",
-    color:"#5d7f62",
+    color:"#E2B4BD",
     points:[
       ["寮下啜 COFFEEZU",24.2578,120.8298,"10:30 集合","寮下啜COFFEEZU"],
       ["埔里快速午餐／加油",23.9696,120.9648,"13:00 補給","加油站 埔里"],
@@ -825,7 +1043,7 @@ const routes = {
   },
   2:{
     title:"10/16｜埔里 → 鳶峰 → 昆陽 → 武嶺 → 中橫 → 花蓮",
-    color:"#a15d3d",
+    color:"#D89FAA",
     points:[
       ["小島好樂",23.9696,120.9648,"07:30 出發","小島好樂 埔里"],
       ["霧社",24.0224,121.1322,"途經","霧社 南投"],
@@ -885,11 +1103,11 @@ const routes = {
 
 
 const markerTypeColors={
-  spot:"#3f7a4e",
-  food:"#d2763d",
-  stay:"#527a9a",
-  fuel:"#b18b2f",
-  traffic:"#b8483e"
+  spot:"#D89FAA",
+  food:"#F0C8C1",
+  stay:"#C9A5AD",
+  fuel:"#E2B4BD",
+  traffic:"#B46F7D"
 };
 const markerTypeLabels={spot:"景點",food:"餐飲",stay:"住宿",fuel:"加油／補給",traffic:"交管／時間紅線"};
 
@@ -905,7 +1123,7 @@ function markerIcon(type){
     scale:8,
     fillColor:markerTypeColors[type]||markerTypeColors.spot,
     fillOpacity:1,
-    strokeColor:"#ffffff",
+    strokeColor:"#FFF5F5",
     strokeWeight:2
   };
 }
@@ -1003,7 +1221,7 @@ function renderRoute(day){
       const info=new google.maps.InfoWindow({
         content:`<div style="min-width:205px;font-family:Microsoft JhengHei,sans-serif">
           <div style="font-size:12px;font-weight:700;color:${markerTypeColors[type]};margin-bottom:2px">${markerTypeLabels[type]}</div>
-          <strong>${name}</strong><br><span style="color:#667">${sub}</span><br>
+          <strong>${name}</strong><br><span style="color:#7A6F72">${sub}</span><br>
           <a href="${gmapSearch(q)}" target="_blank" rel="noopener">在 Google Maps 開啟 ↗</a>
         </div>`
       });
@@ -1018,7 +1236,7 @@ function renderRoute(day){
       const info=new google.maps.InfoWindow({
         content:`<div style="min-width:205px;font-family:Microsoft JhengHei,sans-serif">
           <div style="font-size:12px;font-weight:700;color:${markerTypeColors[type]};margin-bottom:2px">${markerTypeLabels[type]}</div>
-          <strong>${name}</strong><br><span style="color:#667">${sub}</span><br>
+          <strong>${name}</strong><br><span style="color:#7A6F72">${sub}</span><br>
           <a href="${gmapSearch(q)}" target="_blank" rel="noopener">在 Google Maps 開啟 ↗</a>
         </div>`
       });
@@ -1138,166 +1356,325 @@ function renderOps(day){
 }
 
 
-// ===== Open-Meteo：免 API Key 天氣預報 =====
+// ===== Google Weather API：ETA 智慧預報（透過安全 Proxy） =====
 const weatherPlan = {
   "1":{
     date:"2026-10-15",
     points:[
-      {name:"東勢",lat:24.2578,lng:120.8298},
-      {name:"埔里",lat:23.9696,lng:120.9648},
-      {name:"翠峰",lat:24.1045,lng:121.1832},
-      {name:"力行吊橋",lat:24.160286,lng:121.213991}
+      {name:"東勢",lat:24.2578,lng:120.8298,eta:"10:30"},
+      {name:"埔里",lat:23.9696,lng:120.9648,eta:"13:00"},
+      {name:"翠峰",lat:24.1045,lng:121.1832,eta:"14:50"},
+      {name:"力行吊橋",lat:24.160286,lng:121.213991,eta:"16:00"}
     ]
   },
   "2":{
     date:"2026-10-16",
     points:[
-      {name:"埔里",lat:23.9696,lng:120.9648},
-      {name:"武嶺",lat:24.1370,lng:121.2754},
-      {name:"關原",lat:24.1792,lng:121.3440},
-      {name:"花蓮",lat:23.9911,lng:121.6112}
+      {name:"埔里",lat:23.9696,lng:120.9648,eta:"07:30"},
+      {name:"武嶺",lat:24.1370,lng:121.2754,eta:"10:15"},
+      {name:"關原",lat:24.1792,lng:121.3440,eta:"12:00"},
+      {name:"花蓮",lat:23.9911,lng:121.6112,eta:"19:00"}
     ]
   },
   "3":{
     date:"2026-10-17",
     points:[
-      {name:"花蓮",lat:23.9911,lng:121.6112},
-      {name:"太巴塱",lat:23.6601,lng:121.4484},
-      {name:"玉里",lat:23.3322,lng:121.3153},
-      {name:"池上",lat:23.1240,lng:121.2190}
+      {name:"花蓮",lat:23.9911,lng:121.6112,eta:"09:00"},
+      {name:"太巴塱",lat:23.6601,lng:121.4484,eta:"10:10"},
+      {name:"玉里",lat:23.3322,lng:121.3153,eta:"11:40"},
+      {name:"池上",lat:23.1240,lng:121.2190,eta:"14:20"}
     ]
   },
   "4":{
     date:"2026-10-18",
     points:[
-      {name:"池上",lat:23.1240,lng:121.2190},
-      {name:"向陽",lat:23.2575,lng:120.9842},
-      {name:"天池",lat:23.2852,lng:120.9010},
-      {name:"寶來",lat:23.1088,lng:120.7026},
-      {name:"台南",lat:22.9998,lng:120.2269}
+      {name:"池上",lat:23.1240,lng:121.2190,eta:"08:00"},
+      {name:"向陽",lat:23.2575,lng:120.9842,eta:"09:40"},
+      {name:"埡口",lat:23.2669,lng:120.9484,eta:"11:20"},
+      {name:"天池",lat:23.2852,lng:120.9010,eta:"12:20"},
+      {name:"寶來",lat:23.1088,lng:120.7026,eta:"14:10"},
+      {name:"台南",lat:22.9998,lng:120.2269,eta:"19:00"}
     ]
   }
 };
+
 const weatherCache={};
+const weatherFetchedAt={};
 
-function wmoText(code){
-  const c=Number(code);
-  if(c===0) return ["☀️","晴"];
-  if([1,2].includes(c)) return ["🌤️","晴時多雲"];
-  if(c===3) return ["☁️","多雲"];
-  if([45,48].includes(c)) return ["🌫️","霧"];
-  if([51,53,55,56,57].includes(c)) return ["🌦️","毛毛雨"];
-  if([61,63,65,66,67].includes(c)) return ["🌧️","降雨"];
-  if([71,73,75,77].includes(c)) return ["🌨️","降雪"];
-  if([80,81,82].includes(c)) return ["🌦️","陣雨"];
-  if([85,86].includes(c)) return ["🌨️","陣雪"];
-  if([95,96,99].includes(c)) return ["⛈️","雷雨"];
-  return ["🌡️","天氣"];
+function weatherProxyConfigured(){
+  const u=(GOOGLE_WEATHER_PROXY_URL||"").trim();
+  return u && u!=="PASTE_YOUR_WEATHER_PROXY_URL_HERE";
 }
-
-async function fetchPointWeather(point,date){
-  const url =
-    "https://api.open-meteo.com/v1/forecast" +
-    `?latitude=${point.lat}&longitude=${point.lng}` +
-    "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max" +
-    "&timezone=Asia%2FTaipei&forecast_days=16";
-  const res=await fetch(url);
-  if(!res.ok) throw new Error("weather request failed");
-  const j=await res.json();
-  const idx=j.daily?.time?.indexOf(date) ?? -1;
-  if(idx<0) return {...point,available:false};
+function targetDateTime(plan,point){
+  return new Date(`${plan.date}T${point.eta}:00+08:00`);
+}
+function hoursUntilTarget(plan,point){
+  return (targetDateTime(plan,point).getTime()-Date.now())/3600000;
+}
+function googleWeatherIcon(condition){
+  const base=condition?.iconBaseUri;
+  return base ? `${base}.svg` : "";
+}
+function safeNum(v,fallback=null){
+  const n=Number(v); return Number.isFinite(n)?n:fallback;
+}
+function weatherText(condition){
+  return condition?.description?.text || "天氣預報";
+}
+function formatWeatherUpdated(d){
+  return new Intl.DateTimeFormat("zh-TW",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false,timeZone:"Asia/Taipei"}).format(d);
+}
+function dayKey(d){
+  const y=d.year,m=String(d.month).padStart(2,"0"),day=String(d.day).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+function hourlyKey(h){
+  const d=h?.displayDateTime;
+  if(!d) return "";
+  const y=d.year,m=String(d.month).padStart(2,"0"),day=String(d.day).padStart(2,"0"),hr=String(d.hours??0).padStart(2,"0");
+  return `${y}-${m}-${day}T${hr}:00`;
+}
+async function weatherProxyFetch(params){
+  const base=GOOGLE_WEATHER_PROXY_URL.trim().replace(/\/$/,"");
+  const url=new URL(base);
+  Object.entries(params).forEach(([k,v])=>url.searchParams.set(k,String(v)));
+  const res=await fetch(url.toString(),{headers:{"Accept":"application/json"}});
+  let body=null;
+  try{ body=await res.json(); }catch(e){}
+  if(!res.ok) throw new Error(body?.error || `Google Weather Proxy ${res.status}`);
+  return body;
+}
+async function fetchGoogleDaily(point,date){
+  const j=await weatherProxyFetch({mode:"daily",lat:point.lat,lng:point.lng,days:10});
+  const d=(j.forecastDays||[]).find(x=>dayKey(x.displayDate)===date);
+  if(!d) return {...point,available:false,forecastMode:"daily"};
+  const daytime=d.daytimeForecast||{};
   return {
-    ...point,available:true,
-    code:j.daily.weather_code[idx],
-    tmax:j.daily.temperature_2m_max[idx],
-    tmin:j.daily.temperature_2m_min[idx],
-    rain:j.daily.precipitation_probability_max[idx],
-    wind:j.daily.wind_speed_10m_max[idx],
-    gust:j.daily.wind_gusts_10m_max[idx]
+    ...point,available:true,forecastMode:"daily",
+    condition:daytime.weatherCondition,
+    tmax:safeNum(d.maxTemperature?.degrees),
+    tmin:safeNum(d.minTemperature?.degrees),
+    feelsMax:safeNum(d.feelsLikeMaxTemperature?.degrees),
+    feelsMin:safeNum(d.feelsLikeMinTemperature?.degrees),
+    rain:safeNum(daytime.precipitation?.probability?.percent,0),
+    wind:safeNum(daytime.wind?.speed?.value,0),
+    gust:safeNum(daytime.wind?.gust?.value,0),
+    thunder:safeNum(daytime.thunderstormProbability,0),
+    humidity:safeNum(daytime.relativeHumidity)
   };
 }
+async function fetchGoogleHourly(point,plan){
+  const target=targetDateTime(plan,point);
+  const h=Math.ceil((target.getTime()-Date.now())/3600000)+2;
+  const hours=Math.min(72,Math.max(1,h));
+  const j=await weatherProxyFetch({mode:"hourly",lat:point.lat,lng:point.lng,hours});
+  const rows=j.forecastHours||[];
+  if(!rows.length) return {...point,available:false,forecastMode:"hourly"};
 
-function buildWeatherAlerts(rows){
+  const wanted=target.getTime();
+  let best=null,bestGap=Infinity;
+  rows.forEach(x=>{
+    const st=x?.interval?.startTime ? new Date(x.interval.startTime).getTime() : NaN;
+    if(Number.isFinite(st)){
+      const g=Math.abs(st-wanted);
+      if(g<bestGap){best=x;bestGap=g;}
+    }
+  });
+  if(!best || bestGap>2*3600000) return {...point,available:false,forecastMode:"hourly"};
+
+  return {
+    ...point,available:true,forecastMode:"hourly",
+    forecastLocal:hourlyKey(best),
+    condition:best.weatherCondition,
+    temp:safeNum(best.temperature?.degrees),
+    feels:safeNum(best.feelsLikeTemperature?.degrees),
+    rain:safeNum(best.precipitation?.probability?.percent,0),
+    wind:safeNum(best.wind?.speed?.value,0),
+    gust:safeNum(best.wind?.gust?.value,0),
+    visibility:safeNum(best.visibility?.distance),
+    thunder:safeNum(best.thunderstormProbability,0),
+    humidity:safeNum(best.relativeHumidity)
+  };
+}
+async function fetchGooglePoint(point,plan){
+  const diff=hoursUntilTarget(plan,point);
+  if(diff>240) return {...point,available:false,forecastMode:"future",reason:"range"};
+  if(diff<-6) return {...point,available:false,forecastMode:"past",reason:"past"};
+  if(diff<=72) return fetchGoogleHourly(point,plan);
+  return fetchGoogleDaily(point,plan.date);
+}
+async function fetchRouteAlerts(plan){
+  // Public Alerts 是「目前有效」警報，只在距離該日 72 小時內查詢，避免把很早以前的即時警報誤當成旅程預報。
+  const first=targetDateTime(plan,plan.points[0]);
+  const diff=(first.getTime()-Date.now())/3600000;
+  if(diff>72 || diff<-24) return [];
+  const settled=await Promise.allSettled(plan.points.map(p=>
+    weatherProxyFetch({mode:"alerts",lat:p.lat,lng:p.lng})
+  ));
+  const dedupe=new Map();
+  settled.forEach(r=>{
+    if(r.status!=="fulfilled") return;
+    (r.value.weatherAlerts||[]).forEach(a=>{
+      const key=a.alertId || `${a.eventType}|${a.areaName}|${a.startTime}`;
+      if(!dedupe.has(key)) dedupe.set(key,a);
+    });
+  });
+  return [...dedupe.values()];
+}
+function buildGoogleWeatherAlerts(rows){
   const alerts=[];
   rows.filter(x=>x.available).forEach(x=>{
-    if(x.tmin<=8) alerts.push(`${x.name} 最低約 ${Math.round(x.tmin)}°C：高山低溫，增加保暖與防風層。`);
-    if(x.rain>=60) alerts.push(`${x.name} 降雨機率約 ${Math.round(x.rain)}%：雨具、防水手套與道路狀況列為優先。`);
-    if(x.gust>=40) alerts.push(`${x.name} 最大陣風約 ${Math.round(x.gust)} km/h：機車留意側風與高架／稜線路段。`);
+    const low=x.forecastMode==="hourly" ? x.feels : x.feelsMin;
+    if(low!=null && low<=8) alerts.push(`${x.name} 體感約 ${Math.round(low)}°C：高山低溫，增加保暖與防風層。`);
+    if(x.rain>=60) alerts.push(`${x.name} 降雨機率約 ${Math.round(x.rain)}%：雨具、防水手套與煞車距離列為優先。`);
+    if(x.gust>=40) alerts.push(`${x.name} 陣風約 ${Math.round(x.gust)} km/h：機車留意側風、稜線與大型車亂流。`);
+    if(x.visibility!=null && x.visibility<5) alerts.push(`${x.name} 能見度約 ${x.visibility.toFixed(1)} km：山區可能有霧，降低速度並避免跟車過近。`);
+    if(x.thunder>=30) alerts.push(`${x.name} 雷雨機率約 ${Math.round(x.thunder)}%：避免在高山開闊路段久留。`);
   });
   return alerts;
 }
+function officialAlertHTML(a){
+  const title=a.alertTitle?.text || a.eventType || "天氣警報";
+  const area=a.areaName || "";
+  const sev=(a.severity||"").replaceAll("_"," ");
+  const desc=(a.description||"").replace(/\s+/g," ").trim();
+  return `<div class="weather-official">
+    <strong>官方警報｜${escapeHTML(title)}${area?`｜${escapeHTML(area)}`:""}</strong>
+    <small>${sev?`嚴重度：${escapeHTML(sev)}。`:""}${desc?escapeHTML(desc.slice(0,220)):"請依發布單位指示調整行程。"}</small>
+  </div>`;
+}
+function weatherRowHTML(x){
+  if(!x.available){
+    const why=x.reason==="range" ? "尚未進入 Google 10 天預報範圍" :
+      x.reason==="past" ? "此 ETA 已超過預報時段" : "目前沒有可用預報";
+    return `<div class="weather-row">
+      <div><div class="weather-place">${escapeHTML(x.name)}</div>
+      <div class="weather-condition">${why}</div><div class="weather-eta">預計 ${x.eta} 抵達</div></div>
+      <div class="weather-values">—</div>
+    </div>`;
+  }
 
-async function renderWeather(day){
+  const icon=googleWeatherIcon(x.condition);
+  const iconHTML=icon?`<img class="weather-icon" src="${icon}" alt="">`:"";
+  const desc=escapeHTML(weatherText(x.condition));
+  if(x.forecastMode==="hourly"){
+    return `<div class="weather-row">
+      <div>
+        <div class="weather-place">${iconHTML}${escapeHTML(x.name)}</div>
+        <div class="weather-condition">${desc}｜降雨 ${Math.round(x.rain)}%｜雷雨 ${Math.round(x.thunder)}%</div>
+        <div class="weather-eta">ETA ${x.eta}｜逐時預報</div>
+      </div>
+      <div class="weather-values">
+        <div class="weather-temp">${x.temp==null?"—":Math.round(x.temp)+"°C"} <span style="font-size:.72rem;color:#6F6366">體感 ${x.feels==null?"—":Math.round(x.feels)+"°C"}</span></div>
+        <div class="weather-sub">風 ${Math.round(x.wind)}｜陣風 ${Math.round(x.gust)} km/h${x.visibility!=null?`｜能見度 ${x.visibility.toFixed(1)} km`:""}</div>
+      </div>
+    </div>`;
+  }
+  return `<div class="weather-row">
+    <div>
+      <div class="weather-place">${iconHTML}${escapeHTML(x.name)}</div>
+      <div class="weather-condition">${desc}｜降雨 ${Math.round(x.rain)}%｜雷雨 ${Math.round(x.thunder)}%</div>
+      <div class="weather-eta">ETA ${x.eta}｜每日趨勢，72 小時內自動切換逐時 ETA</div>
+    </div>
+    <div class="weather-values">
+      <div class="weather-temp">${x.tmin==null||x.tmax==null?"—":Math.round(x.tmin)+"–"+Math.round(x.tmax)+"°C"}</div>
+      <div class="weather-sub">體感 ${x.feelsMin==null||x.feelsMax==null?"—":Math.round(x.feelsMin)+"–"+Math.round(x.feelsMax)+"°C"}｜風 ${Math.round(x.wind)}｜陣風 ${Math.round(x.gust)} km/h</div>
+    </div>
+  </div>`;
+}
+function refreshGoogleWeather(day){
+  Object.keys(weatherCache).filter(k=>k.startsWith(day+"_")).forEach(k=>delete weatherCache[k]);
+  Object.keys(weatherFetchedAt).filter(k=>k.startsWith(day+"_")).forEach(k=>delete weatherFetchedAt[k]);
+  renderWeather(day,true);
+}
+async function renderWeather(day,force=false){
   const box=document.getElementById("weatherContent");
   const plan=weatherPlan[day];
   if(!box || !plan) return;
 
+  if(!weatherProxyConfigured()){
+    box.innerHTML=`<div class="weather-card">
+      <div class="weather-head">
+        <div><h3>${plan.date.slice(5).replace("-","/")} 沿線天氣</h3><small>Google Weather API</small></div>
+        <a class="weather-source" href="https://developers.google.com/maps/documentation/weather" target="_blank" rel="noopener">Google Weather ↗</a>
+      </div>
+      <div class="weather-config">
+        Google Weather Proxy 尚未設定。部署附帶的 <strong>google-weather-proxy-worker.js</strong> 後，
+        將本 HTML 中的 <strong>PASTE_YOUR_WEATHER_PROXY_URL_HERE</strong> 換成 Worker 網址即可。
+        Weather API Key 不需要、也不應直接放進這個公開 HTML。
+      </div>
+    </div>`;
+    return;
+  }
+
   box.innerHTML=`<div class="weather-card">
     <div class="weather-head">
-      <div><h3>${plan.date.slice(5).replace("-","/")} 沿線天氣</h3><small>溫度、降雨、最大風速／陣風</small></div>
-      <a class="weather-source" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo ↗</a>
+      <div><h3>${plan.date.slice(5).replace("-","/")} 沿線天氣</h3><small>Google Weather｜依預計抵達時間自動切換每日／逐時預報</small></div>
+      <a class="weather-source" href="https://developers.google.com/maps/documentation/weather" target="_blank" rel="noopener">Google Weather ↗</a>
     </div>
-    <div class="weather-loading">正在取得最新預報…</div>
+    <div class="weather-loading">正在取得 Google 最新預報…</div>
   </div>`;
 
   try{
     const cacheKey=day+"_"+plan.date;
-    let rows=weatherCache[cacheKey];
-    if(!rows){
-      rows=await Promise.all(plan.points.map(p=>fetchPointWeather(p,plan.date)));
-      weatherCache[cacheKey]=rows;
+    let payload=force?null:weatherCache[cacheKey];
+    if(!payload){
+      const rows=await Promise.all(plan.points.map(p=>fetchGooglePoint(p,plan)));
+      const official=await fetchRouteAlerts(plan);
+      payload={rows,official};
+      weatherCache[cacheKey]=payload;
+      weatherFetchedAt[cacheKey]=new Date();
     }
-
+    const rows=payload.rows;
+    const official=payload.official||[];
     const available=rows.filter(x=>x.available);
-    if(!available.length){
-      box.innerHTML=`<div class="weather-card">
-        <div class="weather-head">
-          <div><h3>${plan.date.slice(5).replace("-","/")} 沿線天氣</h3><small>Open-Meteo 預報</small></div>
-          <a class="weather-source" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo ↗</a>
-        </div>
-        <div class="weather-unavailable">這一天目前尚未進入可用的預報範圍。接近出發日後重新開啟網頁，資料會自動出現。</div>
-        <div class="contact-note">山區預報僅供規劃。10/16 合歡山／中橫與 10/18 南橫，出發前仍應搭配官方道路公告與中央氣象署資訊判斷。</div>
-      </div>`;
-      return;
-    }
 
-    const alerts=buildWeatherAlerts(rows);
+    const alerts=buildGoogleWeatherAlerts(rows);
+    const modes=new Set(available.map(x=>x.forecastMode));
+    let modeLabel="Google Weather";
+    if(modes.has("hourly")&&modes.has("daily")) modeLabel="每日＋逐時 ETA";
+    else if(modes.has("hourly")) modeLabel="逐時 ETA";
+    else if(modes.has("daily")) modeLabel="每日趨勢";
+
     box.innerHTML=`<div class="weather-card">
       <div class="weather-head">
-        <div><h3>${plan.date.slice(5).replace("-","/")} 沿線天氣</h3><small>每日最高／最低、降雨與風況</small></div>
-        <a class="weather-source" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo ↗</a>
+        <div>
+          <h3>${plan.date.slice(5).replace("-","/")} 沿線天氣</h3>
+          <small>Google Weather API <span class="weather-mode">${modeLabel}</span></small>
+        </div>
+        <a class="weather-source" href="https://developers.google.com/maps/documentation/weather" target="_blank" rel="noopener">Google Weather ↗</a>
       </div>
-      <div class="weather-grid">
-        ${rows.map(x=>{
-          if(!x.available) return `<div class="weather-row">
-            <div><div class="weather-place">${x.name}</div><div class="weather-condition">尚未進入預報範圍</div></div>
-            <div class="weather-values">—</div>
-          </div>`;
-          const [icon,desc]=wmoText(x.code);
-          return `<div class="weather-row">
-            <div>
-              <div class="weather-place">${icon} ${x.name}</div>
-              <div class="weather-condition">${desc}｜降雨 ${Math.round(x.rain)}%</div>
-            </div>
-            <div class="weather-values">
-              <div class="weather-temp">${Math.round(x.tmin)}–${Math.round(x.tmax)}°C</div>
-              <div class="weather-sub">風 ${Math.round(x.wind)}｜陣風 ${Math.round(x.gust)} km/h</div>
-            </div>
-          </div>`;
-        }).join("")}
-      </div>
+      ${available.length
+        ? `<div class="weather-grid">${rows.map(weatherRowHTML).join("")}</div>`
+        : `<div class="weather-unavailable">目前尚未進入 Google 可用的 10 天預報範圍。接近出發日後重新開啟或按「重新整理天氣」，資料會自動出現。</div>`
+      }
       <div class="weather-alerts">
         ${alerts.length
-          ? alerts.map(a=>`<div class="weather-alert">⚠ ${a}</div>`).join("")
-          : `<div class="weather-ok">目前預報未觸發低溫、降雨 ≥60% 或陣風 ≥40 km/h 的自動警示。</div>`
+          ? alerts.map(a=>`<div class="weather-alert">⚠ ${escapeHTML(a)}</div>`).join("")
+          : available.length
+            ? `<div class="weather-ok">目前預報未觸發低體感溫度、降雨 ≥60%、陣風 ≥40 km/h、低能見度或較高雷雨機率的自動騎乘警示。</div>`
+            : ""
         }
       </div>
-      <div class="contact-note">資料來源：Open-Meteo。山區天氣變化快，實際騎乘仍以出發前最新預報、現地能見度與官方道路資訊為準。</div>
+      ${official.length?official.map(officialAlertHTML).join(""):""}
+      <div class="weather-toolbar">
+        <button class="weather-refresh" type="button" onclick="refreshGoogleWeather('${day}')">↻ 重新整理天氣</button>
+      </div>
+      <div class="weather-meta">
+        <span>資料來源：Google Weather API${official.length?"＋目前有效官方天氣警報":""}</span>
+        <span>本頁更新：${formatWeatherUpdated(weatherFetchedAt[cacheKey]||new Date())}</span>
+      </div>
+      <div class="contact-note">10/16 合歡山／中橫與 10/18 南橫屬高山道路，天氣資料用於行程判斷；實際騎乘仍需搭配現地能見度與官方道路管制資訊。</div>
     </div>`;
   }catch(err){
+    console.warn("Google Weather",err);
     box.innerHTML=`<div class="weather-card">
-      <div class="weather-head"><div><h3>沿線天氣</h3><small>Open-Meteo</small></div></div>
-      <div class="weather-unavailable">天氣資料暫時無法取得。請確認網路連線後重新整理；其他行程功能不受影響。</div>
+      <div class="weather-head">
+        <div><h3>${plan.date.slice(5).replace("-","/")} 沿線天氣</h3><small>Google Weather API</small></div>
+        <a class="weather-source" href="https://developers.google.com/maps/documentation/weather" target="_blank" rel="noopener">Google Weather ↗</a>
+      </div>
+      <div class="weather-unavailable">Google Weather 暫時無法取得：${escapeHTML(err.message||"未知錯誤")}。其他行程功能不受影響。</div>
+      <div class="weather-toolbar"><button class="weather-refresh" type="button" onclick="refreshGoogleWeather('${day}')">↻ 再試一次</button></div>
     </div>`;
   }
 }
@@ -1376,6 +1753,41 @@ document.querySelectorAll(".info").forEach(card=>{
 });
 
 
+
+
+let fpImportOwner="A";
+let fpMemoryMode="shared";
+let fpMovieMode="shared";
+
+function ownerDisplayName(owner){
+  return owner==="B" ? "葛澔瑀" : "林洺宥";
+}
+function ownerAllowed(owner,mode){
+  return mode==="shared" || owner===mode;
+}
+function ownerClass(owner){
+  return owner==="B" ? "b" : "";
+}
+document.querySelectorAll("[data-import-owner]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    fpImportOwner=btn.dataset.importOwner;
+    document.querySelectorAll("[data-import-owner]").forEach(x=>x.classList.toggle("active",x===btn));
+  });
+});
+document.querySelectorAll("[data-memory-mode]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    fpMemoryMode=btn.dataset.memoryMode;
+    document.querySelectorAll("[data-memory-mode]").forEach(x=>x.classList.toggle("active",x===btn));
+    stopPlayback(true); hidePlaybackPhoto(); renderFootprint(); renderPhotoForVisit(null);
+  });
+});
+document.querySelectorAll("[data-movie-mode]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    fpMovieMode=btn.dataset.movieMode;
+    document.querySelectorAll("[data-movie-mode]").forEach(x=>x.classList.toggle("active",x===btn));
+    drawMoviePoster();
+  });
+});
 
 // ===== V5 旅行足跡：Timeline JSON / GPX 本機匯入 =====
 const TRIP_DATES = {"1":"2026-10-15","2":"2026-10-16","3":"2026-10-17","4":"2026-10-18"};
@@ -1594,13 +2006,15 @@ function tripOnly(track){
   return {...track,points:timed.length?timed:untimed,visits};
 }
 function dayPoints(day){
-  const all=fpTracks.flatMap(t=>t.points.map(p=>({...p,trackName:t.name})));
+  const all=fpTracks.filter(t=>ownerAllowed(t.owner||"A",fpMemoryMode))
+    .flatMap(t=>t.points.map(p=>({...p,trackName:t.name,owner:t.owner||"A"})));
   if(day==="all") return all.sort((a,b)=>(a.ts&&b.ts)?new Date(a.ts)-new Date(b.ts):0);
   const date=TRIP_DATES[day];
   return all.filter(p=>!p.ts || taiwanDate(p.ts)===date).sort((a,b)=>(a.ts&&b.ts)?new Date(a.ts)-new Date(b.ts):0);
 }
 function dayVisits(day){
-  const all=fpTracks.flatMap(t=>(t.visits||[]).map(v=>({...v,trackName:t.name})));
+  const all=fpTracks.filter(t=>ownerAllowed(t.owner||"A",fpMemoryMode))
+    .flatMap(t=>(t.visits||[]).map(v=>({...v,trackName:t.name,owner:t.owner||"A"})));
   if(day==="all") return all.sort((a,b)=>(a.start&&b.start)?new Date(a.start)-new Date(b.start):0);
   const date=TRIP_DATES[day];
   return all.filter(v=>!v.start || taiwanDate(v.start)===date).sort((a,b)=>(a.start&&b.start)?new Date(a.start)-new Date(b.start):0);
@@ -1706,32 +2120,37 @@ function renderFootprint(){
     const r=routes[d];
     if(!r) return;
     const planned=new google.maps.Polyline({
-      path:r.path,map:footprintMap,strokeColor:"#8d9691",strokeOpacity:.35,strokeWeight:5
+      path:r.path,map:footprintMap,strokeColor:"#C9B8BC",strokeOpacity:.35,strokeWeight:5
     });
     footprintOverlays.push(planned);
     r.path.forEach(p=>bounds.extend(p));
   });
 
   if(points.length){
-    // Break lines on date changes or very long time gaps to avoid cross-day jumps.
-    let groups=[],g=[];
-    points.forEach((p,i)=>{
-      if(i>0){
-        const prev=points[i-1];
-        const dateBreak=prev.ts&&p.ts&&taiwanDate(prev.ts)!==taiwanDate(p.ts);
-        const gap=prev.ts&&p.ts&&(new Date(p.ts)-new Date(prev.ts)>4*3600*1000);
-        if(dateBreak||gap){if(g.length>1) groups.push(g);g=[];}
-      }
-      g.push({lat:p.lat,lng:p.lng});
-    });
-    if(g.length>1) groups.push(g);
-
-    groups.forEach(path=>{
-      const line=new google.maps.Polyline({
-        path,map:footprintMap,strokeColor:"#214f3c",strokeOpacity:.95,strokeWeight:5
+    ["A","B"].forEach(owner=>{
+      if(!ownerAllowed(owner,fpMemoryMode)) return;
+      const ownerPoints=points.filter(p=>(p.owner||"A")===owner);
+      let groups=[],g=[];
+      ownerPoints.forEach((p,i)=>{
+        if(i>0){
+          const prev=ownerPoints[i-1];
+          const dateBreak=prev.ts&&p.ts&&taiwanDate(prev.ts)!==taiwanDate(p.ts);
+          const gap=prev.ts&&p.ts&&(new Date(p.ts)-new Date(prev.ts)>4*3600*1000);
+          if(dateBreak||gap){if(g.length>1) groups.push(g);g=[];}
+        }
+        g.push({lat:p.lat,lng:p.lng});
       });
-      footprintOverlays.push(line);
-      path.forEach(p=>bounds.extend(p));
+      if(g.length>1) groups.push(g);
+
+      groups.forEach(path=>{
+        const line=new google.maps.Polyline({
+          path,map:footprintMap,
+          strokeColor:owner==="B"?"#F7D6D0":"#E2B4BD",
+          strokeOpacity:.95,strokeWeight:5
+        });
+        footprintOverlays.push(line);
+        path.forEach(p=>bounds.extend(p));
+      });
     });
 
     const first=points[0],last=points[points.length-1];
@@ -1744,12 +2163,12 @@ function renderFootprint(){
       const m=new google.maps.Marker({
         position:{lat:v.lat,lng:v.lng},map:footprintMap,
         title:v.name||"停留點",
-        icon:{path:google.maps.SymbolPath.CIRCLE,scale:6,fillColor:"#b66a3d",fillOpacity:1,strokeColor:"#fff",strokeWeight:2}
+        icon:{path:google.maps.SymbolPath.CIRCLE,scale:6,fillColor:"#F0C8C1",fillOpacity:1,strokeColor:"#fff",strokeWeight:2}
       });
       const info=new google.maps.InfoWindow({
         content:`<div style="min-width:190px;font-family:Microsoft JhengHei,sans-serif">
           <strong>${v.name||"停留點"}</strong><br>
-          <span style="color:#667">${v.start?formatDateTime(v.start):"—"}${v.end?" ～ "+taiwanTime(v.end):""}</span>
+          <span style="color:#7A6F72">${v.start?formatDateTime(v.start):"—"}${v.end?" ～ "+taiwanTime(v.end):""}</span>
         </div>`
       });
       m.addListener("click",()=>info.open({anchor:m,map:footprintMap}));
@@ -1767,8 +2186,9 @@ function renderTrackList(){
   }
   el.innerHTML=fpTracks.map(t=>{
     const dates=[...new Set(t.points.filter(p=>p.ts).map(p=>taiwanDate(p.ts)).filter(Boolean))].sort();
+    const owner=t.owner||"A";
     return `<div class="fp-track-item">
-      <div><strong>${escapeHTML(t.name)}</strong>
+      <div><strong><span class="owner-badge ${ownerClass(owner)}">${ownerDisplayName(owner)}</span> ${escapeHTML(t.name)}</strong>
       <small>${t.type}｜${t.points.length.toLocaleString("zh-TW")} 個位置點${dates.length?"｜"+dates.join("、"):""}</small></div>
       <button class="fp-btn danger" type="button" data-delete-track="${t.id}">移除</button>
     </div>`;
@@ -1783,10 +2203,23 @@ function renderStopList(visits){
   el.innerHTML=visits.slice(0,60).map(v=>{
     let dur="";
     if(v.start&&v.end) dur=`｜${durationText(new Date(v.end)-new Date(v.start))}`;
-    return `<div class="fp-stop"><div><strong>${escapeHTML(v.name||"停留點")}</strong>
-      <small>${v.start?formatDateTime(v.start):"時間不明"}${dur}｜${escapeHTML(v.source||"")}</small></div>
-      <a class="fp-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v.lat+","+v.lng)}">地圖</a></div>`;
+    const photoN=typeof photosForVisit==="function"?photosForVisit(v).length:0;
+    return `<div class="fp-stop"><div><strong><span class="owner-badge ${ownerClass(v.owner||"A")}">${ownerDisplayName(v.owner||"A")}</span> ${escapeHTML(v.name||"停留點")}</strong>
+      <small>${v.start?formatDateTime(v.start):"時間不明"}${dur}｜${escapeHTML(v.source||"")}${photoN?`｜📷 ${photoN}`:""}</small></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        ${photoN?`<button class="fp-btn" type="button" data-show-visit-photo="${encodeURIComponent(JSON.stringify(v))}">照片</button>`:""}
+        <a class="fp-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v.lat+","+v.lng)}">地圖</a>
+      </div></div>`;
   }).join("");
+  el.querySelectorAll("[data-show-visit-photo]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      try{
+        const v=JSON.parse(decodeURIComponent(btn.dataset.showVisitPhoto));
+        fpActivePhotoIndex=0;
+        renderPhotoForVisit(v);
+      }catch(e){}
+    });
+  });
 }
 function escapeHTML(v){
   return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
@@ -1859,6 +2292,7 @@ async function importTimelineFiles(files){
       let t=tripOnly(parseTimelineJSON(data,file.name));
       if(!t.points.length && !t.visits.length) throw new Error("找不到 10/15–10/18 的位置資料");
       t.id=`timeline-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      t.owner=fpImportOwner;
       t.importedAt=new Date().toISOString();
       // De-duplicate near-identical points.
       t.points=t.points.filter((p,i,a)=>i===0 || p.lat!==a[i-1].lat || p.lng!==a[i-1].lng || p.ts!==a[i-1].ts);
@@ -1878,6 +2312,7 @@ async function importGPXFiles(files){
       let t=tripOnly(parseGPX(await file.text(),file.name));
       if(!t.points.length) throw new Error("沒有可用軌跡點");
       t.id=`gpx-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      t.owner=fpImportOwner;
       t.importedAt=new Date().toISOString();
       await saveTrack(t);fpTracks.push(t);
       success++;totalPts+=t.points.length;
@@ -1916,6 +2351,8 @@ function startPlayback(){
   stopPlayback(false);
   fpPlaybackPoints=pts;
   fpPlaybackIndex=0;
+  fpLastPlaybackVisitKey="";
+  hidePlaybackPhoto();
   fpPlaybackMarker=new google.maps.Marker({
     position:{lat:pts[0].lat,lng:pts[0].lng},map:footprintMap,
     title:"旅行回放"
@@ -1927,6 +2364,16 @@ function startPlayback(){
     const p=fpPlaybackPoints[fpPlaybackIndex];
     fpPlaybackMarker.setPosition({lat:p.lat,lng:p.lng});
     document.getElementById("fpPlayTime").textContent=p.ts?formatDateTime(p.ts):`軌跡 ${fpPlaybackIndex+1}/${fpPlaybackPoints.length}`;
+
+    const visit=playbackVisitForPoint(p);
+    if(visit){
+      const key=visitKey(visit);
+      if(key!==fpLastPlaybackVisitKey && photosForVisit(visit).length){
+        fpLastPlaybackVisitKey=key;
+        showPlaybackPhoto(visit);
+      }
+    }
+
     if(fpPlaybackIndex>=fpPlaybackPoints.length-1) stopPlayback(false);
   },120);
 }
@@ -1944,13 +2391,559 @@ document.getElementById("gpxFileInput")?.addEventListener("change",e=>{
 });
 document.querySelectorAll(".fp-daytab").forEach(b=>b.addEventListener("click",()=>{
   document.querySelectorAll(".fp-daytab").forEach(x=>x.classList.remove("active"));
-  b.classList.add("active");fpCurrentDay=b.dataset.fpday;stopPlayback(true);renderFootprint();
+  b.classList.add("active");fpCurrentDay=b.dataset.fpday;stopPlayback(true);hidePlaybackPhoto();renderFootprint();renderPhotoForVisit(null);
 }));
 document.getElementById("fpClearBtn")?.addEventListener("click",clearTracks);
 document.getElementById("fpExportBtn")?.addEventListener("click",exportSelectedGPX);
 document.getElementById("fpFitBtn")?.addEventListener("click",renderFootprint);
 document.getElementById("fpPlayBtn")?.addEventListener("click",startPlayback);
 document.getElementById("fpPauseBtn")?.addEventListener("click",pausePlayback);
+
+
+// ===== V7 旅行照片：EXIF + Timeline 停留點 + 類 Relive 回放 =====
+let fpPhotos=[];
+let fpActiveVisit=null;
+let fpActiveVisitPhotos=[];
+let fpActivePhotoIndex=0;
+let fpPhotoOverlayTimer=null;
+let fpPhotoOverlayCycle=null;
+let fpLastPlaybackVisitKey="";
+
+function photoDbOpen(){
+  return new Promise((resolve,reject)=>{
+    const req=indexedDB.open("trip-photos-v1",1);
+    req.onupgradeneeded=()=>{
+      if(!req.result.objectStoreNames.contains("photos")){
+        req.result.createObjectStore("photos",{keyPath:"id"});
+      }
+    };
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>reject(req.error);
+  });
+}
+
+async function photoDbPut(rec){
+  const db=await photoDbOpen();
+  await new Promise((resolve,reject)=>{
+    const tx=db.transaction("photos","readwrite");
+    tx.objectStore("photos").put(rec);
+    tx.oncomplete=resolve;
+    tx.onerror=()=>reject(tx.error);
+  });
+  db.close();
+}
+
+async function loadStoredPhotos(){
+  try{
+    const db=await photoDbOpen();
+    fpPhotos=await new Promise((resolve,reject)=>{
+      const req=db.transaction("photos","readonly").objectStore("photos").getAll();
+      req.onsuccess=()=>resolve(req.result||[]);
+      req.onerror=()=>reject(req.error);
+    });
+    db.close();
+    updatePhotoCount();
+    renderFootprint();
+    renderPhotoForVisit(null);
+  }catch(e){ console.warn("load photos",e); }
+}
+
+async function clearStoredPhotos(){
+  if(!confirm("確定清除目前瀏覽器內的旅行照片？手機原始照片不會被刪除。")) return;
+  const db=await photoDbOpen();
+  await new Promise((resolve,reject)=>{
+    const tx=db.transaction("photos","readwrite");
+    tx.objectStore("photos").clear();
+    tx.oncomplete=resolve;
+    tx.onerror=()=>reject(tx.error);
+  });
+  db.close();
+  fpPhotos=[];
+  fpActiveVisit=null; fpActiveVisitPhotos=[]; fpActivePhotoIndex=0;
+  updatePhotoCount();
+  renderFootprint();
+  renderPhotoForVisit(null);
+  hidePlaybackPhoto();
+}
+
+let exifrPromise=null;
+async function getExifr(){
+  if(!exifrPromise){
+    exifrPromise=import("https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/lite.esm.mjs")
+      .then(m=>m.default||m)
+      .catch(err=>{console.warn("EXIF library unavailable",err);return null;});
+  }
+  return exifrPromise;
+}
+
+function normalPhotoTime(v,fallbackMs){
+  if(v instanceof Date && !isNaN(v)) return v.toISOString();
+  if(v){
+    const d=new Date(v);
+    if(!isNaN(d)) return d.toISOString();
+  }
+  return fallbackMs ? new Date(fallbackMs).toISOString() : null;
+}
+
+async function parsePhoto(file){
+  let meta=null;
+  try{
+    const exifr=await getExifr();
+    if(exifr?.parse) meta=await exifr.parse(file);
+  }catch(e){ console.warn("EXIF parse",file.name,e); }
+
+  const lat=Number(meta?.latitude);
+  const lng=Number(meta?.longitude);
+  const takenAt=normalPhotoTime(
+    meta?.DateTimeOriginal || meta?.CreateDate || meta?.ModifyDate,
+    file.lastModified
+  );
+
+  return {
+    id:`photo-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+    name:file.name,
+    type:file.type||"image/jpeg",
+    size:file.size,
+    takenAt,
+    lat:Number.isFinite(lat)?lat:null,
+    lng:Number.isFinite(lng)?lng:null,
+    blob:file,
+    importedAt:new Date().toISOString(),
+    owner:fpImportOwner
+  };
+}
+
+async function importPhotoFiles(files){
+  let ok=0;
+  for(const file of files){
+    try{
+      const rec=await parsePhoto(file);
+      await photoDbPut(rec);
+      fpPhotos.push(rec);
+      ok++;
+    }catch(e){ console.warn("photo import",file.name,e); }
+  }
+  updatePhotoCount();
+  fpSetStatus(`已匯入 ${ok} 張旅行照片。播放時間軸時會在停留點自動顯示配對照片。`,"ok");
+  renderPhotoForVisit(fpActiveVisit);
+}
+
+function updatePhotoCount(){
+  const el=document.getElementById("fpPhotoTotal");
+  if(el) el.textContent=String(fpPhotos.filter(p=>ownerAllowed(p.owner||"A",fpMemoryMode)).length);
+  const sum=document.getElementById("fpPhotoSummary");
+  if(sum) sum.textContent=fpPhotos.length?`已匯入 ${fpPhotos.length} 張照片`:"尚未匯入照片";
+}
+
+function photoMatchScore(photo,visit){
+  if(!visit || !photo.takenAt) return Infinity;
+
+  const pt=new Date(photo.takenAt).getTime();
+  const st=visit.start?new Date(visit.start).getTime():pt;
+  const en=visit.end?new Date(visit.end).getTime():st;
+
+  let timeGap=0;
+  if(pt<st) timeGap=st-pt;
+  else if(pt>en) timeGap=pt-en;
+
+  // 停留前後 45 分鐘以外不配對
+  if(timeGap>45*60*1000) return Infinity;
+
+  let score=timeGap/60000;
+
+  if(Number.isFinite(photo.lat)&&Number.isFinite(photo.lng)&&
+     Number.isFinite(visit.lat)&&Number.isFinite(visit.lng)){
+    const d=haversine(
+      {lat:photo.lat,lng:photo.lng},
+      {lat:visit.lat,lng:visit.lng}
+    );
+    // 有 GPS 時，2 km 之外排除；越近分數越低
+    if(d>2000) return Infinity;
+    score += d/100;
+  }else{
+    // 無 GPS 時可以只靠時間，但降低優先度
+    score += 10;
+  }
+  return score;
+}
+
+function photosForVisit(visit){
+  if(!visit) return [];
+  return fpPhotos
+    .filter(p=>ownerAllowed(p.owner||"A",fpMemoryMode) && (!visit.owner || (p.owner||"A")===visit.owner || fpMemoryMode==="shared"))
+    .map(p=>({p,score:photoMatchScore(p,visit)}))
+    .filter(x=>Number.isFinite(x.score))
+    .sort((a,b)=>a.score-b.score || new Date(a.p.takenAt)-new Date(b.p.takenAt))
+    .map(x=>x.p);
+}
+
+function safeObjectURL(blob){
+  try{return URL.createObjectURL(blob)}catch(e){return ""}
+}
+
+function renderPhotoForVisit(visit){
+  fpActiveVisit=visit||null;
+  fpActiveVisitPhotos=visit?photosForVisit(visit):[];
+  fpActivePhotoIndex=Math.min(fpActivePhotoIndex,Math.max(0,fpActiveVisitPhotos.length-1));
+
+  const preview=document.getElementById("fpPhotoPreview");
+  const strip=document.getElementById("fpPhotoStrip");
+  const info=document.getElementById("fpPhotoInfo");
+  const prev=document.getElementById("fpPhotoPrev");
+  const next=document.getElementById("fpPhotoNext");
+  if(!preview||!strip) return;
+
+  if(!visit){
+    preview.innerHTML='<div class="fp-photo-preview-empty">點擊停留點，或播放旅行時間軸時，這裡會顯示配對照片。</div>';
+    strip.innerHTML="";
+    info.textContent=`${fpPhotos.length} 張已匯入`;
+    prev.disabled=true; next.disabled=true;
+    return;
+  }
+
+  if(!fpActiveVisitPhotos.length){
+    preview.innerHTML=`<div class="fp-photo-preview-empty">「${escapeHTML(visit.name||"停留點")}」目前沒有配對到照片。</div>`;
+    strip.innerHTML="";
+    info.textContent="0 張配對照片";
+    prev.disabled=true; next.disabled=true;
+    return;
+  }
+
+  const p=fpActiveVisitPhotos[fpActivePhotoIndex];
+  const u=safeObjectURL(p.blob);
+  preview.innerHTML=u
+    ? `<img src="${u}" alt="${escapeHTML(p.name)}">`
+    : `<div class="fp-photo-preview-empty">${escapeHTML(p.name)}（此瀏覽器無法預覽該格式）</div>`;
+
+  strip.innerHTML=fpActiveVisitPhotos.map((ph,i)=>{
+    const tu=safeObjectURL(ph.blob);
+    return `<button class="fp-photo-thumb ${i===fpActivePhotoIndex?"active":""}" type="button" data-pidx="${i}">
+      ${tu?`<img src="${tu}" alt="${escapeHTML(ph.name)}">`:`<span>${i+1}</span>`}
+    </button>`;
+  }).join("");
+
+  strip.querySelectorAll("[data-pidx]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      fpActivePhotoIndex=Number(btn.dataset.pidx);
+      renderPhotoForVisit(fpActiveVisit);
+    });
+  });
+
+  info.textContent=`${fpActivePhotoIndex+1} / ${fpActiveVisitPhotos.length}｜${visit.name||"停留點"}`;
+  prev.disabled=fpActiveVisitPhotos.length<2;
+  next.disabled=fpActiveVisitPhotos.length<2;
+}
+
+function visitKey(v){
+  return `${v?.start||""}|${v?.end||""}|${v?.lat||""}|${v?.lng||""}|${v?.name||""}`;
+}
+
+function playbackVisitForPoint(p){
+  const visits=dayVisits(fpCurrentDay);
+  if(!visits.length) return null;
+  const t=p.ts?new Date(p.ts).getTime():null;
+  let best=null,bestScore=Infinity;
+
+  for(const v of visits){
+    let score=Infinity;
+
+    if(t && v.start){
+      const s=new Date(v.start).getTime();
+      const e=v.end?new Date(v.end).getTime():s+10*60000;
+      if(t>=s-3*60000 && t<=e+3*60000){
+        score=Math.min(Math.abs(t-s),Math.abs(t-e))/60000;
+      }
+    }
+
+    if(Number.isFinite(p.lat)&&Number.isFinite(p.lng)&&
+       Number.isFinite(v.lat)&&Number.isFinite(v.lng)){
+      const d=haversine(p,v);
+      if(d<=180) score=Math.min(score,d/20);
+    }
+
+    if(score<bestScore){
+      bestScore=score;best=v;
+    }
+  }
+  return bestScore<Infinity?best:null;
+}
+
+function hidePlaybackPhoto(){
+  if(fpPhotoOverlayTimer){clearTimeout(fpPhotoOverlayTimer);fpPhotoOverlayTimer=null;}
+  if(fpPhotoOverlayCycle){clearInterval(fpPhotoOverlayCycle);fpPhotoOverlayCycle=null;}
+  const card=document.getElementById("fpPlaybackPhoto");
+  if(card) card.classList.remove("show");
+}
+
+function showPlaybackPhoto(visit){
+  const photos=photosForVisit(visit);
+  if(!photos.length) return;
+
+  renderPhotoForVisit(visit);
+  hidePlaybackPhoto();
+
+  const card=document.getElementById("fpPlaybackPhoto");
+  const img=document.getElementById("fpPlaybackPhotoImg");
+  const title=document.getElementById("fpPlaybackPhotoTitle");
+  const meta=document.getElementById("fpPlaybackPhotoMeta");
+  const count=document.getElementById("fpPlaybackPhotoCount");
+  if(!card||!img) return;
+
+  let i=0;
+  const showOne=()=>{
+    const p=photos[i];
+    const u=safeObjectURL(p.blob);
+    if(u){
+      img.src=u;img.style.display="block";
+    }else{
+      img.removeAttribute("src");img.style.display="none";
+    }
+    title.textContent=visit.name||"旅行停留點";
+    meta.textContent=`${visit.start?formatDateTime(visit.start):""}${p.takenAt?"｜照片 "+formatDateTime(p.takenAt):""}`;
+    count.textContent=photos.length>1?`${i+1} / ${photos.length} 張照片`:"1 張照片";
+  };
+
+  showOne();
+  card.classList.add("show");
+
+  if(photos.length>1){
+    fpPhotoOverlayCycle=setInterval(()=>{
+      i=(i+1)%photos.length;
+      showOne();
+    },1400);
+  }
+
+  const duration=Math.min(8000,3500+Math.min(photos.length,4)*1000);
+  fpPhotoOverlayTimer=setTimeout(hidePlaybackPhoto,duration);
+}
+
+document.getElementById("photoFileInput")?.addEventListener("change",e=>{
+  const files=[...e.target.files];
+  if(files.length) importPhotoFiles(files);
+  e.target.value="";
+});
+document.getElementById("fpPhotoClear")?.addEventListener("click",clearStoredPhotos);
+document.getElementById("fpPhotoPrev")?.addEventListener("click",()=>{
+  if(fpActiveVisitPhotos.length<2)return;
+  fpActivePhotoIndex=(fpActivePhotoIndex-1+fpActiveVisitPhotos.length)%fpActiveVisitPhotos.length;
+  renderPhotoForVisit(fpActiveVisit);
+});
+document.getElementById("fpPhotoNext")?.addEventListener("click",()=>{
+  if(fpActiveVisitPhotos.length<2)return;
+  fpActivePhotoIndex=(fpActivePhotoIndex+1)%fpActiveVisitPhotos.length;
+  renderPhotoForVisit(fpActiveVisit);
+});
+
+loadStoredPhotos();
+
+// ===== V8 旅行電影 =====
+let movieAnim=null;
+let movieRecorder=null;
+let movieChunks=[];
+let movieImageCache=new Map();
+
+function movieOwnerAllowed(owner){
+  return fpMovieMode==="shared" || owner===fpMovieMode;
+}
+function movieTracks(){
+  return fpTracks.filter(t=>movieOwnerAllowed(t.owner||"A"));
+}
+function moviePhotos(){
+  return fpPhotos.filter(p=>movieOwnerAllowed(p.owner||"A"));
+}
+function moviePoints(owner=null){
+  return movieTracks().filter(t=>!owner || (t.owner||"A")===owner)
+    .flatMap(t=>t.points.map(p=>({...p,owner:t.owner||"A"})))
+    .filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng))
+    .sort((a,b)=>(a.ts&&b.ts)?new Date(a.ts)-new Date(b.ts):0);
+}
+function movieVisits(){
+  return movieTracks().flatMap(t=>(t.visits||[]).map(v=>({...v,owner:t.owner||"A"})))
+    .sort((a,b)=>(a.start&&b.start)?new Date(a.start)-new Date(b.start):0);
+}
+function setMovieStatus(s){
+  const el=document.getElementById("movieStatus"); if(el) el.textContent=s;
+}
+function movieCtx(){
+  const c=document.getElementById("movieCanvas"); return c?c.getContext("2d"):null;
+}
+function movieBounds(points){
+  if(!points.length) return null;
+  let minLat=Infinity,maxLat=-Infinity,minLng=Infinity,maxLng=-Infinity;
+  points.forEach(p=>{minLat=Math.min(minLat,p.lat);maxLat=Math.max(maxLat,p.lat);minLng=Math.min(minLng,p.lng);maxLng=Math.max(maxLng,p.lng);});
+  return {minLat,maxLat,minLng,maxLng};
+}
+function projectMovie(p,b,w,h,pad=70){
+  const dx=Math.max(.0001,b.maxLng-b.minLng),dy=Math.max(.0001,b.maxLat-b.minLat);
+  const sx=(w-2*pad)/dx, sy=(h-2*pad)/dy, s=Math.min(sx,sy);
+  const usedW=dx*s,usedH=dy*s;
+  const ox=(w-usedW)/2,oy=(h-usedH)/2;
+  return {x:ox+(p.lng-b.minLng)*s,y:h-(oy+(p.lat-b.minLat)*s)};
+}
+function drawRoundRect(ctx,x,y,w,h,r){
+  const rr=Math.min(r,w/2,h/2);ctx.beginPath();
+  ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);
+  ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath();
+}
+function drawMovieBase(ctx,w,h){
+  ctx.fillStyle="#4A4A4A";ctx.fillRect(0,0,w,h);
+  ctx.fillStyle="#FFF5F5";ctx.font="700 30px Microsoft JhengHei, sans-serif";
+  ctx.fillText("2026.10.15–10.18  機車旅行",42,48);
+  const mode=fpMovieMode==="shared"?"共同回憶":ownerDisplayName(fpMovieMode);
+  ctx.fillStyle="#CDBEC1";ctx.font="600 18px Microsoft JhengHei, sans-serif";ctx.fillText(mode,42,76);
+}
+function drawRouteLine(ctx,pts,b,color,progress=1){
+  if(pts.length<2)return;
+  const count=Math.max(2,Math.floor(pts.length*progress));
+  ctx.beginPath();
+  for(let i=0;i<count;i++){
+    const q=projectMovie(pts[i],b,1280,720);
+    if(i===0)ctx.moveTo(q.x,q.y);else ctx.lineTo(q.x,q.y);
+  }
+  ctx.strokeStyle=color;ctx.lineWidth=5;ctx.lineCap="round";ctx.lineJoin="round";ctx.stroke();
+}
+function findNearestVisitForMoviePoint(p,visits){
+  let best=null,score=Infinity;
+  for(const v of visits){
+    if((v.owner||"A")!==(p.owner||"A"))continue;
+    let s=Infinity;
+    if(p.ts&&v.start){
+      const t=new Date(p.ts).getTime(),st=new Date(v.start).getTime(),en=v.end?new Date(v.end).getTime():st+10*60000;
+      if(t>=st-2*60000&&t<=en+2*60000)s=0;
+    }
+    if(Number.isFinite(v.lat)&&Number.isFinite(v.lng)){
+      const d=haversine(p,v); if(d<180)s=Math.min(s,d);
+    }
+    if(s<score){score=s;best=v;}
+  }
+  return score<Infinity?best:null;
+}
+async function blobToImage(blob){
+  if(!blob)return null;
+  const key=blob.size+"-"+blob.type+"-"+blob.lastModified;
+  if(movieImageCache.has(key))return movieImageCache.get(key);
+  const url=URL.createObjectURL(blob);
+  const img=new Image();
+  const prom=new Promise(res=>{img.onload=()=>{URL.revokeObjectURL(url);res(img)};img.onerror=()=>{URL.revokeObjectURL(url);res(null)};});
+  img.src=url;movieImageCache.set(key,prom);return prom;
+}
+async function drawMoviePhoto(ctx,photo,visit){
+  const img=await blobToImage(photo?.blob);
+  if(!img)return;
+  const x=835,y=390,w=390,h=240;
+  ctx.save();drawRoundRect(ctx,x,y,w,h,18);ctx.clip();
+  const scale=Math.max(w/img.width,h/img.height),sw=img.width*scale,sh=img.height*scale;
+  ctx.drawImage(img,x+(w-sw)/2,y+(h-sh)/2,sw,sh);ctx.restore();
+  ctx.fillStyle="rgba(74,74,74,.78)";ctx.fillRect(x,y+h-58,w,58);
+  ctx.fillStyle="#fff";ctx.font="700 20px Microsoft JhengHei, sans-serif";
+  ctx.fillText(visit?.name||"旅行停留點",x+14,y+h-30);
+  ctx.font="500 14px Microsoft JhengHei, sans-serif";ctx.fillStyle="#FFF5F5";
+  ctx.fillText(`${ownerDisplayName(photo.owner||"A")}  ${photo.takenAt?formatDateTime(photo.takenAt):""}`,x+14,y+h-10);
+}
+function drawMoviePoster(){
+  const ctx=movieCtx(),c=document.getElementById("movieCanvas"); if(!ctx||!c)return;
+  drawMovieBase(ctx,c.width,c.height);
+  const a=moviePoints("A"),bpts=moviePoints("B"),all=[...a,...bpts];
+  if(!all.length){
+    ctx.fillStyle="#FFF5F5";ctx.font="700 28px Microsoft JhengHei, sans-serif";
+    ctx.fillText("尚未匯入旅行足跡",420,355);return;
+  }
+  const bb=movieBounds(all);
+  if(a.length)drawRouteLine(ctx,a,bb,"#E2B4BD",1);
+  if(bpts.length)drawRouteLine(ctx,bpts,bb,"#F7D6D0",1);
+  ctx.fillStyle="#FFF5F5";ctx.font="700 24px Microsoft JhengHei, sans-serif";
+  ctx.fillText("Four Days on Two Wheels",42,665);
+}
+async function runMovie({record=false}={}){
+  stopMovie();
+  const canvas=document.getElementById("movieCanvas"),ctx=canvas?.getContext("2d");
+  if(!canvas||!ctx)return;
+  const a=moviePoints("A"),bpts=moviePoints("B"),all=[...a,...bpts];
+  if(!all.length){setMovieStatus("沒有可用足跡，請先匯入 Timeline 或 GPX。");return;}
+  const bb=movieBounds(all),visits=movieVisits(),photos=moviePhotos();
+  let start=performance.now(),duration=22000,lastPhotoKey="",photoState=null,photoUntil=0;
+
+  if(record){
+    movieChunks=[];
+    const stream=canvas.captureStream(30);
+    const type=MediaRecorder.isTypeSupported("video/webm;codecs=vp9")?"video/webm;codecs=vp9":"video/webm";
+    movieRecorder=new MediaRecorder(stream,{mimeType:type});
+    movieRecorder.ondataavailable=e=>{if(e.data.size)movieChunks.push(e.data)};
+    movieRecorder.onstop=()=>{
+      const blob=new Blob(movieChunks,{type:"video/webm"});
+      const u=URL.createObjectURL(blob),a=document.createElement("a");
+      a.href=u;a.download=`2026機車旅行_${fpMovieMode==="shared"?"共同回憶":ownerDisplayName(fpMovieMode)}.webm`;
+      a.click();setTimeout(()=>URL.revokeObjectURL(u),1500);
+      setMovieStatus("WebM 影片已產生並下載。");
+    };
+    movieRecorder.start(500);
+  }
+
+  setMovieStatus(record?"正在錄製旅行電影…":"正在預覽旅行電影…");
+
+  async function frame(now){
+    const t=Math.min(1,(now-start)/duration);
+    drawMovieBase(ctx,canvas.width,canvas.height);
+
+    const intro=Math.min(1,t/0.12);
+    const progress=t<0.12?0:Math.min(1,(t-0.12)/0.78);
+
+    if(a.length)drawRouteLine(ctx,a,bb,"#E2B4BD",progress);
+    if(bpts.length)drawRouteLine(ctx,bpts,bb,"#F7D6D0",progress);
+
+    const drawRider=(pts,color,label)=>{
+      if(!pts.length||progress<=0)return null;
+      const idx=Math.min(pts.length-1,Math.floor(progress*(pts.length-1)));
+      const p=pts[idx],q=projectMovie(p,bb,canvas.width,canvas.height);
+      ctx.beginPath();ctx.arc(q.x,q.y,9,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
+      ctx.strokeStyle="#fff";ctx.lineWidth=3;ctx.stroke();
+      ctx.fillStyle="#fff";ctx.font="700 15px Microsoft JhengHei, sans-serif";
+      ctx.fillText(label,q.x+13,q.y+5);
+      return p;
+    };
+    const pa=drawRider(a,"#E2B4BD","A"),pb=drawRider(bpts,"#F7D6D0","B");
+
+    for(const p of [pa,pb]){
+      if(!p)continue;
+      const v=findNearestVisitForMoviePoint(p,visits);
+      if(v){
+        const key=visitKey(v);
+        if(key!==lastPhotoKey){
+          const matched=photos.filter(ph=>(ph.owner||"A")===(v.owner||"A"))
+            .map(ph=>({ph,score:photoMatchScore(ph,v)})).filter(x=>Number.isFinite(x.score)).sort((x,y)=>x.score-y.score);
+          if(matched.length){
+            lastPhotoKey=key;photoState={photo:matched[0].ph,visit:v};photoUntil=now+2600;
+          }
+        }
+      }
+    }
+
+    if(photoState && now<photoUntil) await drawMoviePhoto(ctx,photoState.photo,photoState.visit);
+
+    if(t>0.92){
+      ctx.fillStyle="rgba(74,74,74,.86)";ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle="#fff";ctx.font="700 44px Microsoft JhengHei, sans-serif";ctx.fillText("4 Days · Two Wheels · One Journey",230,320);
+      ctx.fillStyle="#E0D1D4";ctx.font="600 22px Microsoft JhengHei, sans-serif";ctx.fillText("2026.10.15–10.18",490,365);
+    }
+
+    if(t<1) movieAnim=requestAnimationFrame(frame);
+    else{
+      movieAnim=null;
+      if(record && movieRecorder?.state==="recording")movieRecorder.stop();
+      else setMovieStatus("預覽完成。");
+    }
+  }
+  movieAnim=requestAnimationFrame(frame);
+}
+function stopMovie(){
+  if(movieAnim){cancelAnimationFrame(movieAnim);movieAnim=null;}
+  if(movieRecorder&&movieRecorder.state==="recording")movieRecorder.stop();
+}
+document.getElementById("moviePreviewBtn")?.addEventListener("click",()=>runMovie({record:false}));
+document.getElementById("movieStopBtn")?.addEventListener("click",stopMovie);
+document.getElementById("movieExportBtn")?.addEventListener("click",()=>runMovie({record:true}));
+drawMoviePoster();
+
 
 loadTracks();
 
@@ -1999,6 +2992,9 @@ function showPageView(id,scroll=true){
         renderFootprint();
       }
     });
+  }
+  if(id==="movieStudio"){
+    requestAnimationFrame(()=>drawMoviePoster());
   }
 
   if(scroll){
