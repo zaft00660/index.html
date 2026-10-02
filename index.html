@@ -3,17 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>10/15–10/18 機車旅行｜Google Maps API 版</title>
+<title>10/15–10/18 機車旅行｜戰情版 V5</title>
 <style>
 :root{
   --bg:#f5f2ea;--paper:#fffdf8;--ink:#1f2924;--muted:#66736b;--line:#d9ded8;
   --green:#214f3c;--green2:#47705c;--orange:#b66a3d;--blue:#50758a;--gold:#8f703a;
   --danger:#9c463c;--shadow:0 16px 40px rgba(32,50,42,.08);--radius:22px;
 }
-/* 隱藏 Google Maps API 狀態區塊 */
-.api-panel {
-  display: none !important;
-}
+/* GitHub 分享版：API Key 已寫入 HTML 後，不顯示技術狀態方框 */
+.api-panel { display:none !important; }
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
@@ -57,7 +56,7 @@ h1{font-size:clamp(2.25rem,5vw,4.6rem);line-height:1.05;margin:18px 0 14px}
 
 .sticky{
   position:sticky;top:0;z-index:900;background:rgba(245,242,234,.9);
-  backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.06);margin-top:18px
+  backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.06);margin-top:0
 }
 .nav{display:flex;gap:7px;overflow:auto;padding:9px 0}
 .nav button{
@@ -146,6 +145,243 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
   #map{height:410px}
     .dayhead{grid-template-columns:1fr}
 }
+
+/* ===== 戰情版 V5 ===== */
+.ops-board{
+  background:var(--paper);border:1px solid var(--line);border-radius:24px;
+  padding:20px;box-shadow:var(--shadow);margin-bottom:26px
+}
+.ops-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:14px}
+.ops-head h2{margin:0;font-size:1.35rem}
+.ops-head p{margin:2px 0 0;color:var(--muted);font-size:.9rem}
+.ops-head-actions{display:flex;gap:8px;flex-wrap:wrap}
+.ops-tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.ops-tab{
+  border:1px solid var(--line);background:#fff;border-radius:999px;
+  padding:8px 12px;font-weight:800;color:var(--muted);cursor:pointer
+}
+.ops-tab.active{background:var(--green);color:#fff;border-color:var(--green)}
+.ops-main{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+.ops-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.ops-metric{background:#f4f6f2;border:1px solid #dde4dd;border-radius:14px;padding:12px}
+.ops-metric small{display:block;color:var(--muted);font-weight:800;font-size:.75rem}
+.ops-metric strong{display:block;margin-top:3px;font-size:.98rem}
+.ops-critical{background:#fff0ed;border:1px solid #e6bbb5;border-radius:15px;padding:13px 14px;margin-bottom:10px}
+.ops-critical small{display:block;color:var(--danger);font-weight:900}
+.ops-critical strong{display:block;margin-top:3px}
+.ops-fuel{background:#fff8e8;border:1px solid #e8d49e;border-radius:15px;padding:13px 14px;margin-bottom:10px}
+.ops-fuel small{display:block;color:#7b6226;font-weight:900}
+.ops-fuel strong{display:block;margin-top:3px}
+.ops-planb{background:#edf3f6;border:1px solid #cbd9df;border-radius:15px;padding:13px 14px}
+.ops-planb small{display:block;color:#46697a;font-weight:900}
+.ops-planb strong{display:block;margin-top:3px}
+.quick-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.quick-link{
+  display:inline-flex;align-items:center;text-decoration:none;border:1px solid var(--line);
+  background:white;border-radius:10px;padding:8px 10px;font-size:.82rem;font-weight:800;color:var(--green)
+}
+.mini-btn{
+  border:1px solid var(--line);background:white;color:var(--muted);
+  border-radius:9px;padding:6px 9px;font-size:.78rem;font-weight:800;cursor:pointer
+}
+.day-ops{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:18px
+}
+.day-ops .ops-mini{
+  border:1px solid var(--line);background:#f7f8f5;border-radius:13px;padding:11px
+}
+.day-ops .ops-mini small{display:block;color:var(--muted);font-size:.72rem;font-weight:900}
+.day-ops .ops-mini strong{display:block;margin-top:2px;font-size:.9rem}
+.day-ops .red{background:#fff0ed;border-color:#e4bab4}
+.day-ops .red small{color:var(--danger)}
+.day-ops .gold{background:#fff8e8;border-color:#e8d49e}
+.day-ops .gold small{color:#7b6226}
+.day-ops .blue{background:#edf3f6;border-color:#cbd9df}
+.day-ops .blue small{color:#46697a}
+.marker-legend{display:flex;flex-wrap:wrap;gap:10px;padding:0 16px 14px;color:var(--muted);font-size:.78rem}
+.legend-item{display:flex;align-items:center;gap:5px}
+.legend-dot{width:11px;height:11px;border-radius:50%;display:inline-block;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.14)}
+.food-tools,.stay-tools{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px}
+.tool-link{
+  display:inline-flex;text-decoration:none;border:1px solid var(--line);border-radius:9px;
+  padding:5px 8px;font-size:.75rem;font-weight:800;color:var(--green);background:#fff
+}
+.route-caution{
+  margin:12px 0 0;background:#fff9ef;border:1px dashed #d9bf83;border-radius:12px;
+  padding:10px 12px;color:#6c5a33;font-size:.82rem
+}
+@media(max-width:900px){
+  .ops-main{grid-template-columns:1fr}
+  .ops-metrics{grid-template-columns:repeat(2,1fr)}
+  .day-ops{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+  .ops-head{flex-direction:column}
+  .ops-metrics,.day-ops{grid-template-columns:1fr}
+}
+
+.weather-card{
+  border:1px solid var(--line);border-radius:16px;background:#fff;padding:14px;min-height:100%;
+}
+.weather-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}
+.weather-head h3{margin:0;font-size:1rem}
+.weather-head small{display:block;color:var(--muted);margin-top:2px}
+.weather-source{font-size:.72rem;color:var(--green);text-decoration:none;font-weight:800;white-space:nowrap}
+.weather-grid{display:grid;gap:8px}
+.weather-row{
+  border:1px solid #e1e6e2;border-radius:12px;padding:10px;background:#fafbf9;
+  display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center
+}
+.weather-place{font-weight:900}
+.weather-condition{font-size:.82rem;color:var(--muted)}
+.weather-values{text-align:right;font-variant-numeric:tabular-nums}
+.weather-temp{font-weight:900}
+.weather-sub{font-size:.76rem;color:var(--muted)}
+.weather-alerts{margin-top:10px;display:grid;gap:6px}
+.weather-alert{
+  border-radius:10px;padding:8px 10px;font-size:.8rem;font-weight:800;
+  background:#fff0ed;color:#883f37;border:1px solid #e5bcb6
+}
+.weather-ok{
+  border-radius:10px;padding:8px 10px;font-size:.8rem;
+  background:#edf5ee;color:#356044;border:1px solid #cee0d1
+}
+.weather-loading,.weather-unavailable{
+  border:1px dashed #cfd8d1;border-radius:12px;padding:14px;color:var(--muted);font-size:.85rem
+}
+.contact-line{
+  margin-top:6px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+  font-size:.8rem;color:var(--muted)
+}
+.contact-phone{font-weight:900;color:var(--ink)}
+.contact-btn{
+  display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;
+  padding:4px 7px;font-size:.72rem;font-weight:900;border:1px solid var(--line);
+  color:var(--green);background:#fff
+}
+.contact-note{
+  margin-top:14px;padding:9px 11px;border-radius:10px;background:#f4f5f1;
+  color:var(--muted);font-size:.75rem
+}
+
+
+/* ===== V5 旅行足跡 ===== */
+.footprint-section{margin-top:36px;scroll-margin-top:90px}
+.footprint-hero{
+  background:linear-gradient(135deg,#173c2f,#315e4a);
+  color:#fff;border-radius:24px;padding:22px;box-shadow:var(--shadow);margin-bottom:14px
+}
+.footprint-hero h2{margin:0 0 6px;font-size:1.45rem}
+.footprint-hero p{margin:0;color:rgba(255,255,255,.82)}
+.privacy-strip{
+  margin-top:12px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);
+  border-radius:13px;padding:10px 12px;font-size:.82rem
+}
+.fp-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-bottom:14px}
+.fp-card{
+  background:var(--paper);border:1px solid var(--line);border-radius:18px;
+  padding:16px;box-shadow:var(--shadow)
+}
+.fp-card h3{margin:0 0 5px;font-size:1rem}
+.fp-card p{margin:0;color:var(--muted);font-size:.84rem}
+.fp-upload-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.fp-upload{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:var(--green);color:#fff;border-radius:11px;padding:9px 12px;
+  font-weight:900;font-size:.84rem;cursor:pointer;border:0
+}
+.fp-upload.secondary{background:#fff;color:var(--green);border:1px solid var(--line)}
+.fp-upload input{display:none}
+.fp-help{
+  margin-top:11px;padding:10px 12px;border-radius:11px;background:#f3f5f2;
+  font-size:.78rem;color:var(--muted)
+}
+.fp-status{
+  margin-top:10px;border-radius:11px;padding:9px 11px;font-size:.8rem;
+  background:#f4f5f1;color:var(--muted);border:1px solid var(--line)
+}
+.fp-status.ok{background:#edf5ee;color:#356044;border-color:#cee0d1}
+.fp-status.err{background:#fff0ed;color:#883f37;border-color:#e5bcb6}
+.fp-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:11px}
+.fp-stat{background:#f6f7f4;border:1px solid #e0e5df;border-radius:12px;padding:10px}
+.fp-stat small{display:block;color:var(--muted);font-size:.7rem;font-weight:900}
+.fp-stat strong{display:block;margin-top:2px;font-size:.96rem}
+.fp-daytabs{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 11px}
+.fp-daytab{
+  border:1px solid var(--line);background:#fff;color:var(--muted);
+  border-radius:999px;padding:7px 11px;font-weight:900;cursor:pointer
+}
+.fp-daytab.active{background:var(--green);color:#fff;border-color:var(--green)}
+.fp-map-wrap{
+  background:var(--paper);border:1px solid var(--line);border-radius:20px;
+  overflow:hidden;box-shadow:var(--shadow);margin-bottom:14px
+}
+#footprintMap{height:520px;background:#e8ece8}
+.fp-map-placeholder{
+  height:100%;display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:24px;color:var(--muted)
+}
+.fp-map-tools{
+  padding:12px 14px;border-top:1px solid var(--line);display:flex;
+  justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap
+}
+.fp-legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.78rem}
+.fp-line{display:inline-flex;align-items:center;gap:5px}
+.fp-line::before{content:"";width:22px;height:4px;border-radius:999px;background:#98a09c}
+.fp-line.actual::before{background:#214f3c}
+.fp-controls{display:flex;gap:7px;flex-wrap:wrap}
+.fp-btn{
+  border:1px solid var(--line);background:#fff;color:var(--green);
+  border-radius:9px;padding:7px 9px;font-size:.76rem;font-weight:900;cursor:pointer
+}
+.fp-btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
+.fp-btn.danger{color:var(--danger)}
+.fp-btn:disabled{opacity:.45;cursor:not-allowed}
+.fp-select{
+  border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 9px;
+  font-size:.76rem;color:var(--ink)
+}
+.fp-lower{display:grid;grid-template-columns:.9fr 1.1fr;gap:14px}
+.fp-track-list,.fp-stop-list{display:grid;gap:7px;margin-top:10px}
+.fp-track-item,.fp-stop{
+  border:1px solid var(--line);background:#fafbf9;border-radius:11px;padding:9px 10px;
+  display:flex;justify-content:space-between;gap:10px;align-items:flex-start
+}
+.fp-track-item strong,.fp-stop strong{display:block;font-size:.86rem}
+.fp-track-item small,.fp-stop small{display:block;color:var(--muted);font-size:.72rem;margin-top:2px}
+.fp-empty{
+  margin-top:10px;border:1px dashed #cfd8d1;border-radius:11px;padding:13px;
+  color:var(--muted);font-size:.82rem
+}
+.fp-playbar{
+  margin-top:11px;padding:10px;border-radius:11px;background:#f4f6f3;
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap
+}
+.fp-playtime{font-variant-numeric:tabular-nums;font-weight:900;font-size:.82rem}
+.fp-note{
+  margin-top:10px;font-size:.74rem;color:var(--muted)
+}
+@media(max-width:900px){
+  .fp-grid,.fp-lower{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .fp-stats{grid-template-columns:repeat(2,1fr)}
+  #footprintMap{height:430px}
+}
+@media print{
+  .footprint-section{break-before:page}
+  .fp-upload-row,.fp-controls,.fp-playbar{display:none!important}
+  #footprintMap{height:360px}
+}
+
+@media print{
+  .sticky,.ops-tabs,.ops-head-actions,.map-box,.quick-links,  .ops-board,.day,.card{box-shadow:none!important}
+  body{background:white}
+  .hero{background:white!important;color:#000!important;padding:18px 0}
+  .hero p{color:#444!important}
+  .metric,.kicker{color:#000!important;border-color:#aaa!important;background:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -153,7 +389,7 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
   <div class="shell">
     <div class="kicker">2026 · 10/15–10/18 · TWO RIDERS</div>
     <h1>四天三夜<br>台灣山海機車縱走</h1>
-    <p>東勢集合，經台21進埔里；第二天走力行、合歡山與中橫到花蓮；第三天沿花東縱谷到池上；第四天走南橫返回台南。</p>
+    <p>東勢集合後第一天完成力行支線並回埔里；第二天專心走合歡山與中橫到花蓮；第三天沿花東縱谷到池上；第四天走南橫返回台南。</p>
     <div class="metrics">
       <span class="metric">2 人機車旅行</span>
       <span class="metric">埔里／花蓮／池上 3 晚</span>
@@ -179,18 +415,42 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 <div class="sticky">
   <div class="shell nav">
     <button class="active" data-to="overview">總覽</button>
-    <button data-to="d1">10/15 東勢→埔里</button>
+    <button data-to="d1">10/15 東勢→力行→埔里</button>
     <button data-to="d2">10/16 埔里→花蓮</button>
     <button data-to="d3">10/17 花蓮→池上</button>
     <button data-to="d4">10/18 南橫→台南</button>
+    <button data-to="footprint">旅行足跡</button>
   </div>
 </div>
 
 <main class="shell">
 <section id="overview">
+
+<section class="ops-board" id="opsBoard">
+  <div class="ops-head">
+    <div>
+      <h2>旅行戰情室</h2>
+      <p>上路時優先看這裡：當日里程、時間紅線、加油、官方路況、備援方案與沿線天氣。</p>
+    </div>
+    <div class="ops-head-actions">
+      <button class="btn secondary" type="button" onclick="window.print()">列印／另存 PDF</button>
+    </div>
+  </div>
+  <div class="ops-tabs">
+    <button class="ops-tab active" data-opsday="1">10/15</button>
+    <button class="ops-tab" data-opsday="2">10/16</button>
+    <button class="ops-tab" data-opsday="3">10/17</button>
+    <button class="ops-tab" data-opsday="4">10/18</button>
+  </div>
+  <div class="ops-main">
+    <div id="opsContent"></div>
+    <div id="weatherContent"></div>
+  </div>
+</section>
+
   <div class="cards">
-    <div class="card"><small>DAY 1</small><strong>兩地出發，東勢集合</strong><p>10:30 寮下啜喝咖啡；國姓午餐、糯米石橋、埔里二月咖啡。</p></div>
-    <div class="card"><small>DAY 2</small><strong>力行、武嶺與中橫</strong><p>06:00 提早出發，將多出的時間留給拍照、慢騎與施工緩衝。</p></div>
+    <div class="card"><small>DAY 1</small><strong>東勢集合，當天完成力行</strong><p>10:30 寮下啜喝咖啡；埔里快速補給後上霧社、翠峰與力行吊橋，再折返埔里。</p></div>
+    <div class="card"><small>DAY 2</small><strong>合歡山與中橫慢騎</strong><p>力行已在前一天完成，07:30 從埔里出發，沿鳶峰、昆陽、武嶺進中橫，時間更從容。</p></div>
     <div class="card"><small>DAY 3</small><strong>花東縱谷到池上</strong><p>太巴塱、玉里麵，下午銜接已安排的池上電動車導覽。</p></div>
     <div class="card"><small>DAY 4</small><strong>南橫回台南</strong><p>08:00 出發，優先銜接向陽施工放行，再走埡口、天池與寶來。</p></div>
   </div>
@@ -211,73 +471,94 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
     <div id="map">
       <div class="map-placeholder">
         <strong>尚未載入 Google Maps</strong>
-        請在上方貼入 API Key，按「儲存並載入 Google 地圖」。
+        若地圖未顯示，請確認 HTML 內的 Google Maps API Key、GitHub Pages HTTP referrer 與 Maps JavaScript API 設定。
       </div>
     </div>
+
+    <div class="marker-legend">
+      <span class="legend-item"><span class="legend-dot" style="background:#3f7a4e"></span>景點</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#d2763d"></span>餐飲</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#527a9a"></span>住宿</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#b18b2f"></span>加油／補給</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#b8483e"></span>交管／時間紅線</span>
+    </div>
+
     <div class="map-bottom">
-      <div class="map-desc" id="mapDesc">全程總覽：東勢 → 埔里 → 力行 → 武嶺 → 花蓮 → 池上 → 南橫 → 台南。</div>
+      <div><div class="map-desc" id="mapDesc">全程總覽：東勢 → 埔里 → 力行折返 → 埔里 → 武嶺 → 花蓮 → 池上 → 南橫 → 台南。</div><div class="route-caution">路線線條為行程規劃示意；實際導航請使用右側 Google Maps 按鈕，並以當日官方道路管制為準。</div></div>
       <div class="map-actions" id="mapActions"></div>
     </div>
   </div>
 </section>
 
 <section class="day" id="d1" data-day="1">
-<header class="dayhead"><div><div>DAY 1 · 10/15（四）</div><h2>台南／新北 → 東勢 → 國姓 → 埔里</h2><p>兩人分頭完成長途騎乘，10:30 於東勢正式會合。</p></div><div class="badge">共同集合<br><strong>10:30 寮下啜</strong></div></header>
-<div class="daybody"><div class="grid">
+<header class="dayhead"><div><div>DAY 1 · 10/15（四）</div><h2>台南／新北 → 東勢 → 埔里 → 力行吊橋 → 埔里</h2><p>兩人上午分頭長途騎到東勢，10:30 會合後直接把力行支線放在第一天完成；核心原則是天黑前回到翠峰、台14甲。</p></div><div class="badge">共同集合<br><strong>10:30 寮下啜</strong></div></header>
+<div class="daybody">
+<div class="day-ops" data-dayops="1"></div>
+<div class="grid">
 <div class="timeline">
   <div class="event"><div class="time">05:30</div><div class="ev"><h3>騎士 A｜台南歸仁出發</h3><p>由台南市歸仁區民生北街 169 號出發。03:45–05:15 早餐與裝備確認。</p></div></div>
   <div class="event"><div class="time">05:45</div><div class="ev"><h3>騎士 B｜新北永安市場站出發</h3><p>04:00–05:30 早餐與裝備確認，途中預留短休。</p></div></div>
-  <div class="event"><div class="time">10:30</div><div class="ev"><h3>寮下啜 COFFEEZU｜集合休息</h3><p>只安排 1 小時喝咖啡與整理裝備，不作正式午餐。</p><div class="pills"><span class="pill meal">10:30–11:30</span></div></div></div>
-  <div class="event"><div class="time">11:30</div><div class="ev"><h3>東勢共同出發</h3><p>台8 → 天冷 → 台21，往國姓。</p></div></div>
-  <div class="event"><div class="time">12:30</div><div class="ev"><h3>國姓午餐｜私房客家美食餐廳</h3><p>正式用餐 1.5 小時。</p><div class="pills"><span class="pill meal">12:30–14:00</span></div></div></div>
-  <div class="event"><div class="time">14:10</div><div class="ev"><h3>北港溪糯米石橋</h3><p>古橋、溪谷與客庄地景，停留約 30 分鐘。</p></div></div>
-  <div class="event"><div class="time">15:40</div><div class="ev"><h3>埔里｜入住小島好樂</h3><p>放行李、休息後簡單慢遊埔里市區。</p></div></div>
-  <div class="event"><div class="time">17:45</div><div class="ev"><h3>二月咖啡 埔里店｜晚餐</h3><p>安排 1.5 小時，吃完直接回住宿休息。</p><div class="pills"><span class="pill meal">17:45–19:15</span></div></div></div>
+  <div class="event"><div class="time">10:30</div><div class="ev"><h3>寮下啜 COFFEEZU｜集合休息</h3><p>喝咖啡、整理裝備與休息 1 小時，不安排正式午餐。</p><div class="pills"><span class="pill meal">10:30–11:30</span></div></div></div>
+  <div class="event"><div class="time">11:30</div><div class="ev"><h3>東勢共同出發 → 台8 → 天冷 → 台21 → 埔里</h3><p>這段已把一般道路、紅綠燈與實際騎乘緩衝算進去，約 13:00 抵埔里。</p></div></div>
+  <div class="event"><div class="time">13:00</div><div class="ev"><h3>埔里｜加油＋快速午餐補給</h3><p>13:00–13:25，先把油加滿，再吃飯糰、香蕉或簡單補給。這餐因力行時程改為快速補給。</p><div class="pills"><span class="pill meal">13:00–13:25</span><span class="pill risk">本日午餐例外</span></div></div></div>
+  <div class="event"><div class="time">13:25</div><div class="ev"><h3>埔里 → 霧社 → 清境 → 翠峰</h3><p>山路慢騎，預估 14:50 左右抵達翠峰。若此時已起霧、下雨或路況不佳，直接啟動 Plan B 放棄力行。</p></div></div>
+  <div class="event"><div class="time">14:50</div><div class="ev"><h3>翠峰 → 力行吊橋</h3><p>力行產業道路不使用導航理想時間，直接抓約 70 分鐘。</p></div></div>
+  <div class="event"><div class="time">16:00</div><div class="ev"><h3>力行吊橋｜拍照休息</h3><p>停約 25 分鐘。16:25 準時折返，不往更深處增加支線。</p><div class="pills"><span class="pill risk">16:25 必須折返</span></div></div></div>
+  <div class="event"><div class="time">16:25</div><div class="ev"><h3>力行吊橋 → 翠峰</h3><p>原路折返，預估約 17:35 回到翠峰。這是第一天最重要的安全目標：盡量在天色完全暗下來以前離開力行支線。</p></div></div>
+  <div class="event"><div class="time">17:35</div><div class="ev"><h3>翠峰 → 清境 → 霧社 → 埔里</h3><p>下山段抓約 1 小時 25 分，視霧況、會車與夜間能見度調整。</p></div></div>
+  <div class="event"><div class="time">19:00</div><div class="ev"><h3>埔里｜入住小島好樂</h3><p>預估 19:00–19:20 抵達，先卸行李再前往晚餐。</p></div></div>
+  <div class="event"><div class="time">19:30</div><div class="ev"><h3>二月咖啡 埔里店｜晚餐</h3><p>第一順位仍保留二月咖啡；建議下午進入力行前先電話確認當日晚間最後點餐時間。若無法接待，改由埔里晚開餐廳作備援。</p><div class="pills"><span class="pill meal">預計 19:30 起</span><span class="pill risk">須先確認最後點餐</span></div></div></div>
 </div>
 <div class="side">
   <div class="info"><h3>用餐建議</h3>
-    <div class="mealrow"><small>A 早餐</small><strong>歸仁在地豆漿早餐店</strong><div class="order">飯糰／燒餅蛋＋蛋餅＋無糖豆漿</div><div class="reason">長途騎乘前用澱粉與蛋白質做完整補給。</div></div>
+    <div class="mealrow"><small>A 早餐</small><strong>永和四海豆漿歸仁店</strong><div class="order">飯糰／燒餅蛋＋蛋餅＋無糖豆漿</div><div class="reason">長途騎乘前用澱粉與蛋白質做完整補給。</div></div>
     <div class="mealrow"><small>B 早餐</small><strong>永和豆漿大王（宜安路）</strong><div class="order">燒餅蛋或飯糰＋豆漿</div><div class="reason">鄰近永安市場站，能配合早出發。</div></div>
     <div class="mealrow"><small>咖啡</small><strong>寮下啜 COFFEEZU</strong><div class="order">黑咖啡／拿鐵＋小甜點</div><div class="reason">功能是集合與恢復，不在這裡吃正餐。</div></div>
-    <div class="mealrow"><small>午餐</small><strong>私房客家美食餐廳</strong><div class="order">客家小炒／鹹豬肉＋梅汁過貓＋招牌豆腐＋白飯</div><div class="reason">直接把國姓客庄飲食納入旅行主題。</div></div>
-    <div class="mealrow"><small>晚餐</small><strong>二月咖啡 埔里店</strong><div class="order">清炒蒜辣蛤蠣蘆筍林昆尼＋波隆那肉醬義大利麵</div><div class="reason">一份清爽、一份較有飽足感，適合隔日凌晨起床前的晚餐。</div></div>
+    <div class="mealrow"><small>快速午餐</small><strong>正統飯糰</strong><div class="order">每人 1 個飯糰＋香蕉／能量棒＋水</div><div class="reason">13:00 抵埔里後快速補充澱粉與熱量，把日照時間留給力行支線。</div></div>
+    <div class="mealrow"><small>晚餐</small><strong>二月咖啡 埔里店</strong><div class="order">清炒蒜辣蛤蠣蘆筍林昆尼＋波隆那肉醬義大利麵</div><div class="reason">仍保留你指定的餐廳，但這版回埔里時間較晚，需事先電話確認當日最後點餐。</div></div>
   </div>
-  <div class="info stay"><h3>住宿｜小島好樂</h3><p>埔里。10/16 需要非常早起，第一晚不再追加夜間景點。</p></div>
+  <div class="info stay"><h3>住宿｜小島好樂</h3><p>埔里。第一天會比原方案辛苦，但優點是 10/16 不再需要進力行支線，中橫日會寬鬆許多。</p><div class="alert"><strong>第一天判斷：</strong>14:50 抵翠峰若天候、能見度或道路狀況不理想，直接取消力行，回埔里休息。</div></div>
 </div>
 </div></div>
 </section>
 
+
 <section class="day" id="d2" data-day="2">
-<header class="dayhead"><div><div>DAY 2 · 10/16（五）</div><h2>埔里 → 力行吊橋 → 武嶺 → 中橫 → 花蓮</h2><p>把每段多抓的時間真正留給拍照、停車與山路延誤。</p></div><div class="badge">特別提早<br><strong>06:00 出發</strong></div></header>
-<div class="daybody"><div class="grid">
+<header class="dayhead"><div><div>DAY 2 · 10/16（五）</div><h2>埔里 → 鳶峰 → 昆陽 → 武嶺 → 中橫 → 花蓮</h2><p>力行已在第一天完成，因此第二天不用折返翠峰支線，可把上午時間真正留給合歡山慢騎與拍照，同時大幅增加中橫交管容錯。</p></div><div class="badge">較從容出發<br><strong>07:30</strong></div></header>
+<div class="daybody">
+<div class="day-ops" data-dayops="2"></div>
+<div class="grid">
 <div class="timeline">
-  <div class="event"><div class="time">04:00</div><div class="ev"><h3>埔里早餐｜上禾味</h3><p>04:00–05:30；05:40 再買外帶飯糰。</p></div></div>
-  <div class="event"><div class="time">06:00</div><div class="ev"><h3>埔里 → 霧社 → 清境 → 翠峰</h3><p>抓到 07:45，已比理想導航時間更寬鬆。</p></div></div>
-  <div class="event"><div class="time">07:45</div><div class="ev"><h3>翠峰 → 力行吊橋</h3><p>力行產業道路直接抓約 1 小時 20 分，不追導航。</p></div></div>
-  <div class="event"><div class="time">09:05</div><div class="ev"><h3>力行吊橋｜拍照休息</h3><p>停 30 分鐘，09:35 折返。</p></div></div>
-  <div class="event"><div class="time">10:55</div><div class="ev"><h3>返回翠峰｜快速午餐補給</h3><p>飯糰、香蕉、能量棒與水，控制 15 分鐘。</p><div class="pills"><span class="pill meal">10:55–11:10</span><span class="pill risk">唯一不抓 1.5 小時的午餐</span></div></div></div>
-  <div class="event"><div class="time">11:35</div><div class="ev"><h3>鳶峰｜賞景 15 分鐘</h3><p>路況順就停足；延誤則可縮短。</p></div></div>
-  <div class="event"><div class="time">12:05</div><div class="ev"><h3>昆陽｜短停 10 分鐘</h3><p>欣賞高山坡面與公路景觀。</p></div></div>
-  <div class="event"><div class="time">12:30</div><div class="ev"><h3>武嶺｜停 20 分鐘</h3><p>12:50 離開，開始往大禹嶺、關原。</p></div></div>
-  <div class="event"><div class="time">13:55</div><div class="ev"><h3>關原｜關鍵時間點</h3><p>關原以東不再主動停車拍照，目標銜接豁然亭下午放行。</p><div class="pills"><span class="pill risk">時間紅線</span></div></div></div>
-  <div class="event"><div class="time">16:15</div><div class="ev"><h3>天祥｜等待與休息</h3><p>利用交管等待喝水、伸展，準備最後一波放行。</p></div></div>
-  <div class="event"><div class="time">17:00</div><div class="ev"><h3>天祥 → 太魯閣口</h3><p>配合 17:00–18:00 最後放行。</p></div></div>
-  <div class="event"><div class="time">19:00</div><div class="ev"><h3>花蓮｜入住步裡微旅</h3><p>19:30–21:00 晚餐。</p></div></div>
+  <div class="event"><div class="time">05:30</div><div class="ev"><h3>埔里早餐｜上禾味</h3><p>05:30–07:00 完整用餐；07:00 後準備外帶補給、加油與裝備。</p><div class="pills"><span class="pill meal">早餐 1.5 小時</span></div></div></div>
+  <div class="event"><div class="time">07:30</div><div class="ev"><h3>埔里出發 → 霧社 → 清境 → 鳶峰</h3><p>沒有力行折返後，可以用較舒服的速度上山，沿途保留停車、拍照與紅綠燈／會車緩衝。</p></div></div>
+  <div class="event"><div class="time">09:00</div><div class="ev"><h3>鳶峰｜賞景 20 分鐘</h3><p>09:00–09:20，欣賞台14甲高山公路與稜線景觀。</p></div></div>
+  <div class="event"><div class="time">09:40</div><div class="ev"><h3>昆陽｜賞景 20 分鐘</h3><p>09:40–10:00。若雲況好，可以在這裡多拍一些公路與山谷照片。</p></div></div>
+  <div class="event"><div class="time">10:15</div><div class="ev"><h3>武嶺｜停留 30 分鐘</h3><p>10:15–10:45，比原方案多留 10 分鐘，但仍不在牌樓排隊耗時。</p></div></div>
+  <div class="event"><div class="time">10:45</div><div class="ev"><h3>武嶺 → 大禹嶺 → 關原</h3><p>轉入台8線，預估約 12:00 前後到關原，保留很大的交管餘裕。</p></div></div>
+  <div class="event"><div class="time">12:00</div><div class="ev"><h3>關原｜快速午餐＋休息</h3><p>約 20 分鐘，吃前一早準備的飯糰、香蕉或能量棒。若當日施工流量要求前進，則改在安全停靠點快速補給。</p><div class="pills"><span class="pill meal">約 12:00–12:20</span></div></div></div>
+  <div class="event"><div class="time">12:20</div><div class="ev"><h3>關原 → 新白楊 → 豁然亭</h3><p>關原以東開始以銜接施工放行為優先，不再設定一定要停的景點。目標仍以 14:45–15:30 通過豁然亭為主。</p><div class="pills"><span class="pill risk">交管優先</span></div></div></div>
+  <div class="event"><div class="time">15:30</div><div class="ev"><h3>豁然亭 → 天祥</h3><p>若順利銜接下午放行，預估 16:00–16:20 抵達天祥。</p></div></div>
+  <div class="event"><div class="time">16:15</div><div class="ev"><h3>天祥｜等待與休息</h3><p>把交管等待當成下午正式休息，喝水、伸展、簡單補充熱量。</p></div></div>
+  <div class="event"><div class="time">17:00</div><div class="ev"><h3>天祥 → 太魯閣口</h3><p>配合 17:00–18:00 最後放行，施工路段跟著車流前進。</p></div></div>
+  <div class="event"><div class="time">19:00</div><div class="ev"><h3>花蓮｜入住步裡微旅</h3><p>預估約 19:00 抵達；19:30–21:00 吃晚餐。</p></div></div>
 </div>
 <div class="side">
   <div class="info"><h3>用餐建議</h3>
-    <div class="mealrow"><small>早餐</small><strong>上禾味（永和豆漿）</strong><div class="order">飯糰／燒餅蛋＋蛋餅＋熱豆漿</div><div class="reason">午餐很簡單，因此早餐要吃足。</div></div>
-    <div class="mealrow"><small>外帶午餐</small><strong>正統飯糰</strong><div class="order">每人 1 個飯糰＋香蕉／能量棒＋水</div><div class="reason">耐攜帶、不用餐具，最適合交管日。</div></div>
+    <div class="mealrow"><small>早餐</small><strong>上禾味（永和豆漿）</strong><div class="order">飯糰／燒餅蛋＋蛋餅＋熱豆漿</div><div class="reason">07:30 才出發，可以完整吃 1.5 小時早餐。</div></div>
+    <div class="mealrow"><small>外帶午餐</small><strong>正統飯糰</strong><div class="order">每人 1 個飯糰＋香蕉／能量棒＋水</div><div class="reason">中橫施工時段仍不適合用 1.5 小時坐下吃午餐；改在關原附近快速補給。</div></div>
     <div class="mealrow"><small>晚餐</small><strong>湘念快炒</strong><div class="order">金沙豆腐／中卷＋塔香蛤蜊＋炒青菜＋白飯／炒飯</div><div class="reason">高山長途後補熱食、鹽分、蛋白質與澱粉。</div></div>
   </div>
-  <div class="info stay"><h3>住宿｜步裡微旅</h3><p>花蓮市。</p><div class="alert"><strong>交管：</strong>本日最重要的是約 13:55 抵達關原，並銜接豁然亭與天祥放行。</div></div>
+  <div class="info stay"><h3>住宿｜步裡微旅</h3><p>花蓮市。移除力行後，第二天最大的優勢是上午不必趕時間，且中橫交管的容錯顯著提高。</p><div class="alert"><strong>交管：</strong>建議 12:00 左右已到關原；16:30 前必須進入關原－天祥路段，並以 17:00–18:00 天祥最後放行為底線。</div></div>
 </div>
 </div></div>
 </section>
+
 
 <section class="day" id="d3" data-day="3">
 <header class="dayhead"><div><div>DAY 3 · 10/17（六）</div><h2>花蓮 → 太巴塱 → 玉里 → 池上</h2><p>上午只安排一個文化停點，下午完整保留給池上電動車導覽。</p></div><div class="badge">正常出發<br><strong>09:00</strong></div></header>
-<div class="daybody"><div class="grid">
+<div class="daybody">
+<div class="day-ops" data-dayops="3"></div>
+<div class="grid">
 <div class="timeline">
   <div class="event"><div class="time">07:00</div><div class="ev"><h3>花蓮早餐｜山東豆漿大王</h3><p>07:00–08:30，完整 1.5 小時。</p></div></div>
   <div class="event"><div class="time">09:00</div><div class="ev"><h3>花蓮出發｜台9南下</h3><p>縱谷慢騎，時間估算已保留道路緩衝。</p></div></div>
@@ -301,7 +582,9 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 
 <section class="day" id="d4" data-day="4">
 <header class="dayhead"><div><div>DAY 4 · 10/18（日）</div><h2>池上 → 南橫 → 寶來 → 台南</h2><p>先處理施工與高山管制，再到寶來完整吃午餐。</p></div><div class="badge">施工日提早<br><strong>08:00</strong></div></header>
-<div class="daybody"><div class="grid">
+<div class="daybody">
+<div class="day-ops" data-dayops="4"></div>
+<div class="grid">
 <div class="timeline">
   <div class="event"><div class="time">06:00</div><div class="ev"><h3>池上早餐｜QQ飯糰</h3><p>06:00–07:30，07:30 後整理行李、加滿油。</p></div></div>
   <div class="event"><div class="time">08:00</div><div class="ev"><h3>池上 → 海端 → 霧鹿 → 利稻 → 向陽</h3><p>不安排固定停點，優先銜接施工放行。</p></div></div>
@@ -322,9 +605,109 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 </div>
 </div></div>
 </section>
+
+<section id="footprint" class="footprint-section">
+  <div class="footprint-hero">
+    <h2>旅行足跡</h2>
+    <p>旅行後匯入 Google Maps Timeline JSON 或 GPX，將實際騎乘軌跡與原定行程疊在一起比較。</p>
+    <div class="privacy-strip">
+      <strong>本機處理：</strong>目前版本的 Timeline／GPX 檔案只由瀏覽器讀取並儲存在此裝置的 IndexedDB，不會自動上傳至 GitHub、Google Roads API 或其他伺服器。
+    </div>
+  </div>
+
+  <div class="fp-grid">
+    <div class="fp-card">
+      <h3>匯入旅行紀錄</h3>
+      <p>你可以直接使用 Google Maps Timeline 匯出的 JSON；若未來有 GPX，也可以一起匯入。支援一次選多個檔案。</p>
+      <div class="fp-upload-row">
+        <label class="fp-upload">
+          匯入 Timeline JSON
+          <input id="timelineFileInput" type="file" accept=".json,application/json" multiple>
+        </label>
+        <label class="fp-upload secondary">
+          匯入 GPX
+          <input id="gpxFileInput" type="file" accept=".gpx,application/gpx+xml,application/xml,text/xml" multiple>
+        </label>
+      </div>
+      <div class="fp-help">
+        Google Timeline 新版常見資料結構為 <strong>semanticSegments</strong>；本頁也兼容舊式 <strong>timelineObjects</strong> 與 <strong>locations</strong> 結構。匯入完整歷史資料時，只會在畫面上使用 2026/10/15–10/18 的旅行區段。
+      </div>
+      <div id="fpStatus" class="fp-status">尚未匯入旅行紀錄。</div>
+    </div>
+
+    <div class="fp-card">
+      <h3>目前旅行統計</h3>
+      <p id="fpStatLabel">選擇日期後，統計會依可用 GPS／Timeline 資料更新。</p>
+      <div class="fp-stats">
+        <div class="fp-stat"><small>實際軌跡</small><strong id="fpDistance">—</strong></div>
+        <div class="fp-stat"><small>紀錄跨度</small><strong id="fpDuration">—</strong></div>
+        <div class="fp-stat"><small>位置點</small><strong id="fpPoints">—</strong></div>
+        <div class="fp-stat"><small>最高海拔</small><strong id="fpElevation">—</strong></div>
+        <div class="fp-stat"><small>停留點</small><strong id="fpStops">—</strong></div>
+        <div class="fp-stat"><small>已匯入檔案</small><strong id="fpFiles">0</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fp-map-wrap">
+    <div style="padding:13px 14px 0">
+      <div class="fp-daytabs">
+        <button class="fp-daytab active" data-fpday="all">四天全部</button>
+        <button class="fp-daytab" data-fpday="1">10/15</button>
+        <button class="fp-daytab" data-fpday="2">10/16</button>
+        <button class="fp-daytab" data-fpday="3">10/17</button>
+        <button class="fp-daytab" data-fpday="4">10/18</button>
+      </div>
+    </div>
+    <div id="footprintMap">
+      <div class="fp-map-placeholder">Google Maps 載入後，這裡會顯示「原定路線 vs 實際旅行足跡」。</div>
+    </div>
+    <div class="fp-map-tools">
+      <div class="fp-legend">
+        <span class="fp-line">原定行程</span>
+        <span class="fp-line actual">實際足跡</span>
+      </div>
+      <div class="fp-controls">
+        <button id="fpFitBtn" class="fp-btn" type="button">縮放至軌跡</button>
+        <button id="fpExportBtn" class="fp-btn" type="button" disabled>匯出所選 GPX</button>
+        <button id="fpClearBtn" class="fp-btn danger" type="button">清除本機紀錄</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="fp-lower">
+    <div class="fp-card">
+      <h3>已匯入檔案</h3>
+      <p>資料會留在目前瀏覽器。換手機、換瀏覽器或清除網站資料後，需要重新匯入。</p>
+      <div id="fpTrackList" class="fp-track-list">
+        <div class="fp-empty">尚無資料。</div>
+      </div>
+    </div>
+
+    <div class="fp-card">
+      <h3>旅行時間軸／停留點</h3>
+      <p>Timeline 的 visit 資料會優先使用；GPX 則依長時間低位移自動估算停留。</p>
+      <div class="fp-playbar">
+        <button id="fpPlayBtn" class="fp-btn primary" type="button" disabled>▶ 軌跡回放</button>
+        <button id="fpPauseBtn" class="fp-btn" type="button" disabled>暫停</button>
+        <select id="fpSpeed" class="fp-select" aria-label="回放速度">
+          <option value="1">慢速</option>
+          <option value="3" selected>一般</option>
+          <option value="8">快速</option>
+        </select>
+        <span id="fpPlayTime" class="fp-playtime">—</span>
+      </div>
+      <div id="fpStopList" class="fp-stop-list">
+        <div class="fp-empty">匯入資料後顯示。</div>
+      </div>
+      <div class="fp-note">Roads API 的「貼合道路」尚未在此版本自動啟用；目前先保留原始 Timeline／GPX 足跡，避免在未設定安全 Proxy 前把完整位置資料傳出瀏覽器。</div>
+    </div>
+  </div>
+</section>
+
 </main>
 
-<footer><div class="shell">行程地圖為規劃用途；實際騎乘請依當日天候、道路施工、交管與機車可通行狀態調整。此版本可直接部署至 GitHub Pages。</div></footer>
+<footer><div class="shell">行程地圖為規劃用途；實際騎乘請依當日天候、道路施工、交管與機車可通行狀態調整。戰情版 V5 可直接部署至 GitHub Pages；旅行足跡資料預設只儲存在使用者自己的瀏覽器。</div></footer>
 
 <script>
 // ---------- Google Maps API Key handling ----------
@@ -378,39 +761,41 @@ window.gm_authFailure = function(){
 // ---------- itinerary / route data ----------
 const routes = {
   1:{
-    title:"10/15｜東勢 → 國姓 → 埔里",
+    title:"10/15｜東勢 → 埔里 → 力行吊橋 → 埔里",
     color:"#5d7f62",
     points:[
       ["寮下啜 COFFEEZU",24.2578,120.8298,"10:30 集合","寮下啜COFFEEZU"],
-      ["國姓午餐",24.0635,120.9245,"12:30 客家料理","私房客家美食餐廳 國姓"],
-      ["北港溪糯米石橋",24.05847,120.90646,"14:10","北港溪糯米石橋"],
-      ["小島好樂",23.9696,120.9648,"15:40 入住","小島好樂 埔里"],
-      ["二月咖啡 埔里店",23.9728,120.9687,"17:45 晚餐","二月咖啡 埔里店"]
+      ["埔里快速午餐／加油",23.9696,120.9648,"13:00 補給","加油站 埔里"],
+      ["霧社",24.0224,121.1322,"上山","霧社 南投"],
+      ["翠峰",24.1045,121.1832,"14:50 力行支線入口","翠峰 南投 台14甲"],
+      ["力行吊橋",24.160286,121.213991,"16:00 拍照休息","力行吊橋 南投"],
+      ["小島好樂",23.9696,120.9648,"約19:00 入住","小島好樂 埔里"],
+      ["二月咖啡 埔里店",23.9728,120.9687,"約19:30 晚餐","二月咖啡 埔里店"]
     ],
     path:[
       {lat:24.2578,lng:120.8298},{lat:24.184,lng:120.907},{lat:24.0635,lng:120.9245},
-      {lat:24.05847,lng:120.90646},{lat:23.9696,lng:120.9648},{lat:23.9728,lng:120.9687}
+      {lat:23.9696,lng:120.9648},{lat:24.0224,lng:121.1322},{lat:24.1045,lng:121.1832},
+      {lat:24.160286,lng:121.213991},{lat:24.1045,lng:121.1832},{lat:24.0224,lng:121.1322},
+      {lat:23.9696,lng:120.9648},{lat:23.9728,lng:120.9687}
     ]
   },
   2:{
-    title:"10/16｜埔里 → 力行 → 武嶺 → 中橫 → 花蓮",
+    title:"10/16｜埔里 → 鳶峰 → 昆陽 → 武嶺 → 中橫 → 花蓮",
     color:"#a15d3d",
     points:[
-      ["小島好樂",23.9696,120.9648,"06:00 出發","小島好樂 埔里"],
-      ["翠峰",24.1045,121.1832,"07:45","翠峰 南投 台14甲"],
-      ["力行吊橋",24.160286,121.213991,"09:05","力行吊橋 南投"],
-      ["鳶峰",24.1178,121.2328,"11:35","鳶峰觀景台"],
-      ["昆陽",24.1211,121.2650,"12:05","昆陽 南投"],
-      ["武嶺",24.1370,121.2754,"12:30","武嶺"],
+      ["小島好樂",23.9696,120.9648,"07:30 出發","小島好樂 埔里"],
+      ["霧社",24.0224,121.1322,"途經","霧社 南投"],
+      ["鳶峰",24.1178,121.2328,"09:00 賞景","鳶峰觀景台"],
+      ["昆陽",24.1211,121.2650,"09:40 賞景","昆陽 南投"],
+      ["武嶺",24.1370,121.2754,"10:15 停留","武嶺"],
       ["大禹嶺",24.1840,121.3090,"中橫入口","大禹嶺"],
-      ["關原",24.1792,121.3440,"13:55","關原 花蓮"],
-      ["天祥",24.1819,121.4930,"16:15","天祥 太魯閣"],
+      ["關原",24.1792,121.3440,"約12:00","關原 花蓮"],
+      ["天祥",24.1819,121.4930,"約16:15","天祥 太魯閣"],
       ["太魯閣口",24.1593,121.6218,"約18:00","太魯閣牌樓"],
-      ["步裡微旅",23.9993,121.6030,"約19:00","步裡微旅 花蓮"]
+      ["步裡微旅",23.9993,121.6030,"約19:00 入住","步裡微旅 花蓮"]
     ],
     path:[
-      {lat:23.9696,lng:120.9648},{lat:24.0224,lng:121.1322},{lat:24.1045,lng:121.1832},
-      {lat:24.160286,lng:121.213991},{lat:24.1045,lng:121.1832},{lat:24.1178,lng:121.2328},
+      {lat:23.9696,lng:120.9648},{lat:24.0224,lng:121.1322},{lat:24.1178,lng:121.2328},
       {lat:24.1211,lng:121.2650},{lat:24.1370,lng:121.2754},{lat:24.1840,lng:121.3090},
       {lat:24.1792,lng:121.3440},{lat:24.1819,lng:121.4930},{lat:24.1593,lng:121.6218},
       {lat:23.9993,lng:121.6030}
@@ -454,6 +839,51 @@ const routes = {
   }
 };
 
+
+const markerTypeColors={
+  spot:"#3f7a4e",
+  food:"#d2763d",
+  stay:"#527a9a",
+  fuel:"#b18b2f",
+  traffic:"#b8483e"
+};
+const markerTypeLabels={spot:"景點",food:"餐飲",stay:"住宿",fuel:"加油／補給",traffic:"交管／時間紅線"};
+
+function pointType(name){
+  if(["寮下啜 COFFEEZU","埔里快速午餐／加油","二月咖啡 埔里店","傳統美食玉里麵","如初丼","寶來小吃部"].includes(name)) return "food";
+  if(["小島好樂","步裡微旅","賢情玉緻民宿"].includes(name)) return "stay";
+  if(["關原","天祥","向陽"].includes(name)) return "traffic";
+  return "spot";
+}
+function markerIcon(type){
+  return {
+    path:google.maps.SymbolPath.CIRCLE,
+    scale:8,
+    fillColor:markerTypeColors[type]||markerTypeColors.spot,
+    fillOpacity:1,
+    strokeColor:"#ffffff",
+    strokeWeight:2
+  };
+}
+const extraMarkers={
+  "1":[
+    ["埔里力行前加滿油",23.9684,120.9640,"13:00 先補滿油再上霧社","加油站 埔里","fuel"],
+    ["翠峰進入力行判斷點",24.1045,121.1832,"14:50 若天候、起霧或路況不佳，直接取消力行","翠峰 南投 台14甲","traffic"]
+  ],
+  "2":[
+    ["埔里出發前油量確認",23.9670,120.9660,"07:15 前完成油量確認","台灣中油 埔里站","fuel"],
+    ["關原時間紅線",24.1792,121.3440,"約12:00目標；16:30後不得再進關原－天祥","關原 花蓮","traffic"]
+  ],
+  "3":[
+    ["花蓮出發前補油",23.9930,121.6010,"出發前確認油量","加油站 花蓮市","fuel"],
+    ["池上晚間補油",23.1240,121.2140,"為10/18南橫先加滿","台灣中油 池上站","fuel"]
+  ],
+  "4":[
+    ["池上出發前加滿油",23.1240,121.2140,"07:30–08:00補滿","台灣中油 池上站","fuel"],
+    ["向陽施工／南橫管制",23.2575,120.9842,"目標09:50–10:40通過；並確認南橫開放","向陽 南橫","traffic"]
+  ]
+};
+
 function gmapSearch(q){
   return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
 }
@@ -471,10 +901,11 @@ function updateActionLinks(day){
   }
   let html="";
   if(day==="1"){
-    html+=`<a class="linkbtn" target="_blank" href="${gmapDir("寮下啜COFFEEZU","小島好樂 埔里",["私房客家美食餐廳 國姓","北港溪糯米石橋"])}">Google Maps：東勢→埔里</a>`;
+    html+=`<a class="linkbtn" target="_blank" href="${gmapDir("寮下啜COFFEEZU","力行吊橋 南投",["埔里","霧社 南投","翠峰 南投 台14甲"])}">導航 A：東勢→力行</a>`;
+    html+=`<a class="linkbtn" target="_blank" href="${gmapDir("力行吊橋 南投","小島好樂 埔里",["翠峰 南投 台14甲","霧社 南投"])}">導航 B：力行→埔里</a>`;
   }
   if(day==="2"){
-    html+=`<a class="linkbtn" target="_blank" href="${gmapDir("小島好樂 埔里","武嶺",["翠峰 南投","力行吊橋 南投","鳶峰觀景台","昆陽 南投"])}">導航 A：埔里→武嶺</a>`;
+    html+=`<a class="linkbtn" target="_blank" href="${gmapDir("小島好樂 埔里","武嶺",["霧社 南投","鳶峰觀景台","昆陽 南投"])}">導航 A：埔里→武嶺</a>`;
     html+=`<a class="linkbtn" target="_blank" href="${gmapDir("武嶺","步裡微旅 花蓮",["大禹嶺","關原 花蓮","天祥 太魯閣","太魯閣牌樓"])}">導航 B：武嶺→花蓮</a>`;
   }
   if(day==="3"){
@@ -498,6 +929,7 @@ function initTripMap(){
     gestureHandling:"greedy"
   });
   renderRoute("all");
+  initFootprintMap();
   setStatus("Google Maps 已成功載入。你可以切換每日路線並點擊景點標記。","ok");
 }
 
@@ -523,9 +955,26 @@ function renderRoute(day){
 
     r.points.forEach(([name,lat,lng,sub,q])=>{
       const pos={lat,lng};
-      const marker=new google.maps.Marker({position:pos,map,title:name});
+      const type=pointType(name);
+      const marker=new google.maps.Marker({position:pos,map,title:name,icon:markerIcon(type)});
       const info=new google.maps.InfoWindow({
-        content:`<div style="min-width:190px;font-family:Microsoft JhengHei,sans-serif">
+        content:`<div style="min-width:205px;font-family:Microsoft JhengHei,sans-serif">
+          <div style="font-size:12px;font-weight:700;color:${markerTypeColors[type]};margin-bottom:2px">${markerTypeLabels[type]}</div>
+          <strong>${name}</strong><br><span style="color:#667">${sub}</span><br>
+          <a href="${gmapSearch(q)}" target="_blank" rel="noopener">在 Google Maps 開啟 ↗</a>
+        </div>`
+      });
+      marker.addListener("click",()=>info.open({anchor:marker,map}));
+      overlays.push(marker);
+      bounds.extend(pos);
+    });
+
+    (extraMarkers[d]||[]).forEach(([name,lat,lng,sub,q,type])=>{
+      const pos={lat,lng};
+      const marker=new google.maps.Marker({position:pos,map,title:name,icon:markerIcon(type)});
+      const info=new google.maps.InfoWindow({
+        content:`<div style="min-width:205px;font-family:Microsoft JhengHei,sans-serif">
+          <div style="font-size:12px;font-weight:700;color:${markerTypeColors[type]};margin-bottom:2px">${markerTypeLabels[type]}</div>
           <strong>${name}</strong><br><span style="color:#667">${sub}</span><br>
           <a href="${gmapSearch(q)}" target="_blank" rel="noopener">在 Google Maps 開啟 ↗</a>
         </div>`
@@ -542,6 +991,930 @@ window.initTripMap=initTripMap;
 
 
 
+
+// ===== 戰情版 V2：每日操作資訊 =====
+const opsData = {
+  "1":{
+    date:"10/15（四）",
+    route:"台南／新北 → 東勢 → 埔里 → 力行吊橋 → 埔里",
+    distance:"共同路線約 160–180 km；兩人各自出發段另計",
+    moveTime:"共同騎乘約 6.5–7.5 小時",
+    start:"A 05:30／B 05:45；10:30 東勢集合",
+    end:"約 19:00–19:20 回埔里",
+    redline:"14:50 左右抵翠峰；16:25 必須離開力行吊橋；目標 17:35 前回到翠峰。若翠峰天候、能見度或路況不佳，直接取消力行。",
+    fuel:"兩人各自出發前加滿；13:00 抵埔里後再次補滿油再上霧社。回埔里後視油量補足隔日中橫用油。",
+    planB:"若 13:45 後才抵埔里，或 14:50 翠峰出現起霧、降雨、坍方／施工等不利狀況：取消力行，直接返回埔里入住與晚餐。二月咖啡需先確認最後點餐時間。",
+    links:[
+      ["省道即時路況","https://168.thb.gov.tw/thb168"],
+      ["中央氣象署","https://www.cwa.gov.tw/V8/C/"],
+      ["搜尋埔里加油站","https://www.google.com/maps/search/?api=1&query=%E5%8A%A0%E6%B2%B9%E7%AB%99+%E5%9F%94%E9%87%8C"]
+    ]
+  },
+  "2":{
+    date:"10/16（五）",
+    route:"埔里 → 鳶峰 → 昆陽 → 武嶺 → 中橫 → 花蓮",
+    distance:"約 140–160 km（規劃估算）",
+    moveTime:"道路移動＋交管約 9.5–10.5 小時",
+    start:"07:30 埔里出發",
+    end:"約 19:00 抵花蓮",
+    redline:"約 12:00 抵關原為理想目標；16:30 後不得再進關原－天祥；豁然亭以 14:45–15:30 放行為主要目標，天祥最後放行 17:00–18:00。",
+    fuel:"07:15 前在埔里確認油量／必要時補滿。移除力行折返後油耗壓力降低，但仍不依賴高山路段臨時找加油站。",
+    planB:"若合歡山沿線拍照導致延誤：優先縮短鳶峰、昆陽與武嶺停留；關原以東不再加入景點。若中橫東段臨時封閉，不走陌生產業道路硬繞，依官方資訊重新決定住宿與後續路線。",
+    links:[
+      ["省道即時路況","https://168.thb.gov.tw/thb168"],
+      ["太魯閣交通公告","https://www.taroko.gov.tw/ch/titlelist/news/4037"],
+      ["中央氣象署","https://www.cwa.gov.tw/V8/C/"],
+      ["搜尋埔里加油站","https://www.google.com/maps/search/?api=1&query=%E5%8A%A0%E6%B2%B9%E7%AB%99+%E5%9F%94%E9%87%8C"]
+    ]
+  },
+  "3":{
+    date:"10/17（六）",
+    route:"花蓮 → 太巴塱 → 玉里 → 池上",
+    distance:"約 155–170 km（規劃估算）",
+    moveTime:"道路移動約 3–3.5 小時",
+    start:"09:00 花蓮出發",
+    end:"下午池上導覽；19:30 左右回民宿",
+    redline:"13:10 前離開玉里，約 14:20 抵池上，以不影響下午已預約的電動車導覽為優先。",
+    fuel:"花蓮出發前補油；抵達池上後建議於晚間把油補滿，隔天直接進南橫。",
+    planB:"上午若延誤超過 30–40 分鐘：太巴塱改為短停或取消，保留玉里午餐與池上下午活動。",
+    links:[
+      ["省道即時路況","https://168.thb.gov.tw/thb168"],
+      ["中央氣象署","https://www.cwa.gov.tw/V8/C/"],
+      ["搜尋花蓮加油站","https://www.google.com/maps/search/?api=1&query=%E5%8A%A0%E6%B2%B9%E7%AB%99+%E8%8A%B1%E8%93%AE"]
+    ]
+  },
+  "4":{
+    date:"10/18（日）",
+    route:"池上 → 南橫 → 寶來 → 台南",
+    distance:"約 210–230 km（規劃估算）",
+    moveTime:"道路移動約 7.5–8.5 小時",
+    start:"08:00 池上出發",
+    end:"約 19:00 台南",
+    redline:"09:50–10:40 目標通過向陽施工；14:00 前進入南橫管制區；17:00 前離開梅山口－向陽管制路段。",
+    fuel:"07:30–08:00 在池上市區加滿油後再進南橫；不要把高山管制區內的補油當成計畫的一部分。",
+    planB:"南橫若因天候或災害臨時封閉：改走台9南下台東，再經南迴公路返回台南；行程時間會明顯增加，沿途景點全部取消。",
+    links:[
+      ["省道即時路況","https://168.thb.gov.tw/thb168"],
+      ["玉山國家公園南橫路況","https://www.ysnp.gov.tw/Highway/C001300"],
+      ["中央氣象署","https://www.cwa.gov.tw/V8/C/"],
+      ["搜尋池上加油站","https://www.google.com/maps/search/?api=1&query=%E5%8A%A0%E6%B2%B9%E7%AB%99+%E6%B1%A0%E4%B8%8A"]
+    ]
+  }
+};
+
+function opsHTML(day){
+  const d=opsData[day];
+  return `
+    <div class="ops-metrics">
+      <div class="ops-metric"><small>日期／路線</small><strong>${d.date}<br>${d.route}</strong></div>
+      <div class="ops-metric"><small>預估里程</small><strong>${d.distance}</strong></div>
+      <div class="ops-metric"><small>移動時間</small><strong>${d.moveTime}</strong></div>
+      <div class="ops-metric"><small>出發／結束</small><strong>${d.start}<br>${d.end}</strong></div>
+    </div>
+    <div class="ops-critical"><small>時間紅線</small><strong>${d.redline}</strong></div>
+    <div class="ops-fuel"><small>加油策略</small><strong>${d.fuel}</strong></div>
+    <div class="ops-planb"><small>Plan B</small><strong>${d.planB}</strong></div>
+    <div class="quick-links">
+      ${d.links.map(([label,url])=>`<a class="quick-link" href="${url}" target="_blank" rel="noopener">${label} ↗</a>`).join("")}
+    </div>`;
+}
+
+function renderOps(day){
+  document.querySelectorAll(".ops-tab").forEach(b=>b.classList.toggle("active",b.dataset.opsday===day));
+  document.getElementById("opsContent").innerHTML=opsHTML(day);
+  renderWeather(day);
+
+  document.querySelectorAll(".day-ops").forEach(el=>{
+    const d=opsData[el.dataset.dayops];
+    el.innerHTML=`
+      <div class="ops-mini"><small>預估里程</small><strong>${d.distance}</strong></div>
+      <div class="ops-mini"><small>移動時間</small><strong>${d.moveTime}</strong></div>
+      <div class="ops-mini red"><small>時間紅線</small><strong>${d.redline}</strong></div>
+      <div class="ops-mini gold"><small>加油</small><strong>${d.fuel}</strong></div>`;
+  });
+}
+
+
+// ===== Open-Meteo：免 API Key 天氣預報 =====
+const weatherPlan = {
+  "1":{
+    date:"2026-10-15",
+    points:[
+      {name:"東勢",lat:24.2578,lng:120.8298},
+      {name:"埔里",lat:23.9696,lng:120.9648},
+      {name:"翠峰",lat:24.1045,lng:121.1832},
+      {name:"力行吊橋",lat:24.160286,lng:121.213991}
+    ]
+  },
+  "2":{
+    date:"2026-10-16",
+    points:[
+      {name:"埔里",lat:23.9696,lng:120.9648},
+      {name:"武嶺",lat:24.1370,lng:121.2754},
+      {name:"關原",lat:24.1792,lng:121.3440},
+      {name:"花蓮",lat:23.9911,lng:121.6112}
+    ]
+  },
+  "3":{
+    date:"2026-10-17",
+    points:[
+      {name:"花蓮",lat:23.9911,lng:121.6112},
+      {name:"太巴塱",lat:23.6601,lng:121.4484},
+      {name:"玉里",lat:23.3322,lng:121.3153},
+      {name:"池上",lat:23.1240,lng:121.2190}
+    ]
+  },
+  "4":{
+    date:"2026-10-18",
+    points:[
+      {name:"池上",lat:23.1240,lng:121.2190},
+      {name:"向陽",lat:23.2575,lng:120.9842},
+      {name:"天池",lat:23.2852,lng:120.9010},
+      {name:"寶來",lat:23.1088,lng:120.7026},
+      {name:"台南",lat:22.9998,lng:120.2269}
+    ]
+  }
+};
+const weatherCache={};
+
+function wmoText(code){
+  const c=Number(code);
+  if(c===0) return ["☀️","晴"];
+  if([1,2].includes(c)) return ["🌤️","晴時多雲"];
+  if(c===3) return ["☁️","多雲"];
+  if([45,48].includes(c)) return ["🌫️","霧"];
+  if([51,53,55,56,57].includes(c)) return ["🌦️","毛毛雨"];
+  if([61,63,65,66,67].includes(c)) return ["🌧️","降雨"];
+  if([71,73,75,77].includes(c)) return ["🌨️","降雪"];
+  if([80,81,82].includes(c)) return ["🌦️","陣雨"];
+  if([85,86].includes(c)) return ["🌨️","陣雪"];
+  if([95,96,99].includes(c)) return ["⛈️","雷雨"];
+  return ["🌡️","天氣"];
+}
+
+async function fetchPointWeather(point,date){
+  const url =
+    "https://api.open-meteo.com/v1/forecast" +
+    `?latitude=${point.lat}&longitude=${point.lng}` +
+    "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max" +
+    "&timezone=Asia%2FTaipei&forecast_days=16";
+  const res=await fetch(url);
+  if(!res.ok) throw new Error("weather request failed");
+  const j=await res.json();
+  const idx=j.daily?.time?.indexOf(date) ?? -1;
+  if(idx<0) return {...point,available:false};
+  return {
+    ...point,available:true,
+    code:j.daily.weather_code[idx],
+    tmax:j.daily.temperature_2m_max[idx],
+    tmin:j.daily.temperature_2m_min[idx],
+    rain:j.daily.precipitation_probability_max[idx],
+    wind:j.daily.wind_speed_10m_max[idx],
+    gust:j.daily.wind_gusts_10m_max[idx]
+  };
+}
+
+function buildWeatherAlerts(rows){
+  const alerts=[];
+  rows.filter(x=>x.available).forEach(x=>{
+    if(x.tmin<=8) alerts.push(`${x.name} 最低約 ${Math.round(x.tmin)}°C：高山低溫，增加保暖與防風層。`);
+    if(x.rain>=60) alerts.push(`${x.name} 降雨機率約 ${Math.round(x.rain)}%：雨具、防水手套與道路狀況列為優先。`);
+    if(x.gust>=40) alerts.push(`${x.name} 最大陣風約 ${Math.round(x.gust)} km/h：機車留意側風與高架／稜線路段。`);
+  });
+  return alerts;
+}
+
+async function renderWeather(day){
+  const box=document.getElementById("weatherContent");
+  const plan=weatherPlan[day];
+  if(!box || !plan) return;
+
+  box.innerHTML=`<div class="weather-card">
+    <div class="weather-head">
+      <div><h3>${plan.date.slice(5).replace("-","/")} 沿線天氣</h3><small>溫度、降雨、最大風速／陣風</small></div>
+      <a class="weather-source" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo ↗</a>
+    </div>
+    <div class="weather-loading">正在取得最新預報…</div>
+  </div>`;
+
+  try{
+    const cacheKey=day+"_"+plan.date;
+    let rows=weatherCache[cacheKey];
+    if(!rows){
+      rows=await Promise.all(plan.points.map(p=>fetchPointWeather(p,plan.date)));
+      weatherCache[cacheKey]=rows;
+    }
+
+    const available=rows.filter(x=>x.available);
+    if(!available.length){
+      box.innerHTML=`<div class="weather-card">
+        <div class="weather-head">
+          <div><h3>${plan.date.slice(5).replace("-","/")} 沿線天氣</h3><small>Open-Meteo 預報</small></div>
+          <a class="weather-source" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo ↗</a>
+        </div>
+        <div class="weather-unavailable">這一天目前尚未進入可用的預報範圍。接近出發日後重新開啟網頁，資料會自動出現。</div>
+        <div class="contact-note">山區預報僅供規劃。10/16 合歡山／中橫與 10/18 南橫，出發前仍應搭配官方道路公告與中央氣象署資訊判斷。</div>
+      </div>`;
+      return;
+    }
+
+    const alerts=buildWeatherAlerts(rows);
+    box.innerHTML=`<div class="weather-card">
+      <div class="weather-head">
+        <div><h3>${plan.date.slice(5).replace("-","/")} 沿線天氣</h3><small>每日最高／最低、降雨與風況</small></div>
+        <a class="weather-source" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo ↗</a>
+      </div>
+      <div class="weather-grid">
+        ${rows.map(x=>{
+          if(!x.available) return `<div class="weather-row">
+            <div><div class="weather-place">${x.name}</div><div class="weather-condition">尚未進入預報範圍</div></div>
+            <div class="weather-values">—</div>
+          </div>`;
+          const [icon,desc]=wmoText(x.code);
+          return `<div class="weather-row">
+            <div>
+              <div class="weather-place">${icon} ${x.name}</div>
+              <div class="weather-condition">${desc}｜降雨 ${Math.round(x.rain)}%</div>
+            </div>
+            <div class="weather-values">
+              <div class="weather-temp">${Math.round(x.tmin)}–${Math.round(x.tmax)}°C</div>
+              <div class="weather-sub">風 ${Math.round(x.wind)}｜陣風 ${Math.round(x.gust)} km/h</div>
+            </div>
+          </div>`;
+        }).join("")}
+      </div>
+      <div class="weather-alerts">
+        ${alerts.length
+          ? alerts.map(a=>`<div class="weather-alert">⚠ ${a}</div>`).join("")
+          : `<div class="weather-ok">目前預報未觸發低溫、降雨 ≥60% 或陣風 ≥40 km/h 的自動警示。</div>`
+        }
+      </div>
+      <div class="contact-note">資料來源：Open-Meteo。山區天氣變化快，實際騎乘仍以出發前最新預報、現地能見度與官方道路資訊為準。</div>
+    </div>`;
+  }catch(err){
+    box.innerHTML=`<div class="weather-card">
+      <div class="weather-head"><div><h3>沿線天氣</h3><small>Open-Meteo</small></div></div>
+      <div class="weather-unavailable">天氣資料暫時無法取得。請確認網路連線後重新整理；其他行程功能不受影響。</div>
+    </div>`;
+  }
+}
+
+function autoOpsDay(){
+  const now=new Date();
+  if(now.getFullYear()===2026 && now.getMonth()===9){
+    const n=now.getDate();
+    if(n>=15 && n<=18) return String(n-14);
+  }
+  return "1";
+}
+
+document.querySelectorAll(".ops-tab").forEach(b=>{
+  b.addEventListener("click",()=>{
+    const day=b.dataset.opsday;
+    renderOps(day);
+    const mapTab=document.querySelector(`.map-tab[data-day="${day}"]`);
+    if(mapTab) mapTab.click();
+  });
+});
+
+// ===== 住宿與餐廳聯絡方式 =====
+// 公開電話資料整理於 2026/10/2；出發前仍建議以店家最新公告為準。
+const businessContacts={
+  "永和四海豆漿歸仁店":{phone:"06-3386553",tel:"063386553",query:"永和四海豆漿歸仁店"},
+  "永和豆漿大王（宜安路）":{phone:"02-29227429",tel:"0229227429",query:"永和豆漿大王 宜安路166號"},
+  "寮下啜 COFFEEZU":{phone:"04-25771187",tel:"0425771187",query:"寮下啜COFFEEZU"},
+  "私房客家美食餐廳":{phone:"049-2461300",tel:"0492461300",query:"私房客家美食餐廳 國姓"},
+  "二月咖啡 埔里店":{phone:"049-2990467",tel:"0492990467",query:"二月咖啡 埔里店"},
+  "上禾味（永和豆漿）":{phone:"049-2421870",tel:"0492421870",query:"上禾味 永和豆漿 埔里"},
+  "正統飯糰":{phone:"0936-267547",tel:"0936267547",query:"正統飯糰 埔里"},
+  "湘念快炒":{phone:"03-8336928",tel:"038336928",query:"湘念快炒 花蓮"},
+  "山東豆漿大王":{phone:"03-8322621",tel:"038322621",query:"山東豆漿大王 博愛街263號 花蓮"},
+  "傳統美食玉里麵":{phone:"03-8881613",tel:"038881613",query:"傳統美食玉里麵"},
+  "如初丼":{phone:"0909-588511",tel:"0909588511",query:"如初丼 池上"},
+  "QQ飯糰":{phone:"0983-208107",tel:"0983208107",query:"QQ飯糰 池上"},
+  "寶來小吃部":{phone:"07-6881125",tel:"076881125",query:"寶來小吃部"},
+  "小島好樂":{phone:"0921-787047",tel:"0921787047",query:"小島好樂 埔里"},
+  "步裡微旅":{phone:"0905-050175",tel:"0905050175",query:"步裡微旅 花蓮"},
+  "賢情玉緻民宿":{phone:"0911-864878",tel:"0911864878",query:"賢情玉緻民宿"}
+};
+
+function contactHTML(c,label="電話"){
+  return `<div class="contact-line">
+    <span>${label}：</span><span class="contact-phone">${c.phone}</span>
+    <a class="contact-btn" href="tel:${c.tel}">直接撥號</a>
+    <a class="contact-btn" href="${gmapSearch(c.query)}" target="_blank" rel="noopener">Google Maps ↗</a>
+  </div>`;
+}
+
+document.querySelectorAll(".meal-name").forEach(el=>{
+  const name=el.textContent.trim();
+  const c=businessContacts[name];
+  if(!c) return;
+  el.insertAdjacentHTML("afterend",contactHTML(c));
+});
+
+const stayNameMap={
+  "住宿｜小島好樂":"小島好樂",
+  "住宿｜步裡微旅":"步裡微旅",
+  "住宿｜賢情玉緻民宿":"賢情玉緻民宿"
+};
+document.querySelectorAll(".stay h3").forEach(el=>{
+  const key=stayNameMap[el.textContent.trim()];
+  const c=businessContacts[key];
+  if(!c) return;
+  el.insertAdjacentHTML("afterend",contactHTML(c,"聯絡"));
+});
+
+// 在餐廳／住宿卡片區標示聯絡資料時效
+document.querySelectorAll(".info").forEach(card=>{
+  if(card.querySelector(".contact-line") && !card.querySelector(".contact-note")){
+    card.insertAdjacentHTML("beforeend",`<div class="contact-note">電話為公開資料整理；營業時間、休假與訂位狀況可能變動，出發前可直接致電確認。</div>`);
+  }
+});
+
+
+
+// ===== V5 旅行足跡：Timeline JSON / GPX 本機匯入 =====
+const TRIP_DATES = {"1":"2026-10-15","2":"2026-10-16","3":"2026-10-17","4":"2026-10-18"};
+let fpTracks=[];
+let footprintMap=null;
+let footprintOverlays=[];
+let fpCurrentDay="all";
+let fpPlaybackTimer=null;
+let fpPlaybackIndex=0;
+let fpPlaybackPoints=[];
+let fpPlaybackMarker=null;
+
+function fpSetStatus(msg,type=""){
+  const el=document.getElementById("fpStatus");
+  if(!el) return;
+  el.className="fp-status"+(type?` ${type}`:"");
+  el.textContent=msg;
+}
+
+function taiwanDate(ts){
+  if(!ts) return null;
+  try{
+    return new Intl.DateTimeFormat("en-CA",{
+      timeZone:"Asia/Taipei",year:"numeric",month:"2-digit",day:"2-digit"
+    }).format(new Date(ts));
+  }catch(e){ return null; }
+}
+function taiwanTime(ts){
+  if(!ts) return "—";
+  try{
+    return new Intl.DateTimeFormat("zh-TW",{
+      timeZone:"Asia/Taipei",hour:"2-digit",minute:"2-digit",hour12:false
+    }).format(new Date(ts));
+  }catch(e){ return "—"; }
+}
+function formatDateTime(ts){
+  if(!ts) return "—";
+  try{
+    return new Intl.DateTimeFormat("zh-TW",{
+      timeZone:"Asia/Taipei",month:"2-digit",day:"2-digit",
+      hour:"2-digit",minute:"2-digit",hour12:false
+    }).format(new Date(ts));
+  }catch(e){ return "—"; }
+}
+
+function parseCoord(v){
+  if(!v) return null;
+  if(typeof v==="object"){
+    if(Number.isFinite(Number(v.lat)) && Number.isFinite(Number(v.lng))) return {lat:Number(v.lat),lng:Number(v.lng)};
+    if(Number.isFinite(Number(v.latitude)) && Number.isFinite(Number(v.longitude))) return {lat:Number(v.latitude),lng:Number(v.longitude)};
+    if(v.latitudeE7!=null && v.longitudeE7!=null) return {lat:Number(v.latitudeE7)/1e7,lng:Number(v.longitudeE7)/1e7};
+    if(v.latLng) return parseCoord(v.latLng);
+  }
+  const s=String(v).replace("geo:","").replaceAll("°","").trim();
+  const m=s.match(/(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)/);
+  if(!m) return null;
+  return {lat:Number(m[1]),lng:Number(m[2])};
+}
+function validCoord(p){
+  return p && Number.isFinite(p.lat) && Number.isFinite(p.lng) &&
+    p.lat>=-90 && p.lat<=90 && p.lng>=-180 && p.lng<=180;
+}
+function addPoint(out,coord,ts=null,ele=null,source=""){
+  if(!validCoord(coord)) return;
+  out.push({
+    lat:coord.lat,lng:coord.lng,
+    ts:ts ? new Date(ts).toISOString() : null,
+    ele:Number.isFinite(Number(ele))?Number(ele):null,
+    source
+  });
+}
+function findSemanticSegments(data){
+  if(data && Array.isArray(data.semanticSegments)) return data.semanticSegments;
+  if(Array.isArray(data)){
+    for(const item of data){
+      if(item && Array.isArray(item.semanticSegments)) return item.semanticSegments;
+    }
+  }
+  return null;
+}
+
+function parseTimelineJSON(data,fileName){
+  const points=[],visits=[];
+  const semantic=findSemanticSegments(data);
+
+  if(semantic){
+    semantic.forEach(seg=>{
+      const start=seg.startTime||null;
+      const end=seg.endTime||null;
+
+      if(Array.isArray(seg.timelinePath)){
+        seg.timelinePath.forEach(pt=>{
+          const c=parseCoord(pt.point||pt.location||pt.latLng);
+          let ts=start;
+          const off=Number(pt.durationMinutesOffsetFromStartTime);
+          if(start && Number.isFinite(off)) ts=new Date(new Date(start).getTime()+off*60000).toISOString();
+          addPoint(points,c,ts,null,"timelinePath");
+        });
+      }
+
+      if(seg.activity){
+        const a=seg.activity;
+        addPoint(points,parseCoord(a.start||a.startLocation),start,null,"activity");
+        addPoint(points,parseCoord(a.end||a.endLocation),end,null,"activity");
+      }
+
+      if(seg.visit){
+        const cand=seg.visit.topCandidate||seg.visit;
+        const c=parseCoord(cand.placeLocation||cand.location||cand.centerLatE7?cand:null);
+        if(validCoord(c)){
+          addPoint(points,c,start,null,"visit");
+          visits.push({
+            lat:c.lat,lng:c.lng,start,end,
+            name:cand.name||cand.placeName||cand.semanticType||"Timeline 停留點",
+            placeId:cand.placeId||null,
+            source:"Timeline"
+          });
+        }
+      }
+    });
+  }
+
+  if(data && Array.isArray(data.timelineObjects)){
+    data.timelineObjects.forEach(obj=>{
+      if(obj.activitySegment){
+        const a=obj.activitySegment;
+        const st=a.duration?.startTimestamp||a.duration?.startTimestampMs||null;
+        const en=a.duration?.endTimestamp||a.duration?.endTimestampMs||null;
+        const stISO=st && /^\d+$/.test(String(st)) ? new Date(Number(st)).toISOString() : st;
+        const enISO=en && /^\d+$/.test(String(en)) ? new Date(Number(en)).toISOString() : en;
+        const raw=a.simplifiedRawPath?.points||a.waypointPath?.waypoints||[];
+        raw.forEach(pt=>{
+          const c=parseCoord(pt);
+          const t=pt.timestamp||pt.timestampMs||stISO;
+          const ts=t && /^\d+$/.test(String(t)) ? new Date(Number(t)).toISOString() : t;
+          addPoint(points,c,ts,null,"timelineObjects");
+        });
+        addPoint(points,parseCoord(a.startLocation),stISO,null,"activityStart");
+        addPoint(points,parseCoord(a.endLocation),enISO,null,"activityEnd");
+      }
+      if(obj.placeVisit){
+        const v=obj.placeVisit;
+        const c=parseCoord(v.location);
+        const st=v.duration?.startTimestamp||v.duration?.startTimestampMs||null;
+        const en=v.duration?.endTimestamp||v.duration?.endTimestampMs||null;
+        const stISO=st && /^\d+$/.test(String(st)) ? new Date(Number(st)).toISOString() : st;
+        const enISO=en && /^\d+$/.test(String(en)) ? new Date(Number(en)).toISOString() : en;
+        if(validCoord(c)){
+          addPoint(points,c,stISO,null,"placeVisit");
+          visits.push({
+            lat:c.lat,lng:c.lng,start:stISO,end:enISO,
+            name:v.location?.name||"Timeline 停留點",
+            placeId:v.location?.placeId||null,
+            source:"Timeline"
+          });
+        }
+      }
+    });
+  }
+
+  const locations = (data && Array.isArray(data.locations)) ? data.locations : null;
+  if(locations){
+    locations.forEach(p=>{
+      const c=parseCoord(p);
+      const t=p.timestamp||p.timestampMs||p.timestampMillis||null;
+      const ts=t && /^\d+$/.test(String(t)) ? new Date(Number(t)).toISOString() : t;
+      addPoint(points,c,ts,p.altitude||null,"locations");
+    });
+  }
+
+  // A few exports are a raw array of semantic segments.
+  if(Array.isArray(data) && !semantic && !data.timelineObjects){
+    data.forEach(seg=>{
+      if(seg && (seg.timelinePath||seg.activity||seg.visit)){
+        const wrapped=parseTimelineJSON({semanticSegments:[seg]},fileName);
+        points.push(...wrapped.points);
+        visits.push(...wrapped.visits);
+      }
+    });
+  }
+
+  points.sort((a,b)=>{
+    if(a.ts && b.ts) return new Date(a.ts)-new Date(b.ts);
+    if(a.ts) return -1;
+    if(b.ts) return 1;
+    return 0;
+  });
+
+  return {name:fileName,type:"Timeline JSON",points,visits};
+}
+
+function parseGPX(xmlText,fileName){
+  const xml=new DOMParser().parseFromString(xmlText,"application/xml");
+  if(xml.querySelector("parsererror")) throw new Error("GPX XML 格式無法解析");
+  const nodes=[...xml.querySelectorAll("trkpt,rtept,wpt")];
+  const points=nodes.map(n=>{
+    const lat=Number(n.getAttribute("lat")),lng=Number(n.getAttribute("lon"));
+    const eleNode=n.querySelector("ele"),timeNode=n.querySelector("time");
+    return {
+      lat,lng,
+      ele:eleNode?Number(eleNode.textContent):null,
+      ts:timeNode?new Date(timeNode.textContent).toISOString():null,
+      source:"GPX"
+    };
+  }).filter(validCoord);
+  points.sort((a,b)=>(a.ts&&b.ts)?new Date(a.ts)-new Date(b.ts):0);
+  return {name:fileName,type:"GPX",points,visits:inferStops(points)};
+}
+
+function tripOnly(track){
+  const validDates=new Set(Object.values(TRIP_DATES));
+  const timed=track.points.filter(p=>p.ts && validDates.has(taiwanDate(p.ts)));
+  const untimed=track.points.filter(p=>!p.ts);
+  const visits=(track.visits||[]).filter(v=>!v.start || validDates.has(taiwanDate(v.start)));
+  // For Timeline full-history exports, only use trip dates. For an untimed GPX, keep all points.
+  return {...track,points:timed.length?timed:untimed,visits};
+}
+function dayPoints(day){
+  const all=fpTracks.flatMap(t=>t.points.map(p=>({...p,trackName:t.name})));
+  if(day==="all") return all.sort((a,b)=>(a.ts&&b.ts)?new Date(a.ts)-new Date(b.ts):0);
+  const date=TRIP_DATES[day];
+  return all.filter(p=>!p.ts || taiwanDate(p.ts)===date).sort((a,b)=>(a.ts&&b.ts)?new Date(a.ts)-new Date(b.ts):0);
+}
+function dayVisits(day){
+  const all=fpTracks.flatMap(t=>(t.visits||[]).map(v=>({...v,trackName:t.name})));
+  if(day==="all") return all.sort((a,b)=>(a.start&&b.start)?new Date(a.start)-new Date(b.start):0);
+  const date=TRIP_DATES[day];
+  return all.filter(v=>!v.start || taiwanDate(v.start)===date).sort((a,b)=>(a.start&&b.start)?new Date(a.start)-new Date(b.start):0);
+}
+
+function haversine(a,b){
+  const R=6371000,toRad=x=>x*Math.PI/180;
+  const dLat=toRad(b.lat-a.lat),dLng=toRad(b.lng-a.lng);
+  const s=Math.sin(dLat/2)**2+Math.cos(toRad(a.lat))*Math.cos(toRad(b.lat))*Math.sin(dLng/2)**2;
+  return 2*R*Math.atan2(Math.sqrt(s),Math.sqrt(1-s));
+}
+function trackDistance(points){
+  let m=0;
+  for(let i=1;i<points.length;i++){
+    const a=points[i-1],b=points[i];
+    const d=haversine(a,b);
+    if(a.ts&&b.ts){
+      const sec=(new Date(b.ts)-new Date(a.ts))/1000;
+      if(sec>0 && d/sec*3.6>220) continue; // discard obvious GPS jumps
+      if(sec>6*3600) continue;
+    }
+    if(d<100000) m+=d;
+  }
+  return m;
+}
+function durationText(ms){
+  if(!Number.isFinite(ms)||ms<0) return "—";
+  const min=Math.round(ms/60000),h=Math.floor(min/60),m=min%60;
+  return h?`${h}h ${m}m`:`${m}m`;
+}
+function inferStops(points){
+  const timed=points.filter(p=>p.ts);
+  if(timed.length<3) return [];
+  const out=[];
+  let i=0;
+  while(i<timed.length-1){
+    let j=i+1;
+    while(j<timed.length && haversine(timed[i],timed[j])<=120) j++;
+    const last=timed[Math.max(i,j-1)];
+    const dur=new Date(last.ts)-new Date(timed[i].ts);
+    if(dur>=10*60000){
+      out.push({
+        lat:timed[i].lat,lng:timed[i].lng,start:timed[i].ts,end:last.ts,
+        name:"GPS 推估停留",source:"GPX推估"
+      });
+      i=Math.max(j,i+1);
+    }else i++;
+  }
+  return out;
+}
+
+function fpStats(points,visits){
+  const distance=trackDistance(points);
+  const timed=points.filter(p=>p.ts);
+  const start=timed[0]?.ts,end=timed[timed.length-1]?.ts;
+  const elevs=points.map(p=>p.ele).filter(Number.isFinite);
+  document.getElementById("fpDistance").textContent=points.length?`${(distance/1000).toFixed(1)} km`:"—";
+  document.getElementById("fpDuration").textContent=start&&end?durationText(new Date(end)-new Date(start)):"—";
+  document.getElementById("fpPoints").textContent=points.length.toLocaleString("zh-TW");
+  document.getElementById("fpElevation").textContent=elevs.length?`${Math.round(Math.max(...elevs))} m`:"—";
+  document.getElementById("fpStops").textContent=String(visits.length);
+  document.getElementById("fpFiles").textContent=String(fpTracks.length);
+  document.getElementById("fpStatLabel").textContent=
+    fpCurrentDay==="all"?"2026/10/15–10/18 四天合計":TRIP_DATES[fpCurrentDay].replaceAll("-","/");
+}
+
+function initFootprintMap(){
+  const el=document.getElementById("footprintMap");
+  if(!el || !window.google?.maps) return;
+  footprintMap=new google.maps.Map(el,{
+    center:{lat:23.72,lng:121.03},zoom:8,
+    mapTypeControl:true,streetViewControl:false,fullscreenControl:true,gestureHandling:"greedy"
+  });
+  renderFootprint();
+}
+
+function clearFootprintOverlays(){
+  footprintOverlays.forEach(o=>o.setMap(null));
+  footprintOverlays=[];
+  if(fpPlaybackMarker){fpPlaybackMarker.setMap(null);fpPlaybackMarker=null;}
+}
+
+function renderFootprint(){
+  const points=dayPoints(fpCurrentDay);
+  const visits=dayVisits(fpCurrentDay);
+  fpStats(points,visits);
+  renderStopList(visits);
+  renderTrackList();
+
+  const exp=document.getElementById("fpExportBtn");
+  const play=document.getElementById("fpPlayBtn");
+  const pause=document.getElementById("fpPauseBtn");
+  exp.disabled=!points.length;
+  play.disabled=points.length<2;
+  pause.disabled=points.length<2;
+
+  if(!footprintMap) return;
+  clearFootprintOverlays();
+  const bounds=new google.maps.LatLngBounds();
+
+  const days=fpCurrentDay==="all"?["1","2","3","4"]:[fpCurrentDay];
+  days.forEach(d=>{
+    const r=routes[d];
+    if(!r) return;
+    const planned=new google.maps.Polyline({
+      path:r.path,map:footprintMap,strokeColor:"#8d9691",strokeOpacity:.35,strokeWeight:5
+    });
+    footprintOverlays.push(planned);
+    r.path.forEach(p=>bounds.extend(p));
+  });
+
+  if(points.length){
+    // Break lines on date changes or very long time gaps to avoid cross-day jumps.
+    let groups=[],g=[];
+    points.forEach((p,i)=>{
+      if(i>0){
+        const prev=points[i-1];
+        const dateBreak=prev.ts&&p.ts&&taiwanDate(prev.ts)!==taiwanDate(p.ts);
+        const gap=prev.ts&&p.ts&&(new Date(p.ts)-new Date(prev.ts)>4*3600*1000);
+        if(dateBreak||gap){if(g.length>1) groups.push(g);g=[];}
+      }
+      g.push({lat:p.lat,lng:p.lng});
+    });
+    if(g.length>1) groups.push(g);
+
+    groups.forEach(path=>{
+      const line=new google.maps.Polyline({
+        path,map:footprintMap,strokeColor:"#214f3c",strokeOpacity:.95,strokeWeight:5
+      });
+      footprintOverlays.push(line);
+      path.forEach(p=>bounds.extend(p));
+    });
+
+    const first=points[0],last=points[points.length-1];
+    [["起點",first],["終點",last]].forEach(([label,p])=>{
+      const m=new google.maps.Marker({position:{lat:p.lat,lng:p.lng},map:footprintMap,title:label});
+      footprintOverlays.push(m);bounds.extend({lat:p.lat,lng:p.lng});
+    });
+
+    visits.slice(0,80).forEach(v=>{
+      const m=new google.maps.Marker({
+        position:{lat:v.lat,lng:v.lng},map:footprintMap,
+        title:v.name||"停留點",
+        icon:{path:google.maps.SymbolPath.CIRCLE,scale:6,fillColor:"#b66a3d",fillOpacity:1,strokeColor:"#fff",strokeWeight:2}
+      });
+      const info=new google.maps.InfoWindow({
+        content:`<div style="min-width:190px;font-family:Microsoft JhengHei,sans-serif">
+          <strong>${v.name||"停留點"}</strong><br>
+          <span style="color:#667">${v.start?formatDateTime(v.start):"—"}${v.end?" ～ "+taiwanTime(v.end):""}</span>
+        </div>`
+      });
+      m.addListener("click",()=>info.open({anchor:m,map:footprintMap}));
+      footprintOverlays.push(m);bounds.extend({lat:v.lat,lng:v.lng});
+    });
+  }
+
+  if(!bounds.isEmpty()) footprintMap.fitBounds(bounds,60);
+}
+
+function renderTrackList(){
+  const el=document.getElementById("fpTrackList");
+  if(!fpTracks.length){
+    el.innerHTML='<div class="fp-empty">尚無資料。</div>';return;
+  }
+  el.innerHTML=fpTracks.map(t=>{
+    const dates=[...new Set(t.points.filter(p=>p.ts).map(p=>taiwanDate(p.ts)).filter(Boolean))].sort();
+    return `<div class="fp-track-item">
+      <div><strong>${escapeHTML(t.name)}</strong>
+      <small>${t.type}｜${t.points.length.toLocaleString("zh-TW")} 個位置點${dates.length?"｜"+dates.join("、"):""}</small></div>
+      <button class="fp-btn danger" type="button" data-delete-track="${t.id}">移除</button>
+    </div>`;
+  }).join("");
+  el.querySelectorAll("[data-delete-track]").forEach(b=>b.addEventListener("click",()=>deleteTrack(b.dataset.deleteTrack)));
+}
+function renderStopList(visits){
+  const el=document.getElementById("fpStopList");
+  if(!visits.length){
+    el.innerHTML='<div class="fp-empty">目前所選日期沒有可辨識的停留點。Timeline 的 visit 資料通常會比 GPX 自動推估完整。</div>';return;
+  }
+  el.innerHTML=visits.slice(0,60).map(v=>{
+    let dur="";
+    if(v.start&&v.end) dur=`｜${durationText(new Date(v.end)-new Date(v.start))}`;
+    return `<div class="fp-stop"><div><strong>${escapeHTML(v.name||"停留點")}</strong>
+      <small>${v.start?formatDateTime(v.start):"時間不明"}${dur}｜${escapeHTML(v.source||"")}</small></div>
+      <a class="fp-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v.lat+","+v.lng)}">地圖</a></div>`;
+  }).join("");
+}
+function escapeHTML(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+}
+
+// IndexedDB
+function fpDB(){
+  return new Promise((resolve,reject)=>{
+    const req=indexedDB.open("trip-footprints-v1",1);
+    req.onupgradeneeded=()=>req.result.createObjectStore("tracks",{keyPath:"id"});
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>reject(req.error);
+  });
+}
+async function saveTrack(track){
+  const db=await fpDB();
+  await new Promise((resolve,reject)=>{
+    const tx=db.transaction("tracks","readwrite");
+    tx.objectStore("tracks").put(track);
+    tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);
+  });
+  db.close();
+}
+async function loadTracks(){
+  try{
+    const db=await fpDB();
+    const data=await new Promise((resolve,reject)=>{
+      const req=db.transaction("tracks","readonly").objectStore("tracks").getAll();
+      req.onsuccess=()=>resolve(req.result||[]);
+      req.onerror=()=>reject(req.error);
+    });
+    db.close();
+    fpTracks=data;
+    if(fpTracks.length) fpSetStatus(`已從此瀏覽器載入 ${fpTracks.length} 份旅行紀錄。`,"ok");
+    renderFootprint();
+  }catch(e){console.warn(e);}
+}
+async function deleteTrack(id){
+  const db=await fpDB();
+  await new Promise((resolve,reject)=>{
+    const tx=db.transaction("tracks","readwrite");
+    tx.objectStore("tracks").delete(id);
+    tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);
+  });
+  db.close();
+  fpTracks=fpTracks.filter(t=>t.id!==id);
+  renderFootprint();
+  fpSetStatus("已從此瀏覽器移除該份紀錄。","ok");
+}
+async function clearTracks(){
+  if(!confirm("確定清除目前瀏覽器內所有旅行足跡？原始 Timeline／GPX 檔案不會被刪除。")) return;
+  const db=await fpDB();
+  await new Promise((resolve,reject)=>{
+    const tx=db.transaction("tracks","readwrite");
+    tx.objectStore("tracks").clear();
+    tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);
+  });
+  db.close();
+  fpTracks=[];
+  stopPlayback();
+  renderFootprint();
+  fpSetStatus("本機旅行足跡已清除。");
+}
+
+async function importTimelineFiles(files){
+  let success=0,totalPts=0;
+  for(const file of files){
+    try{
+      const data=JSON.parse(await file.text());
+      let t=tripOnly(parseTimelineJSON(data,file.name));
+      if(!t.points.length && !t.visits.length) throw new Error("找不到 10/15–10/18 的位置資料");
+      t.id=`timeline-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      t.importedAt=new Date().toISOString();
+      // De-duplicate near-identical points.
+      t.points=t.points.filter((p,i,a)=>i===0 || p.lat!==a[i-1].lat || p.lng!==a[i-1].lng || p.ts!==a[i-1].ts);
+      await saveTrack(t);fpTracks.push(t);
+      success++;totalPts+=t.points.length;
+    }catch(e){
+      console.warn(file.name,e);
+    }
+  }
+  fpSetStatus(success?`已匯入 ${success} 份 Timeline JSON，共 ${totalPts.toLocaleString("zh-TW")} 個旅行位置點。`:"Timeline JSON 無法解析，或檔案中沒有 2026/10/15–10/18 的資料。",success?"ok":"err");
+  renderFootprint();
+}
+async function importGPXFiles(files){
+  let success=0,totalPts=0;
+  for(const file of files){
+    try{
+      let t=tripOnly(parseGPX(await file.text(),file.name));
+      if(!t.points.length) throw new Error("沒有可用軌跡點");
+      t.id=`gpx-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      t.importedAt=new Date().toISOString();
+      await saveTrack(t);fpTracks.push(t);
+      success++;totalPts+=t.points.length;
+    }catch(e){console.warn(file.name,e);}
+  }
+  fpSetStatus(success?`已匯入 ${success} 份 GPX，共 ${totalPts.toLocaleString("zh-TW")} 個位置點。`:"GPX 無法解析，或沒有可用軌跡點。",success?"ok":"err");
+  renderFootprint();
+}
+
+function exportSelectedGPX(){
+  const pts=dayPoints(fpCurrentDay).filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng));
+  if(!pts.length) return;
+  const rows=pts.map(p=>{
+    const ele=Number.isFinite(p.ele)?`<ele>${p.ele.toFixed(1)}</ele>`:"";
+    const tm=p.ts?`<time>${p.ts}</time>`:"";
+    return `<trkpt lat="${p.lat.toFixed(7)}" lon="${p.lng.toFixed(7)}">${ele}${tm}</trkpt>`;
+  }).join("");
+  const xml=`<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="旅行戰情室V5" xmlns="http://www.topografix.com/GPX/1/1">
+<trk><name>${fpCurrentDay==="all"?"2026-10-15_10-18旅行足跡":TRIP_DATES[fpCurrentDay]}</name><trkseg>${rows}</trkseg></trk>
+</gpx>`;
+  const blob=new Blob([xml],{type:"application/gpx+xml"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=fpCurrentDay==="all"?"2026-10-15_10-18旅行足跡.gpx":`${TRIP_DATES[fpCurrentDay]}_旅行足跡.gpx`;
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
+function selectedPlaybackPoints(){
+  return dayPoints(fpCurrentDay).filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng));
+}
+function startPlayback(){
+  const pts=selectedPlaybackPoints();
+  if(pts.length<2||!footprintMap) return;
+  stopPlayback(false);
+  fpPlaybackPoints=pts;
+  fpPlaybackIndex=0;
+  fpPlaybackMarker=new google.maps.Marker({
+    position:{lat:pts[0].lat,lng:pts[0].lng},map:footprintMap,
+    title:"旅行回放"
+  });
+  const speed=Number(document.getElementById("fpSpeed").value)||3;
+  const step=Math.max(1,Math.ceil(pts.length/450)*speed);
+  fpPlaybackTimer=setInterval(()=>{
+    fpPlaybackIndex=Math.min(fpPlaybackPoints.length-1,fpPlaybackIndex+step);
+    const p=fpPlaybackPoints[fpPlaybackIndex];
+    fpPlaybackMarker.setPosition({lat:p.lat,lng:p.lng});
+    document.getElementById("fpPlayTime").textContent=p.ts?formatDateTime(p.ts):`軌跡 ${fpPlaybackIndex+1}/${fpPlaybackPoints.length}`;
+    if(fpPlaybackIndex>=fpPlaybackPoints.length-1) stopPlayback(false);
+  },120);
+}
+function stopPlayback(removeMarker=false){
+  if(fpPlaybackTimer){clearInterval(fpPlaybackTimer);fpPlaybackTimer=null;}
+  if(removeMarker && fpPlaybackMarker){fpPlaybackMarker.setMap(null);fpPlaybackMarker=null;}
+}
+function pausePlayback(){stopPlayback(false);}
+
+document.getElementById("timelineFileInput")?.addEventListener("change",e=>{
+  const files=[...e.target.files]; if(files.length) importTimelineFiles(files); e.target.value="";
+});
+document.getElementById("gpxFileInput")?.addEventListener("change",e=>{
+  const files=[...e.target.files]; if(files.length) importGPXFiles(files); e.target.value="";
+});
+document.querySelectorAll(".fp-daytab").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".fp-daytab").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");fpCurrentDay=b.dataset.fpday;stopPlayback(true);renderFootprint();
+}));
+document.getElementById("fpClearBtn")?.addEventListener("click",clearTracks);
+document.getElementById("fpExportBtn")?.addEventListener("click",exportSelectedGPX);
+document.getElementById("fpFitBtn")?.addEventListener("click",renderFootprint);
+document.getElementById("fpPlayBtn")?.addEventListener("click",startPlayback);
+document.getElementById("fpPauseBtn")?.addEventListener("click",pausePlayback);
+
+loadTracks();
+
+
+renderOps(autoOpsDay());
+
+
 loadGoogleMaps();
 
 // tabs
@@ -551,7 +1924,7 @@ document.querySelectorAll(".map-tab").forEach(b=>{
     b.classList.add("active");
     const day=b.dataset.day;
     const desc=document.getElementById("mapDesc");
-    desc.textContent=day==="all"?"全程總覽：東勢 → 埔里 → 力行 → 武嶺 → 花蓮 → 池上 → 南橫 → 台南。":routes[day].title;
+    desc.textContent=day==="all"?"全程總覽：東勢 → 埔里 → 力行折返 → 埔里 → 武嶺 → 花蓮 → 池上 → 南橫 → 台南。":routes[day].title;
     updateActionLinks(day);
     if(map) renderRoute(day);
   });
