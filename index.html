@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>10/15–10/18 機車旅行｜戰情版 V5</title>
+<title>10/15–10/18 機車旅行｜戰情版 V6</title>
 <style>
 :root{
   --bg:#f5f2ea;--paper:#fffdf8;--ink:#1f2924;--muted:#66736b;--line:#d9ded8;
@@ -146,7 +146,7 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
     .dayhead{grid-template-columns:1fr}
 }
 
-/* ===== 戰情版 V5 ===== */
+/* ===== 戰情版 V6 ===== */
 .ops-board{
   background:var(--paper);border:1px solid var(--line);border-radius:24px;
   padding:20px;box-shadow:var(--shadow);margin-bottom:26px
@@ -368,6 +368,40 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
   .fp-stats{grid-template-columns:repeat(2,1fr)}
   #footprintMap{height:430px}
 }
+
+/* ===== V6 單頁分頁切換 ===== */
+.page-view{display:none}
+.page-view.active-view{display:block;animation:viewFade .18s ease-out}
+@keyframes viewFade{
+  from{opacity:.25;transform:translateY(5px)}
+  to{opacity:1;transform:none}
+}
+.overview-card-link{
+  width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;
+  appearance:none;-webkit-appearance:none
+}
+.overview-card-link:hover{border-color:#b6c4bb;transform:translateY(-1px)}
+.overview-card-link:focus-visible{
+  outline:3px solid rgba(33,79,60,.18);outline-offset:2px
+}
+.card-go{
+  display:inline-block;margin-top:9px;font-size:.78rem;font-weight:900;color:var(--green)
+}
+.view-titlebar{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  margin:0 0 12px
+}
+.view-back{
+  display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);
+  background:#fff;color:var(--green);border-radius:999px;padding:7px 10px;
+  font-size:.78rem;font-weight:900;cursor:pointer
+}
+@media(max-width:640px){
+  .nav{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav button{white-space:nowrap;flex:0 0 auto}
+}
+
 @media print{
   .footprint-section{break-before:page}
   .fp-upload-row,.fp-controls,.fp-playbar{display:none!important}
@@ -424,7 +458,7 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 </div>
 
 <main class="shell">
-<section id="overview">
+<section id="overview" class="page-view active-view">
 
 <section class="ops-board" id="opsBoard">
   <div class="ops-head">
@@ -449,10 +483,10 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 </section>
 
   <div class="cards">
-    <div class="card"><small>DAY 1</small><strong>東勢集合，當天完成力行</strong><p>10:30 寮下啜喝咖啡；埔里快速補給後上霧社、翠峰與力行吊橋，再折返埔里。</p></div>
-    <div class="card"><small>DAY 2</small><strong>合歡山與中橫慢騎</strong><p>力行已在前一天完成，07:30 從埔里出發，沿鳶峰、昆陽、武嶺進中橫，時間更從容。</p></div>
-    <div class="card"><small>DAY 3</small><strong>花東縱谷到池上</strong><p>太巴塱、玉里麵，下午銜接已安排的池上電動車導覽。</p></div>
-    <div class="card"><small>DAY 4</small><strong>南橫回台南</strong><p>08:00 出發，優先銜接向陽施工放行，再走埡口、天池與寶來。</p></div>
+    <button class="card overview-card-link" type="button" data-openview="d1"><small>DAY 1</small><strong>東勢集合，當天完成力行</strong><p>10:30 寮下啜喝咖啡；埔里快速補給後上霧社、翠峰與力行吊橋，再折返埔里。</p><span class="card-go">查看完整行程 →</span></button>
+    <button class="card overview-card-link" type="button" data-openview="d2"><small>DAY 2</small><strong>合歡山與中橫慢騎</strong><p>力行已在前一天完成，07:30 從埔里出發，沿鳶峰、昆陽、武嶺進中橫，時間更從容。</p><span class="card-go">查看完整行程 →</span></button>
+    <button class="card overview-card-link" type="button" data-openview="d3"><small>DAY 3</small><strong>花東縱谷到池上</strong><p>太巴塱、玉里麵，下午銜接已安排的池上電動車導覽。</p><span class="card-go">查看完整行程 →</span></button>
+    <button class="card overview-card-link" type="button" data-openview="d4"><small>DAY 4</small><strong>南橫回台南</strong><p>08:00 出發，優先銜接向陽施工放行，再走埡口、天池與寶來。</p><span class="card-go">查看完整行程 →</span></button>
   </div>
 
   <div class="section-title">
@@ -490,7 +524,9 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
   </div>
 </section>
 
-<section class="day" id="d1" data-day="1">
+<section class="day page-view" id="d1" data-day="1">
+<div class="view-titlebar"><button class="view-back" type="button" data-openview="overview">← 返回總覽與地圖</button></div>
+
 <header class="dayhead"><div><div>DAY 1 · 10/15（四）</div><h2>台南／新北 → 東勢 → 埔里 → 力行吊橋 → 埔里</h2><p>兩人上午分頭長途騎到東勢，10:30 會合後直接把力行支線放在第一天完成；核心原則是天黑前回到翠峰、台14甲。</p></div><div class="badge">共同集合<br><strong>10:30 寮下啜</strong></div></header>
 <div class="daybody">
 <div class="day-ops" data-dayops="1"></div>
@@ -523,7 +559,9 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 </section>
 
 
-<section class="day" id="d2" data-day="2">
+<section class="day page-view" id="d2" data-day="2">
+<div class="view-titlebar"><button class="view-back" type="button" data-openview="overview">← 返回總覽與地圖</button></div>
+
 <header class="dayhead"><div><div>DAY 2 · 10/16（五）</div><h2>埔里 → 鳶峰 → 昆陽 → 武嶺 → 中橫 → 花蓮</h2><p>力行已在第一天完成，因此第二天不用折返翠峰支線，可把上午時間真正留給合歡山慢騎與拍照，同時大幅增加中橫交管容錯。</p></div><div class="badge">較從容出發<br><strong>07:30</strong></div></header>
 <div class="daybody">
 <div class="day-ops" data-dayops="2"></div>
@@ -554,7 +592,9 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 </section>
 
 
-<section class="day" id="d3" data-day="3">
+<section class="day page-view" id="d3" data-day="3">
+<div class="view-titlebar"><button class="view-back" type="button" data-openview="overview">← 返回總覽與地圖</button></div>
+
 <header class="dayhead"><div><div>DAY 3 · 10/17（六）</div><h2>花蓮 → 太巴塱 → 玉里 → 池上</h2><p>上午只安排一個文化停點，下午完整保留給池上電動車導覽。</p></div><div class="badge">正常出發<br><strong>09:00</strong></div></header>
 <div class="daybody">
 <div class="day-ops" data-dayops="3"></div>
@@ -580,7 +620,9 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 </div></div>
 </section>
 
-<section class="day" id="d4" data-day="4">
+<section class="day page-view" id="d4" data-day="4">
+<div class="view-titlebar"><button class="view-back" type="button" data-openview="overview">← 返回總覽與地圖</button></div>
+
 <header class="dayhead"><div><div>DAY 4 · 10/18（日）</div><h2>池上 → 南橫 → 寶來 → 台南</h2><p>先處理施工與高山管制，再到寶來完整吃午餐。</p></div><div class="badge">施工日提早<br><strong>08:00</strong></div></header>
 <div class="daybody">
 <div class="day-ops" data-dayops="4"></div>
@@ -606,7 +648,9 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 </div></div>
 </section>
 
-<section id="footprint" class="footprint-section">
+<section id="footprint" class="footprint-section page-view">
+<div class="view-titlebar"><button class="view-back" type="button" data-openview="overview">← 返回總覽與地圖</button></div>
+
   <div class="footprint-hero">
     <h2>旅行足跡</h2>
     <p>旅行後匯入 Google Maps Timeline JSON 或 GPX，將實際騎乘軌跡與原定行程疊在一起比較。</p>
@@ -707,7 +751,7 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 
 </main>
 
-<footer><div class="shell">行程地圖為規劃用途；實際騎乘請依當日天候、道路施工、交管與機車可通行狀態調整。戰情版 V5 可直接部署至 GitHub Pages；旅行足跡資料預設只儲存在使用者自己的瀏覽器。</div></footer>
+<footer><div class="shell">行程地圖為規劃用途；實際騎乘請依當日天候、道路施工、交管與機車可通行狀態調整。戰情版 V6 採分頁切換介面，可直接部署至 GitHub Pages；旅行足跡資料預設只儲存在使用者自己的瀏覽器。</div></footer>
 
 <script>
 // ---------- Google Maps API Key handling ----------
@@ -929,7 +973,6 @@ function initTripMap(){
     gestureHandling:"greedy"
   });
   renderRoute("all");
-  initFootprintMap();
   setStatus("Google Maps 已成功載入。你可以切換每日路線並點擊景點標記。","ok");
 }
 
@@ -1929,13 +1972,51 @@ document.querySelectorAll(".map-tab").forEach(b=>{
     if(map) renderRoute(day);
   });
 });
-document.querySelectorAll(".nav button").forEach(b=>{
-  b.addEventListener("click",()=>{
-    document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-    document.getElementById(b.dataset.to).scrollIntoView({behavior:"smooth",block:"start"});
+function showPageView(id,scroll=true){
+  const target=document.getElementById(id);
+  if(!target) return;
+
+  document.querySelectorAll(".page-view").forEach(v=>v.classList.remove("active-view"));
+  target.classList.add("active-view");
+
+  document.querySelectorAll(".nav button").forEach(b=>{
+    b.classList.toggle("active",b.dataset.to===id);
   });
+
+  // Hidden Google Maps containers need a resize after becoming visible.
+  if(id==="overview" && map){
+    requestAnimationFrame(()=>{
+      google.maps.event.trigger(map,"resize");
+      renderRoute(currentDay||"all");
+    });
+  }
+
+  if(id==="footprint" && window.google?.maps){
+    requestAnimationFrame(()=>{
+      if(!footprintMap) initFootprintMap();
+      else{
+        google.maps.event.trigger(footprintMap,"resize");
+        renderFootprint();
+      }
+    });
+  }
+
+  if(scroll){
+    const sticky=document.querySelector(".sticky");
+    const y=(document.querySelector("main")?.getBoundingClientRect().top||0)+window.scrollY-(sticky?.offsetHeight||0)-8;
+    window.scrollTo({top:Math.max(0,y),behavior:"smooth"});
+  }
+}
+
+document.querySelectorAll(".nav button").forEach(b=>{
+  b.addEventListener("click",()=>showPageView(b.dataset.to,true));
 });
+document.querySelectorAll("[data-openview]").forEach(b=>{
+  b.addEventListener("click",()=>showPageView(b.dataset.openview,true));
+});
+
+// Always open on overview on a fresh page load.
+showPageView("overview",false);
 </script>
 </body>
 </html>
