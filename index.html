@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>10/15–10/18 機車旅行｜戰情版 V9.3</title>
+<title>10/15–10/18 機車旅行｜戰情版 V9.4</title>
 <style>
 :root{
   --bg:#FFF5F5;--paper:#FFFFFF;--ink:#4A4A4A;--muted:#7A6F72;--line:#E9D7DA;
@@ -569,6 +569,69 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
   .metric,.kicker{color:#000!important;border-color:#aaa!important;background:none!important}
 }
 
+
+/* ===== V9.4 手機版 Google Maps Key 設定 ===== */
+.maps-key-fab{
+  position:fixed;right:16px;bottom:18px;z-index:1400;
+  border:1px solid rgba(74,74,74,.14);background:#4A4A4A;color:#fff;
+  border-radius:999px;padding:10px 14px;font-weight:900;font-size:.78rem;
+  box-shadow:0 10px 28px rgba(74,74,74,.24);cursor:pointer
+}
+.maps-key-fab:hover{background:#5A5053}
+.maps-key-modal{
+  display:none;position:fixed;inset:0;z-index:3000;background:rgba(45,41,42,.58);
+  padding:18px;align-items:center;justify-content:center;backdrop-filter:blur(4px)
+}
+.maps-key-modal.open{display:flex}
+.maps-key-dialog{
+  width:min(520px,100%);background:#fff;border:1px solid #E9D7DA;border-radius:22px;
+  box-shadow:0 24px 70px rgba(0,0,0,.28);overflow:hidden
+}
+.maps-key-dialog-head{
+  background:#4A4A4A;color:#fff;padding:18px 20px
+}
+.maps-key-dialog-head h2{margin:0;font-size:1.15rem}
+.maps-key-dialog-head p{margin:5px 0 0;color:rgba(255,255,255,.82);font-size:.8rem}
+.maps-key-dialog-body{padding:18px 20px}
+.maps-key-dialog-body label{display:block;font-weight:900;font-size:.82rem;margin-bottom:6px;color:#51474A}
+.maps-key-input-wrap{display:flex;gap:7px;align-items:stretch}
+.maps-key-input{
+  min-width:0;flex:1;border:1px solid #DCC9CD;border-radius:12px;padding:11px 12px;
+  color:#4A4A4A;background:#FFFDFD;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size:.82rem
+}
+.maps-key-show{
+  border:1px solid #DCC9CD;background:#FFF5F5;color:#625559;border-radius:12px;
+  padding:0 11px;font-weight:900;cursor:pointer;white-space:nowrap
+}
+.maps-key-help{
+  margin-top:10px;padding:10px 11px;border-radius:12px;background:#FFF5F5;
+  color:#665A5D;font-size:.78rem;line-height:1.6
+}
+.maps-key-status{
+  display:none;margin-top:10px;padding:9px 10px;border-radius:10px;font-size:.78rem
+}
+.maps-key-status.show{display:block}
+.maps-key-status.err{background:#FBEAEC;color:#955765}
+.maps-key-status.ok{background:#EEF4EF;color:#526D59}
+.maps-key-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:15px}
+.maps-key-action{
+  border:0;border-radius:11px;padding:9px 12px;font-weight:900;cursor:pointer
+}
+.maps-key-action.primary{background:#E2B4BD;color:#4A4A4A}
+.maps-key-action.secondary{background:#fff;border:1px solid #DCC9CD;color:#625559}
+.maps-key-action.danger{background:#fff;border:1px solid #D9AAB2;color:#955765}
+.maps-key-mini{
+  margin-top:8px;color:#7A6F72;font-size:.7rem
+}
+@media(max-width:620px){
+  .maps-key-fab{right:12px;bottom:12px;padding:9px 12px}
+  .maps-key-dialog-body,.maps-key-dialog-head{padding-left:15px;padding-right:15px}
+}
+@media print{
+  .maps-key-fab,.maps-key-modal{display:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -590,8 +653,8 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 <div class="shell">
   <section class="api-panel">
     <h2>Google Maps API 狀態</h2>
-    <p>此版本採「API Key 直接寫入 HTML」方式，適合部署到 GitHub Pages。設定完成後，開啟網頁會自動載入 Google Maps，不需要再次輸入。</p>
-    <div id="apiStatus" class="status warn">尚未設定 API Key。請用文字編輯器開啟本 HTML，搜尋 <strong>PASTE_YOUR_API_KEY_HERE</strong>，替換成你的 Google Maps JavaScript API Key。</div>
+    <p>V9.4 改為在瀏覽器本機儲存 Google Maps JavaScript API Key；GitHub HTML 不再需要內嵌 Maps Key。</p>
+    <div id="apiStatus" class="status warn">尚未設定 Google Maps Key。請使用右下角「地圖設定」。</div>
     <div class="api-note">
       安全建議：Google Cloud → API Key → 應用程式限制選「網站（HTTP referrers）」；正式部署到 GitHub Pages 後，只允許你的 GitHub Pages 網址，API restrictions 只保留「Maps JavaScript API」。
     </div>
@@ -625,7 +688,7 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
     <div id="map">
       <div class="map-placeholder">
         <strong>尚未載入 Google Maps</strong>
-        若地圖未顯示，請確認 HTML 內的 Google Maps API Key、GitHub Pages HTTP referrer 與 Maps JavaScript API 設定。
+        若尚未設定 Google Maps Key，請點右下角「地圖設定」；設定後會儲存在目前瀏覽器並自動載入地圖。
       </div>
     </div>
 
@@ -1006,59 +1069,166 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 
 </main>
 
-<footer><div class="shell">行程地圖為規劃用途；實際騎乘請依當日天候、道路施工、交管與機車可通行狀態調整。戰情版 V9.2 採雙旅人資料分流，支援林洺宥、葛澔瑀與共同回憶模式，並可在瀏覽器本機預覽與輸出 WebM 旅行電影。</div></footer>
+<footer><div class="shell">行程地圖為規劃用途；實際騎乘請依當日天候、道路施工、交管與機車可通行狀態調整。戰情版 V9.4 採雙旅人資料分流，支援林洺宥、葛澔瑀與共同回憶模式，並可在瀏覽器本機預覽與輸出 WebM 旅行電影。</div></footer>
 
 <script>
-// ---------- Google Maps API Key handling ----------
-// ★★★ 請只修改下一行 ★★★
-// 把 PASTE_YOUR_API_KEY_HERE 替換成你自己的 Google Maps JavaScript API Key。
-const GOOGLE_MAPS_API_KEY = "PASTE_YOUR_API_KEY_HERE";
+// ---------- Google Maps API Key handling：V9.4 手機本機設定 ----------
+const MAPS_KEY_STORAGE = "trip_google_maps_js_api_key_v1";
 
-// Google Weather API 透過安全 Proxy 呼叫，不要把 Weather API Key 放進這個 HTML。
+// Google Weather + Roads API 安全 Proxy
 const GOOGLE_WEATHER_PROXY_URL = "https://trip-weather-proxy.zaft00660.workers.dev";
+let GOOGLE_MAPS_API_KEY = "";
 
 const statusBox = document.getElementById("apiStatus");
+let googleMapsScriptLoading=false;
 
 function setStatus(msg, type="warn"){
+  if(!statusBox) return;
   statusBox.className = "status " + type;
   statusBox.innerHTML = msg;
 }
 
-function loadGoogleMaps(){
-  const key = GOOGLE_MAPS_API_KEY.trim();
+function getStoredMapsKey(){
+  try{return (localStorage.getItem(MAPS_KEY_STORAGE)||"").trim();}
+  catch(e){return "";}
+}
+function saveStoredMapsKey(key){
+  localStorage.setItem(MAPS_KEY_STORAGE,key.trim());
+}
+function clearStoredMapsKey(){
+  localStorage.removeItem(MAPS_KEY_STORAGE);
+}
+function maskMapsKey(key){
+  if(!key) return "尚未設定";
+  if(key.length<=10) return "••••••••";
+  return `${key.slice(0,6)}••••••••${key.slice(-4)}`;
+}
+function mapsKeyModalStatus(msg,type="err"){
+  const el=document.getElementById("mapsKeyModalStatus");
+  if(!el) return;
+  el.textContent=msg;
+  el.className=`maps-key-status show ${type}`;
+}
+function clearMapsKeyModalStatus(){
+  const el=document.getElementById("mapsKeyModalStatus");
+  if(!el) return;
+  el.className="maps-key-status";
+  el.textContent="";
+}
+function openMapsKeyModal({required=false,message=""}={}){
+  const modal=document.getElementById("mapsKeyModal");
+  const input=document.getElementById("mapsKeyInput");
+  const info=document.getElementById("mapsKeyStoredInfo");
+  const cancel=document.getElementById("mapsKeyCancel");
+  const stored=getStoredMapsKey();
 
-  if(!key || key === "PASTE_YOUR_API_KEY_HERE"){
-    setStatus(
-      '尚未設定 API Key。請用文字編輯器開啟本 HTML，搜尋 <strong>PASTE_YOUR_API_KEY_HERE</strong>，替換成你的 Google Maps JavaScript API Key。',
-      "warn"
-    );
+  if(input) input.value=stored;
+  if(info) info.textContent=stored?`目前已儲存：${maskMapsKey(stored)}`:"目前尚未儲存 Maps Key。";
+  if(cancel) cancel.style.display=required&&!stored?"none":"inline-block";
+  clearMapsKeyModalStatus();
+  if(message) mapsKeyModalStatus(message,"err");
+
+  modal?.classList.add("open");
+  setTimeout(()=>input?.focus(),80);
+}
+function closeMapsKeyModal(){
+  document.getElementById("mapsKeyModal")?.classList.remove("open");
+}
+function loadGoogleMaps(){
+  const key=(GOOGLE_MAPS_API_KEY||getStoredMapsKey()).trim();
+  GOOGLE_MAPS_API_KEY=key;
+
+  if(window.google?.maps){
+    setStatus("Google Maps 已載入。","ok");
+    return;
+  }
+  if(googleMapsScriptLoading) return;
+
+  if(!key){
+    setStatus("尚未設定 Google Maps Key。請點右下角「地圖設定」。","warn");
+    openMapsKeyModal({required:true});
     return;
   }
 
   setStatus("正在載入 Google Maps…","warn");
+  googleMapsScriptLoading=true;
 
-  const script = document.createElement("script");
-  script.src =
-    "https://maps.googleapis.com/maps/api/js?key=" +
-    encodeURIComponent(key) +
+  const old=document.getElementById("googleMapsJsApi");
+  if(old) old.remove();
+
+  const script=document.createElement("script");
+  script.id="googleMapsJsApi";
+  script.src=
+    "https://maps.googleapis.com/maps/api/js?key="+
+    encodeURIComponent(key)+
     "&callback=initTripMap&loading=async";
-  script.async = true;
-  script.defer = true;
-  script.onerror = () => {
-    setStatus(
-      "Google Maps 載入失敗。請確認 API Key、Maps JavaScript API、Billing，以及 GitHub Pages 的 HTTP referrer 限制設定。",
-      "err"
-    );
+  script.async=true;
+  script.defer=true;
+  script.onerror=()=>{
+    googleMapsScriptLoading=false;
+    setStatus("Google Maps 載入失敗。請確認 Key、API、Billing 與 HTTP referrer。","err");
+    openMapsKeyModal({
+      message:"Google Maps 載入失敗。請檢查 Maps JavaScript API Key 與 GitHub Pages HTTP referrer 限制。"
+    });
   };
   document.head.appendChild(script);
 }
 
-window.gm_authFailure = function(){
+window.gm_authFailure=function(){
+  googleMapsScriptLoading=false;
   setStatus(
-    "Google Maps 驗證失敗。常見原因：API Key 錯誤、Maps JavaScript API 未啟用、Billing 未啟用，或 HTTP referrer 限制不符合目前網址。",
+    "Google Maps 驗證失敗。請確認 Maps JavaScript API、Billing 與 HTTP referrer 限制。",
     "err"
   );
+  openMapsKeyModal({
+    message:"Google Maps 驗證失敗。這通常是 Key 錯誤、Maps JavaScript API 未啟用，或 HTTP referrer 不符合目前 GitHub Pages 網址。"
+  });
 };
+
+document.getElementById("mapsKeyFab")?.addEventListener("click",()=>openMapsKeyModal());
+document.getElementById("mapsKeyCancel")?.addEventListener("click",closeMapsKeyModal);
+document.getElementById("mapsKeyShow")?.addEventListener("click",()=>{
+  const input=document.getElementById("mapsKeyInput");
+  const btn=document.getElementById("mapsKeyShow");
+  if(!input||!btn) return;
+  const showing=input.type==="text";
+  input.type=showing?"password":"text";
+  btn.textContent=showing?"顯示":"隱藏";
+});
+document.getElementById("mapsKeySave")?.addEventListener("click",()=>{
+  const input=document.getElementById("mapsKeyInput");
+  const key=(input?.value||"").trim();
+  if(!key){
+    mapsKeyModalStatus("請先貼上 Google Maps JavaScript API Key。","err");
+    return;
+  }
+  if(key.length<20){
+    mapsKeyModalStatus("這個 Key 看起來過短，請確認是否貼上完整 Google Maps API Key。","err");
+    return;
+  }
+  try{
+    saveStoredMapsKey(key);
+    mapsKeyModalStatus("已儲存在這台裝置。正在重新載入地圖…","ok");
+    setTimeout(()=>location.reload(),450);
+  }catch(e){
+    mapsKeyModalStatus("瀏覽器無法儲存 Key。請確認沒有封鎖網站儲存空間。","err");
+  }
+});
+document.getElementById("mapsKeyClear")?.addEventListener("click",()=>{
+  if(!confirm("確定清除這台裝置儲存的 Google Maps Key？")) return;
+  clearStoredMapsKey();
+  GOOGLE_MAPS_API_KEY="";
+  mapsKeyModalStatus("已清除。頁面將重新載入。","ok");
+  setTimeout(()=>location.reload(),350);
+});
+document.getElementById("mapsKeyInput")?.addEventListener("keydown",e=>{
+  if(e.key==="Enter") document.getElementById("mapsKeySave")?.click();
+});
+document.getElementById("mapsKeyModal")?.addEventListener("click",e=>{
+  if(e.target===e.currentTarget && getStoredMapsKey()) closeMapsKeyModal();
+});
+
+GOOGLE_MAPS_API_KEY=getStoredMapsKey();
 
 // ---------- itinerary / route data ----------
 const routes = {
@@ -3286,5 +3456,41 @@ document.querySelectorAll("[data-openview]").forEach(b=>{
 // Always open on overview on a fresh page load.
 showPageView("overview",false);
 </script>
+
+<button id="mapsKeyFab" class="maps-key-fab" type="button" aria-label="Google Maps 地圖設定">地圖設定</button>
+
+<div id="mapsKeyModal" class="maps-key-modal" role="dialog" aria-modal="true" aria-labelledby="mapsKeyTitle">
+  <div class="maps-key-dialog">
+    <div class="maps-key-dialog-head">
+      <h2 id="mapsKeyTitle">Google Maps 設定</h2>
+      <p>只需在這台手機／瀏覽器設定一次。</p>
+    </div>
+    <div class="maps-key-dialog-body">
+      <label for="mapsKeyInput">Google Maps JavaScript API Key</label>
+      <div class="maps-key-input-wrap">
+        <input id="mapsKeyInput" class="maps-key-input" type="password" inputmode="text"
+               autocomplete="off" autocapitalize="off" spellcheck="false"
+               placeholder="AIza…">
+        <button id="mapsKeyShow" class="maps-key-show" type="button">顯示</button>
+      </div>
+
+      <div class="maps-key-help">
+        這裡應填「Google Maps JavaScript API」的瀏覽器 Key，不是 Weather／Roads 的 Cloudflare Secret。
+        Key 只儲存在目前瀏覽器的 localStorage，不會寫進 GitHub HTML。Google Cloud 建議用 HTTP referrer
+        限制為你的 GitHub Pages 網域。
+      </div>
+
+      <div id="mapsKeyModalStatus" class="maps-key-status"></div>
+      <div id="mapsKeyStoredInfo" class="maps-key-mini"></div>
+
+      <div class="maps-key-actions">
+        <button id="mapsKeyClear" class="maps-key-action danger" type="button">清除 Key</button>
+        <button id="mapsKeyCancel" class="maps-key-action secondary" type="button">取消</button>
+        <button id="mapsKeySave" class="maps-key-action primary" type="button">儲存並載入地圖</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
