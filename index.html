@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>10/15–10/18 機車旅行｜戰情版 V9.4.1</title>
+<title>10/15–10/18 機車旅行｜戰情版 V9.5</title>
 <style>
 :root{
   --bg:#FFF5F5;--paper:#FFFFFF;--ink:#4A4A4A;--muted:#7A6F72;--line:#E9D7DA;
@@ -632,6 +632,38 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
   .maps-key-fab,.maps-key-modal{display:none!important}
 }
 
+
+/* ===== V9.4.2 原生 Maps Key 面板：不依賴彈窗 JS ===== */
+.maps-key-native{
+  margin:12px 0 14px;border:1px solid #DCC9CD;background:#FFF9FA;border-radius:16px;
+  overflow:hidden;scroll-margin-top:88px
+}
+.maps-key-native summary{
+  list-style:none;cursor:pointer;padding:12px 14px;background:#4A4A4A;color:#fff;
+  font-weight:900;font-size:.86rem
+}
+.maps-key-native summary::-webkit-details-marker{display:none}
+.maps-key-native summary::after{content:"＋";float:right;font-size:1rem}
+.maps-key-native[open] summary::after{content:"－"}
+.maps-key-native-body{padding:13px 14px}
+.maps-key-native-body p{margin:0 0 9px;color:#655A5D;font-size:.78rem;line-height:1.6}
+.maps-key-native-row{display:flex;gap:7px;align-items:stretch}
+.maps-key-native-input{
+  flex:1;min-width:0;border:1px solid #DCC9CD;border-radius:11px;padding:11px 12px;
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.8rem;color:#4A4A4A;background:#fff
+}
+.maps-key-native-btn{
+  border:0;border-radius:11px;padding:9px 11px;font-weight:900;cursor:pointer;background:#E2B4BD;color:#4A4A4A
+}
+.maps-key-native-btn.alt{background:#fff;border:1px solid #DCC9CD;color:#625559}
+.maps-key-native-status{margin-top:8px;font-size:.75rem;font-weight:800;color:#6B555B}
+.maps-key-native-help{margin-top:9px;font-size:.7rem;color:#7A6F72;line-height:1.55}
+.maps-key-fab{display:inline-flex;align-items:center;text-decoration:none}
+@media(max-width:620px){
+  .maps-key-native-row{flex-direction:column}
+  .maps-key-native-btn{width:100%}
+}
+
 </style>
 </head>
 <body>
@@ -677,6 +709,23 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 <main class="shell">
 <section id="overview" class="page-view active-view">
 
+
+<details id="mapsKeyInlineDetails" class="maps-key-native" open>
+  <summary>Google Maps API Key 設定</summary>
+  <div class="maps-key-native-body">
+    <p>第一次使用請直接在這裡貼上 <strong>Google Maps JavaScript API Key</strong>。這是地圖用的瀏覽器 Key，不是 Cloudflare 的 Weather／Roads Secret。</p>
+    <div class="maps-key-native-row">
+      <input id="mapsKeyInlineInput" class="maps-key-native-input" type="password"
+             autocomplete="off" autocapitalize="off" spellcheck="false"
+             placeholder="在這裡貼上 API Key，例如 AIza…">
+      <button id="mapsKeyInlineShow" class="maps-key-native-btn alt" type="button">顯示</button>
+      <button id="mapsKeyInlineSave" class="maps-key-native-btn" type="button">儲存並載入地圖</button>
+    </div>
+    <div id="mapsKeyInlineStatus" class="maps-key-native-status">尚未檢查本機設定。</div>
+    <div class="maps-key-native-help">Key 只會儲存在目前瀏覽器的 localStorage，不會寫回 GitHub HTML。Google Cloud 請將此 Key 的 HTTP referrer 限制為你的 GitHub Pages 網域。</div>
+  </div>
+</details>
+
 <div class="map-box">
     <div class="map-tabs">
       <button class="map-tab active" data-day="all">全程</button>
@@ -690,7 +739,7 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
         <strong>尚未載入 Google Maps</strong>
         若尚未設定 Google Maps Key，請點「設定 Google Maps API Key」。設定後會儲存在目前瀏覽器並自動載入地圖。
           <div style="margin-top:10px">
-            <button type="button" class="fp-btn" onclick="openMapsKeyModal({required:true})">設定 Google Maps API Key</button>
+            <a class="fp-btn" href="#mapsKeyInlineDetails">設定 Google Maps API Key</a>
           </div>
       </div>
     </div>
@@ -1003,7 +1052,7 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 
     <div class="fp-card">
       <h3>旅行時間軸／停留點</h3>
-      <p>Timeline 的 visit 資料會優先使用；GPX 則依長時間低位移自動估算停留。</p>
+      <p>停留點會綜合 Timeline visit、GPS 低位移／低速，以及照片 EXIF 的拍攝時間與位置自動判定；若接近原訂行程點，也會自動套用景點名稱。</p>
       <div class="fp-playbar">
         <button id="fpPlayBtn" class="fp-btn primary" type="button" disabled>▶ 軌跡回放</button>
         <button id="fpPauseBtn" class="fp-btn" type="button" disabled>暫停</button>
@@ -1031,7 +1080,10 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
         <span id="fpPhotoInfo" class="fp-photo-info">0 張</span>
         <button id="fpPhotoClear" class="fp-btn danger" type="button">清除照片</button>
       </div>
-      <div class="fp-note">Roads API 已啟用。Google 建議輸入點彼此距離不要過遠；若 Timeline 本身非常稀疏，貼合結果仍可能與實際騎乘路徑不同。可關閉「使用貼合後路線」立即比較原始足跡。</div>
+      <div class="fp-note">
+        <strong>智慧停留辨識：</strong>Timeline 原生停留點優先；沒有 visit 時會再用 GPS 低位移／低速推估，最後以照片 EXIF 的時間與位置補足。照片本身不會送到 Roads API。
+        <br>Roads API 已啟用；若 Timeline 本身非常稀疏，貼合結果仍可能與實際騎乘路徑不同，可關閉「使用貼合後路線」比較原始足跡。
+      </div>
     </div>
   </div>
 </section>
@@ -1072,9 +1124,9 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 
 </main>
 
-<footer><div class="shell">行程地圖為規劃用途；實際騎乘請依當日天候、道路施工、交管與機車可通行狀態調整。戰情版 V9.4.1 採雙旅人資料分流，支援林洺宥、葛澔瑀與共同回憶模式，並可在瀏覽器本機預覽與輸出 WebM 旅行電影。</div></footer>
+<footer><div class="shell">行程地圖為規劃用途；實際騎乘請依當日天候、道路施工、交管與機車可通行狀態調整。戰情版 V9.5 採雙旅人資料分流，支援林洺宥、葛澔瑀與共同回憶模式，並加入 Timeline＋GPS＋照片 EXIF 的智慧停留點辨識，可在瀏覽器本機預覽與輸出 WebM 旅行電影。</div></footer>
 
-<button id="mapsKeyFab" class="maps-key-fab" type="button" aria-label="Google Maps 地圖設定">地圖設定</button>
+<a id="mapsKeyFab" class="maps-key-fab" href="#mapsKeyInlineDetails" aria-label="Google Maps 地圖設定">地圖設定</a>
 
 <div id="mapsKeyModal" class="maps-key-modal" role="dialog" aria-modal="true" aria-labelledby="mapsKeyTitle">
   <div class="maps-key-dialog">
@@ -1109,8 +1161,47 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
   </div>
 </div>
 
+
 <script>
-// ---------- Google Maps API Key handling：V9.4 手機本機設定 ----------
+(function(){
+  const STORE="trip_google_maps_js_api_key_v1";
+  function q(id){return document.getElementById(id);}
+  function stored(){try{return (localStorage.getItem(STORE)||"").trim();}catch(e){return "";}}
+  function setStatus(msg){const e=q("mapsKeyInlineStatus");if(e)e.textContent=msg;}
+  const input=q("mapsKeyInlineInput");
+  const show=q("mapsKeyInlineShow");
+  const save=q("mapsKeyInlineSave");
+  const details=q("mapsKeyInlineDetails");
+
+  const current=stored();
+  if(input && current) input.value=current;
+  setStatus(current ? "此瀏覽器已儲存 Google Maps Key；可直接重新載入或更換。" : "尚未設定 Google Maps Key，請貼上後儲存。");
+  if(details && !current) details.open=true;
+
+  show?.addEventListener("click",function(){
+    if(!input)return;
+    const isText=input.type==="text";
+    input.type=isText?"password":"text";
+    this.textContent=isText?"顯示":"隱藏";
+  });
+
+  save?.addEventListener("click",function(){
+    const key=(input?.value||"").trim();
+    if(!key){setStatus("請先貼上完整的 Google Maps JavaScript API Key。");return;}
+    if(key.length<20){setStatus("Key 看起來過短，請確認是否完整貼上。");return;}
+    try{
+      localStorage.setItem(STORE,key);
+      setStatus("已儲存，正在重新載入地圖…");
+      setTimeout(()=>location.reload(),300);
+    }catch(e){
+      setStatus("瀏覽器無法儲存 Key，請確認網站儲存空間沒有被封鎖。");
+    }
+  });
+})();
+</script>
+
+<script>
+// ---------- Google Maps API Key handling：V9.5 手機本機設定 ----------
 const MAPS_KEY_STORAGE = "trip_google_maps_js_api_key_v1";
 
 // Google Weather + Roads API 安全 Proxy
@@ -1183,8 +1274,9 @@ function loadGoogleMaps(){
   if(googleMapsScriptLoading) return;
 
   if(!key){
-    setStatus("尚未設定 Google Maps Key。請點右下角「地圖設定」。","warn");
-    openMapsKeyModal({required:true});
+    setStatus("尚未設定 Google Maps Key。請在地圖上方的「Google Maps API Key 設定」面板貼上 Key。","warn");
+    const details=document.getElementById("mapsKeyInlineDetails");
+    if(details) details.open=true;
     return;
   }
 
@@ -1223,7 +1315,7 @@ window.gm_authFailure=function(){
   });
 };
 
-document.getElementById("mapsKeyFab")?.addEventListener("click",()=>openMapsKeyModal());
+// V9.4.2：右下角「地圖設定」使用原生錨點，不依賴 JavaScript 彈窗。
 document.getElementById("mapsKeyCancel")?.addEventListener("click",closeMapsKeyModal);
 document.getElementById("mapsKeyShow")?.addEventListener("click",()=>{
   const input=document.getElementById("mapsKeyInput");
@@ -2265,7 +2357,7 @@ function parseGPX(xmlText,fileName){
     };
   }).filter(validCoord);
   points.sort((a,b)=>(a.ts&&b.ts)?new Date(a.ts)-new Date(b.ts):0);
-  return {name:fileName,type:"GPX",points,visits:inferStops(points)};
+  return {name:fileName,type:"GPX",points,visits:[]};
 }
 
 function tripOnly(track){
@@ -2283,12 +2375,25 @@ function dayPoints(day){
   const date=TRIP_DATES[day];
   return all.filter(p=>!p.ts || taiwanDate(p.ts)===date).sort((a,b)=>(a.ts&&b.ts)?new Date(a.ts)-new Date(b.ts):0);
 }
-function dayVisits(day){
-  const all=fpTracks.filter(t=>ownerAllowed(t.owner||"A",fpMemoryMode))
-    .flatMap(t=>(t.visits||[]).map(v=>({...v,trackName:t.name,owner:t.owner||"A"})));
-  if(day==="all") return all.sort((a,b)=>(a.start&&b.start)?new Date(a.start)-new Date(b.start):0);
-  const date=TRIP_DATES[day];
-  return all.filter(v=>!v.start || taiwanDate(v.start)===date).sort((a,b)=>(a.start&&b.start)?new Date(a.start)-new Date(b.start):0);
+function dayVisits(day,mode=fpMemoryMode){
+  const tracks=fpTracks.filter(t=>ownerAllowed(t.owner||"A",mode));
+  let all=tracks.flatMap(derivedVisitsForTrack);
+
+  const owners=["A","B"].filter(o=>ownerAllowed(o,mode));
+  const dates=day==="all"?Object.values(TRIP_DATES):[TRIP_DATES[day]];
+  owners.forEach(owner=>dates.forEach(date=>{
+    all.push(...inferPhotoStops(owner,date));
+  }));
+
+  all=mergeDetectedVisits(all);
+  if(day!=="all"){
+    const date=TRIP_DATES[day];
+    all=all.filter(v=>!v.start || taiwanDate(v.start)===date);
+  }else{
+    const valid=new Set(Object.values(TRIP_DATES));
+    all=all.filter(v=>!v.start || valid.has(taiwanDate(v.start)));
+  }
+  return all.sort((a,b)=>(a.start&&b.start)?new Date(a.start)-new Date(b.start):0);
 }
 
 function haversine(a,b){
@@ -2316,25 +2421,266 @@ function durationText(ms){
   const min=Math.round(ms/60000),h=Math.floor(min/60),m=min%60;
   return h?`${h}h ${m}m`:`${m}m`;
 }
-function inferStops(points){
-  const timed=points.filter(p=>p.ts);
-  if(timed.length<3) return [];
+function dayKeyFromDate(date){
+  return Object.keys(TRIP_DATES).find(k=>TRIP_DATES[k]===date)||null;
+}
+function visitMidTime(v){
+  const s=v?.start?new Date(v.start).getTime():NaN;
+  const e=v?.end?new Date(v.end).getTime():s;
+  if(Number.isFinite(s)&&Number.isFinite(e)) return (s+e)/2;
+  return Number.isFinite(s)?s:NaN;
+}
+function plannedCandidatesForDay(day){
+  const r=routes[day];
+  if(!r) return [];
+  return (r.points||[]).map((x,i)=>{
+    const meta=String(x[3]||"");
+    const m=meta.match(/(\d{1,2}):(\d{2})/);
+    const date=TRIP_DATES[String(day)];
+    return {
+      name:x[0],lat:Number(x[1]),lng:Number(x[2]),
+      expected:m&&date
+        ? new Date(`${date}T${String(m[1]).padStart(2,"0")}:${m[2]}:00+08:00`).getTime()
+        : NaN,
+      order:i
+    };
+  });
+}
+function matchPlannedPoi(v,maxMeters=700){
+  if(!Number.isFinite(v?.lat)||!Number.isFinite(v?.lng)) return null;
+  const date=v.start?taiwanDate(v.start):null;
+  const day=dayKeyFromDate(date);
+  if(!day) return null;
+  const mid=visitMidTime(v);
+  let best=null,bestScore=Infinity;
+  plannedCandidatesForDay(day).forEach(p=>{
+    const d=haversine(v,p);
+    if(d>maxMeters) return;
+    let score=d;
+    if(Number.isFinite(mid)&&Number.isFinite(p.expected)){
+      const hours=Math.abs(mid-p.expected)/3600000;
+      score += Math.min(hours,8)*120;
+    }
+    if(score<bestScore){
+      bestScore=score;
+      best={...p,distance:d};
+    }
+  });
+  return best;
+}
+function genericVisitName(name){
+  const s=String(name||"");
+  return !s || /Timeline 停留點|GPS 推估停留|照片紀錄點|照片推估停留|停留點/.test(s);
+}
+function enrichVisitWithPlan(v){
+  const hit=matchPlannedPoi(v,700);
+  if(!hit) return v;
+  const useName=genericVisitName(v.name) || v.source!=="Timeline";
+  return {
+    ...v,
+    name:useName?hit.name:v.name,
+    plannedName:hit.name,
+    plannedDistance:Math.round(hit.distance),
+    matchedPlan:true
+  };
+}
+function centroid(points){
+  const valid=(points||[]).filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng));
+  if(!valid.length) return null;
+  return {
+    lat:valid.reduce((s,p)=>s+p.lat,0)/valid.length,
+    lng:valid.reduce((s,p)=>s+p.lng,0)/valid.length
+  };
+}
+function localPathDistance(points){
+  let d=0;
+  for(let i=1;i<points.length;i++) d+=haversine(points[i-1],points[i]);
+  return d;
+}
+function inferGpsStops(points,{owner="A",trackName=""}={}){
+  const timed=(points||[])
+    .filter(p=>p.ts&&Number.isFinite(p.lat)&&Number.isFinite(p.lng))
+    .sort((a,b)=>new Date(a.ts)-new Date(b.ts));
+  if(timed.length<2) return [];
+
   const out=[];
   let i=0;
   while(i<timed.length-1){
-    let j=i+1;
-    while(j<timed.length && haversine(timed[i],timed[j])<=120) j++;
-    const last=timed[Math.max(i,j-1)];
-    const dur=new Date(last.ts)-new Date(timed[i].ts);
-    if(dur>=10*60000){
-      out.push({
-        lat:timed[i].lat,lng:timed[i].lng,start:timed[i].ts,end:last.ts,
-        name:"GPS 推估停留",source:"GPX推估"
-      });
+    let cluster=[timed[i]],j=i+1;
+
+    while(j<timed.length){
+      const c=centroid(cluster);
+      const next=timed[j];
+      const span=new Date(next.ts)-new Date(cluster[0].ts);
+      if(span>150*60000) break;
+      if(haversine(c,next)<=180){
+        cluster.push(next);
+        j++;
+      }else break;
+    }
+
+    const first=cluster[0],last=cluster[cluster.length-1];
+    const durMs=new Date(last.ts)-new Date(first.ts);
+    const durMin=durMs/60000;
+    const center=centroid(cluster);
+    const displacement=haversine(first,last);
+    const pathM=localPathDistance(cluster);
+    const avgKmh=durMs>0 ? (pathM/(durMs/1000))*3.6 : 999;
+
+    if(cluster.length>=2 && durMin>=6 && (displacement<=160 || avgKmh<=7)){
+      out.push(enrichVisitWithPlan({
+        lat:center.lat,lng:center.lng,start:first.ts,end:last.ts,
+        name:"GPS 推估停留",source:"GPS推估",
+        confidence:durMin>=12?"高":"中",
+        owner,trackName,
+        inference:{
+          durationMin:Math.round(durMin),
+          avgKmh:Number(avgKmh.toFixed(1)),
+          radiusMeters:180
+        }
+      }));
       i=Math.max(j,i+1);
-    }else i++;
+    }else{
+      i++;
+    }
   }
   return out;
+}
+function inferStops(points){
+  return inferGpsStops(points,{owner:"A"});
+}
+function closestTrackPointForPhoto(photo,owner,maxMinutes=45){
+  if(!photo?.takenAt) return null;
+  const pt=new Date(photo.takenAt).getTime();
+  let best=null,bestGap=Infinity;
+  fpTracks.filter(t=>(t.owner||"A")===owner).forEach(t=>{
+    (t.points||[]).forEach(p=>{
+      if(!p.ts||!Number.isFinite(p.lat)||!Number.isFinite(p.lng)) return;
+      const gap=Math.abs(new Date(p.ts).getTime()-pt);
+      if(gap<bestGap){bestGap=gap;best=p;}
+    });
+  });
+  return bestGap<=maxMinutes*60000?best:null;
+}
+function clusterPhotosForStops(owner,date){
+  if(typeof fpPhotos==="undefined" || !Array.isArray(fpPhotos)) return [];
+  const photos=fpPhotos
+    .filter(p=>(p.owner||"A")===owner && p.takenAt && taiwanDate(p.takenAt)===date)
+    .sort((a,b)=>new Date(a.takenAt)-new Date(b.takenAt));
+
+  if(!photos.length) return [];
+  const clusters=[];
+  let cur=[];
+
+  for(const p of photos){
+    if(!cur.length){cur=[p];continue;}
+    const prev=cur[cur.length-1];
+    const gap=new Date(p.takenAt)-new Date(prev.takenAt);
+    const aGPS=Number.isFinite(prev.lat)&&Number.isFinite(prev.lng);
+    const bGPS=Number.isFinite(p.lat)&&Number.isFinite(p.lng);
+    const spatialOk=aGPS&&bGPS ? haversine(prev,p)<=350 : true;
+    const maxGap=(aGPS&&bGPS)?35*60000:20*60000;
+    if(gap<=maxGap && spatialOk) cur.push(p);
+    else{clusters.push(cur);cur=[p];}
+  }
+  if(cur.length) clusters.push(cur);
+  return clusters;
+}
+function inferPhotoStops(owner,date){
+  const out=[];
+  clusterPhotosForStops(owner,date).forEach(cluster=>{
+    const geo=cluster.filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng));
+    let loc=centroid(geo);
+    const first=cluster[0],last=cluster[cluster.length-1];
+    const firstMs=new Date(first.takenAt).getTime();
+    const lastMs=new Date(last.takenAt).getTime();
+
+    if(!loc){
+      const nearest=closestTrackPointForPhoto(first,owner,45);
+      if(nearest) loc={lat:nearest.lat,lng:nearest.lng};
+    }
+    if(!loc) return;
+
+    const pad=cluster.length===1?3*60000:2*60000;
+    out.push(enrichVisitWithPlan({
+      lat:loc.lat,lng:loc.lng,
+      start:new Date(firstMs-pad).toISOString(),
+      end:new Date(lastMs+pad).toISOString(),
+      name:cluster.length===1?"照片紀錄點":"照片推估停留",
+      source:geo.length?"照片EXIF推估":"照片＋軌跡推估",
+      confidence:geo.length?"高":"中",
+      owner,
+      photoClusterCount:cluster.length
+    }));
+  });
+  return out;
+}
+function visitPriority(v){
+  const s=String(v?.source||"");
+  if(s.includes("Timeline")) return 4;
+  if(s.includes("GPS")) return 3;
+  if(s.includes("照片")) return 2;
+  return 1;
+}
+function intervalsClose(a,b,minutes=35){
+  if(!a.start||!b.start) return true;
+  const as=new Date(a.start).getTime(),ae=a.end?new Date(a.end).getTime():as;
+  const bs=new Date(b.start).getTime(),be=b.end?new Date(b.end).getTime():bs;
+  const gap=Math.max(0,Math.max(as,bs)-Math.min(ae,be));
+  return gap<=minutes*60000;
+}
+function mergeDetectedVisits(visits){
+  const sorted=(visits||[])
+    .filter(v=>Number.isFinite(v.lat)&&Number.isFinite(v.lng))
+    .sort((a,b)=>(a.start&&b.start)?new Date(a.start)-new Date(b.start):0);
+  const out=[];
+
+  for(const raw of sorted){
+    const v=enrichVisitWithPlan(raw);
+    let hit=-1;
+
+    for(let i=out.length-1;i>=0;i--){
+      const o=out[i];
+      if((o.owner||"A")!==(v.owner||"A")) continue;
+      if(!intervalsClose(o,v,35)) continue;
+      if(haversine(o,v)<=280){hit=i;break;}
+    }
+
+    if(hit<0){
+      out.push(v);
+      continue;
+    }
+
+    const a=out[hit];
+    const primary=visitPriority(v)>visitPriority(a)?v:a;
+    const secondary=primary===v?a:v;
+    const starts=[a.start,v.start].filter(Boolean).map(x=>new Date(x).getTime());
+    const ends=[a.end||a.start,v.end||v.start].filter(Boolean).map(x=>new Date(x).getTime());
+    const sources=[...new Set([
+      ...String(a.source||"").split("＋"),
+      ...String(v.source||"").split("＋")
+    ].filter(Boolean))];
+
+    out[hit]=enrichVisitWithPlan({
+      ...secondary,...primary,
+      start:starts.length?new Date(Math.min(...starts)).toISOString():primary.start,
+      end:ends.length?new Date(Math.max(...ends)).toISOString():primary.end,
+      source:sources.join("＋"),
+      confidence:(a.confidence==="高"||v.confidence==="高")
+        ?"高"
+        :(a.confidence||v.confidence||"中"),
+      photoClusterCount:(a.photoClusterCount||0)+(v.photoClusterCount||0)
+    });
+  }
+  return out;
+}
+function derivedVisitsForTrack(track){
+  const owner=track.owner||"A";
+  const base=(track.visits||[])
+    .filter(v=>String(v.source||"")!=="GPX推估")
+    .map(v=>enrichVisitWithPlan({...v,owner,trackName:track.name}));
+  const gps=inferGpsStops(track.points||[],{owner,trackName:track.name});
+  return [...base,...gps];
 }
 
 function fpStats(points,visits){
@@ -2477,14 +2823,14 @@ function renderTrackList(){
 function renderStopList(visits){
   const el=document.getElementById("fpStopList");
   if(!visits.length){
-    el.innerHTML='<div class="fp-empty">目前所選日期沒有可辨識的停留點。Timeline 的 visit 資料通常會比 GPX 自動推估完整。</div>';return;
+    el.innerHTML='<div class="fp-empty">目前仍沒有可辨識的停留點。系統已嘗試 Timeline visit、GPS 低位移／低速、照片時間／GPS，以及原訂行程點匹配。</div>';return;
   }
   el.innerHTML=visits.slice(0,60).map(v=>{
     let dur="";
     if(v.start&&v.end) dur=`｜${durationText(new Date(v.end)-new Date(v.start))}`;
     const photoN=typeof photosForVisit==="function"?photosForVisit(v).length:0;
     return `<div class="fp-stop"><div><strong><span class="owner-badge ${ownerClass(v.owner||"A")}">${ownerDisplayName(v.owner||"A")}</span> ${escapeHTML(v.name||"停留點")}</strong>
-      <small>${v.start?formatDateTime(v.start):"時間不明"}${dur}｜${escapeHTML(v.source||"")}${photoN?`｜📷 ${photoN}`:""}</small></div>
+      <small>${v.start?formatDateTime(v.start):"時間不明"}${dur}｜${escapeHTML(v.source||"")}${v.confidence?`｜可信度 ${escapeHTML(v.confidence)}`:""}${v.matchedPlan?`｜行程點`:""}${photoN?`｜📷 ${photoN}`:""}</small></div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
         ${photoN?`<button class="fp-btn" type="button" data-show-visit-photo="${encodeURIComponent(JSON.stringify(v))}">照片</button>`:""}
         <a class="fp-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v.lat+","+v.lng)}">地圖</a>
@@ -2923,6 +3269,7 @@ async function loadStoredPhotos(){
     updatePhotoCount();
     renderFootprint();
     renderPhotoForVisit(null);
+    drawMoviePoster();
   }catch(e){ console.warn("load photos",e); }
 }
 
@@ -2942,6 +3289,7 @@ async function clearStoredPhotos(){
   renderFootprint();
   renderPhotoForVisit(null);
   hidePlaybackPhoto();
+  drawMoviePoster();
 }
 
 let exifrPromise=null;
@@ -3002,8 +3350,10 @@ async function importPhotoFiles(files){
     }catch(e){ console.warn("photo import",file.name,e); }
   }
   updatePhotoCount();
-  fpSetStatus(`已匯入 ${ok} 張旅行照片。播放時間軸時會在停留點自動顯示配對照片。`,"ok");
+  fpSetStatus(`已匯入 ${ok} 張旅行照片。V9.5 會用照片時間／GPS 補建停留點並自動配對。`,"ok");
   renderPhotoForVisit(fpActiveVisit);
+  renderFootprint();
+  drawMoviePoster();
 }
 
 function updatePhotoCount(){
@@ -3123,6 +3473,7 @@ function playbackVisitForPoint(p){
   let best=null,bestScore=Infinity;
 
   for(const v of visits){
+    if(p.owner && v.owner && (p.owner||"A")!==(v.owner||"A")) continue;
     let score=Infinity;
 
     if(t && v.start){
@@ -3136,7 +3487,7 @@ function playbackVisitForPoint(p){
     if(Number.isFinite(p.lat)&&Number.isFinite(p.lng)&&
        Number.isFinite(v.lat)&&Number.isFinite(v.lng)){
       const d=haversine(p,v);
-      if(d<=180) score=Math.min(score,d/20);
+      if(d<=260) score=Math.min(score,d/20);
     }
 
     if(score<bestScore){
@@ -3236,8 +3587,7 @@ function moviePoints(owner=null){
     .sort((a,b)=>(a.ts&&b.ts)?new Date(a.ts)-new Date(b.ts):0);
 }
 function movieVisits(){
-  return movieTracks().flatMap(t=>(t.visits||[]).map(v=>({...v,owner:t.owner||"A"})))
-    .sort((a,b)=>(a.start&&b.start)?new Date(a.start)-new Date(b.start):0);
+  return dayVisits("all",fpMovieMode);
 }
 function setMovieStatus(s){
   const el=document.getElementById("movieStatus"); if(el) el.textContent=s;
