@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>10/15–10/18 機車旅行｜戰情版 V9.2</title>
+<title>10/15–10/18 機車旅行｜戰情版 V9.3</title>
 <style>
 :root{
   --bg:#FFF5F5;--paper:#FFFFFF;--ink:#4A4A4A;--muted:#7A6F72;--line:#E9D7DA;
@@ -379,6 +379,27 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
   display:flex;gap:8px;align-items:center;flex-wrap:wrap
 }
 .fp-playtime{font-variant-numeric:tabular-nums;font-weight:900;font-size:.82rem}
+
+.roads-panel{
+  margin-top:12px;border:1px solid #DCC9CD;background:#FFF8F9;border-radius:14px;padding:12px
+}
+.roads-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.roads-head strong{color:#51474A}
+.roads-head small{display:block;color:#74686B;margin-top:3px;line-height:1.5}
+.roads-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.roads-toggle{
+  display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;
+  border-radius:999px;padding:6px 10px;font-size:.75rem;font-weight:900;color:#5F5256
+}
+.roads-toggle input{accent-color:#E2B4BD}
+.roads-state{
+  display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;
+  background:#F5E9EB;color:#67585C;font-size:.7rem;font-weight:900
+}
+.roads-state.ok{background:#EEF4EF;color:#526D59}
+.roads-state.busy{background:#FFF2E1;color:#775E35}
+.roads-state.err{background:#FBEAEC;color:#955765}
+.track-snap{display:inline-flex;align-items:center;gap:4px;margin-left:5px;font-size:.68rem;font-weight:900;color:#6B555B}
 .fp-note{
   margin-top:10px;font-size:.74rem;color:var(--muted)
 }
@@ -791,7 +812,7 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
     <h2>旅行足跡</h2>
     <p>旅行後匯入 Google Maps Timeline JSON 或 GPX，將實際騎乘軌跡與原定行程疊在一起比較。</p>
     <div class="privacy-strip">
-      <strong>本機處理：</strong>目前版本的 Timeline／GPX 檔案只由瀏覽器讀取並儲存在此裝置的 IndexedDB，不會自動上傳至 GitHub、Google Roads API 或其他伺服器。
+      <strong>資料處理：</strong>原始 Timeline／GPX 與照片仍儲存在此裝置的 IndexedDB。啟用「道路貼合」時，只會將旅行軌跡的經緯度點經你的 Cloudflare Worker 傳送至 Google Roads API；原始檔案、照片與 EXIF 不會送出。
     </div>
   </div>
 
@@ -826,6 +847,22 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
       </div>
       <div class="fp-photo-upload-note">
         照片會優先用 EXIF 的「拍攝時間＋GPS」與停留點配對；若沒有 GPS，就以拍攝時間配對。照片同樣只儲存在目前瀏覽器，不會自動上傳到 GitHub。
+      </div>
+      <div class="roads-panel">
+        <div class="roads-head">
+          <div>
+            <strong>Google Roads API｜貼合道路</strong>
+            <small>匯入 Timeline／GPX 後自動貼合道路。原始點仍保留，可隨時切回原始足跡。</small>
+          </div>
+          <span id="roadsState" class="roads-state">等待軌跡</span>
+        </div>
+        <div class="roads-actions">
+          <label class="roads-toggle">
+            <input id="roadsToggle" type="checkbox" checked>
+            使用貼合後路線
+          </label>
+          <button id="roadsSnapAllBtn" class="fp-btn" type="button">重新貼合全部足跡</button>
+        </div>
       </div>
       <div id="fpStatus" class="fp-status">尚未匯入旅行紀錄。</div>
     </div>
@@ -928,7 +965,7 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
         <span id="fpPhotoInfo" class="fp-photo-info">0 張</span>
         <button id="fpPhotoClear" class="fp-btn danger" type="button">清除照片</button>
       </div>
-      <div class="fp-note">Roads API 的「貼合道路」尚未在此版本自動啟用；目前先保留原始 Timeline／GPX 足跡，避免在未設定安全 Proxy 前把完整位置資料傳出瀏覽器。</div>
+      <div class="fp-note">Roads API 已啟用。Google 建議輸入點彼此距離不要過遠；若 Timeline 本身非常稀疏，貼合結果仍可能與實際騎乘路徑不同。可關閉「使用貼合後路線」立即比較原始足跡。</div>
     </div>
   </div>
 </section>
@@ -975,10 +1012,10 @@ footer{padding:24px 0 45px;color:var(--muted);text-align:center;font-size:.82rem
 // ---------- Google Maps API Key handling ----------
 // ★★★ 請只修改下一行 ★★★
 // 把 PASTE_YOUR_API_KEY_HERE 替換成你自己的 Google Maps JavaScript API Key。
-const GOOGLE_MAPS_API_KEY = "AIzaSyCw20w6C1zUicvAxUOclMX86-ltuATCQjc";
+const GOOGLE_MAPS_API_KEY = "PASTE_YOUR_API_KEY_HERE";
 
 // Google Weather API 透過安全 Proxy 呼叫，不要把 Weather API Key 放進這個 HTML。
-const GOOGLE_WEATHER_PROXY_URL = "https://trip-weather-proxy.zaft00660.workers.dev/";
+const GOOGLE_WEATHER_PROXY_URL = "https://trip-weather-proxy.zaft00660.workers.dev";
 
 const statusBox = document.getElementById("apiStatus");
 
@@ -1807,6 +1844,24 @@ let fpPlaybackTimer=null;
 let fpPlaybackIndex=0;
 let fpPlaybackPoints=[];
 let fpPlaybackMarker=null;
+let fpUseRoadSnap=true;
+let roadsBusy=false;
+
+function roadsProxyConfigured(){
+  const u=(GOOGLE_WEATHER_PROXY_URL||"").trim();
+  return !!u && !u.includes("PASTE_YOUR");
+}
+function setRoadsState(text,type=""){
+  const el=document.getElementById("roadsState");
+  if(!el) return;
+  el.className="roads-state"+(type?` ${type}`:"");
+  el.textContent=text;
+}
+function trackDisplayPoints(track){
+  return fpUseRoadSnap && Array.isArray(track.snappedPoints) && track.snappedPoints.length>1
+    ? track.snappedPoints
+    : (track.points||[]);
+}
 
 function fpSetStatus(msg,type=""){
   const el=document.getElementById("fpStatus");
@@ -2015,7 +2070,7 @@ function tripOnly(track){
 }
 function dayPoints(day){
   const all=fpTracks.filter(t=>ownerAllowed(t.owner||"A",fpMemoryMode))
-    .flatMap(t=>t.points.map(p=>({...p,trackName:t.name,owner:t.owner||"A"})));
+    .flatMap(t=>trackDisplayPoints(t).map(p=>({...p,trackName:t.name,owner:t.owner||"A"})));
   if(day==="all") return all.sort((a,b)=>(a.ts&&b.ts)?new Date(a.ts)-new Date(b.ts):0);
   const date=TRIP_DATES[day];
   return all.filter(p=>!p.ts || taiwanDate(p.ts)===date).sort((a,b)=>(a.ts&&b.ts)?new Date(a.ts)-new Date(b.ts):0);
@@ -2144,7 +2199,9 @@ function renderFootprint(){
           const prev=ownerPoints[i-1];
           const dateBreak=prev.ts&&p.ts&&taiwanDate(prev.ts)!==taiwanDate(p.ts);
           const gap=prev.ts&&p.ts&&(new Date(p.ts)-new Date(prev.ts)>4*3600*1000);
-          if(dateBreak||gap){if(g.length>1) groups.push(g);g=[];}
+          const trackBreak=prev.trackName!==p.trackName;
+          const roadBreak=prev.roadSegment&&p.roadSegment&&prev.roadSegment!==p.roadSegment;
+          if(dateBreak||gap||trackBreak||roadBreak){if(g.length>1) groups.push(g);g=[];}
         }
         g.push({lat:p.lat,lng:p.lng});
       });
@@ -2195,13 +2252,19 @@ function renderTrackList(){
   el.innerHTML=fpTracks.map(t=>{
     const dates=[...new Set(t.points.filter(p=>p.ts).map(p=>taiwanDate(p.ts)).filter(Boolean))].sort();
     const owner=t.owner||"A";
+    const snapText=t.snappedPoints?.length?`<span class="track-snap">✓ 道路貼合 ${t.snappedPoints.length.toLocaleString("zh-TW")} 點</span>`:
+      t.snapStatus==="failed"?`<span class="track-snap">⚠ 貼合失敗</span>`:`<span class="track-snap">原始足跡</span>`;
     return `<div class="fp-track-item">
-      <div><strong><span class="owner-badge ${ownerClass(owner)}">${ownerDisplayName(owner)}</span> ${escapeHTML(t.name)}</strong>
-      <small>${t.type}｜${t.points.length.toLocaleString("zh-TW")} 個位置點${dates.length?"｜"+dates.join("、"):""}</small></div>
-      <button class="fp-btn danger" type="button" data-delete-track="${t.id}">移除</button>
+      <div><strong><span class="owner-badge ${ownerClass(owner)}">${ownerDisplayName(owner)}</span> ${escapeHTML(t.name)} ${snapText}</strong>
+      <small>${t.type}｜原始 ${t.points.length.toLocaleString("zh-TW")} 點${dates.length?"｜"+dates.join("、"):""}</small></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="fp-btn" type="button" data-snap-track="${t.id}">${t.snappedPoints?.length?"重新貼合":"貼合道路"}</button>
+        <button class="fp-btn danger" type="button" data-delete-track="${t.id}">移除</button>
+      </div>
     </div>`;
   }).join("");
   el.querySelectorAll("[data-delete-track]").forEach(b=>b.addEventListener("click",()=>deleteTrack(b.dataset.deleteTrack)));
+  el.querySelectorAll("[data-snap-track]").forEach(b=>b.addEventListener("click",()=>snapTrackWithUI(b.dataset.snapTrack)));
 }
 function renderStopList(visits){
   const el=document.getElementById("fpStopList");
@@ -2263,6 +2326,9 @@ async function loadTracks(){
     fpTracks=data;
     if(fpTracks.length) fpSetStatus(`已從此瀏覽器載入 ${fpTracks.length} 份旅行紀錄。`,"ok");
     renderFootprint();
+    if(fpTracks.length && roadsProxyConfigured()){
+      setTimeout(()=>snapAllTracks({onlyMissing:true,quiet:true}),250);
+    }
   }catch(e){console.warn(e);}
 }
 async function deleteTrack(id){
@@ -2305,6 +2371,10 @@ async function importTimelineFiles(files){
       // De-duplicate near-identical points.
       t.points=t.points.filter((p,i,a)=>i===0 || p.lat!==a[i-1].lat || p.lng!==a[i-1].lng || p.ts!==a[i-1].ts);
       await saveTrack(t);fpTracks.push(t);
+      if(roadsProxyConfigured()){
+        try{await snapTrackToRoads(t,{silent:true});}
+        catch(err){t.snapStatus="failed";t.snapError=err.message||String(err);await saveTrack(t);console.warn("Roads API",err);}
+      }
       success++;totalPts+=t.points.length;
     }catch(e){
       console.warn(file.name,e);
@@ -2323,10 +2393,195 @@ async function importGPXFiles(files){
       t.owner=fpImportOwner;
       t.importedAt=new Date().toISOString();
       await saveTrack(t);fpTracks.push(t);
+      if(roadsProxyConfigured()){
+        try{await snapTrackToRoads(t,{silent:true});}
+        catch(err){t.snapStatus="failed";t.snapError=err.message||String(err);await saveTrack(t);console.warn("Roads API",err);}
+      }
       success++;totalPts+=t.points.length;
     }catch(e){console.warn(file.name,e);}
   }
   fpSetStatus(success?`已匯入 ${success} 份 GPX，共 ${totalPts.toLocaleString("zh-TW")} 個位置點。`:"GPX 無法解析，或沒有可用軌跡點。",success?"ok":"err");
+  renderFootprint();
+}
+
+
+function splitRoadInput(points){
+  const valid=(points||[]).filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng));
+  if(valid.length<2) return [];
+  const segs=[];
+  let cur=[valid[0]];
+  for(let i=1;i<valid.length;i++){
+    const prev=valid[i-1],p=valid[i];
+    const dist=haversine(prev,p);
+    const dt=prev.ts&&p.ts ? Math.abs(new Date(p.ts)-new Date(prev.ts)) : 0;
+    const dateBreak=prev.ts&&p.ts&&taiwanDate(prev.ts)!==taiwanDate(p.ts);
+    // Do not ask Google to bridge large recording gaps.
+    const split=dateBreak || dist>20000 || dt>2*3600*1000;
+    if(split){
+      if(cur.length>=2) segs.push(cur);
+      cur=[p];
+    }else cur.push(p);
+  }
+  if(cur.length>=2) segs.push(cur);
+  return segs;
+}
+function roadsChunks(segment,maxPoints=95){
+  const chunks=[];
+  let start=0;
+  while(start<segment.length-1){
+    const end=Math.min(segment.length,start+maxPoints);
+    chunks.push(segment.slice(start,end));
+    if(end>=segment.length) break;
+    start=end-1; // overlap one point so adjacent snapped chunks join cleanly
+  }
+  return chunks;
+}
+async function roadsProxySnapChunk(input){
+  if(!roadsProxyConfigured()) throw new Error("Roads Proxy 尚未設定");
+  const base=GOOGLE_WEATHER_PROXY_URL.trim().replace(/\/$/,"");
+  const url=`${base}?mode=roadsSnap`;
+  const payload={points:input.map(p=>({lat:p.lat,lng:p.lng}))};
+  const res=await fetch(url,{
+    method:"POST",
+    headers:{"Content-Type":"application/json","Accept":"application/json"},
+    body:JSON.stringify(payload)
+  });
+  let body=null;
+  try{body=await res.json();}catch(e){}
+  if(!res.ok) throw new Error(body?.error||`Roads Proxy ${res.status}`);
+  return body.snappedPoints||[];
+}
+function normalizeRoadsChunk(input,snapped,segmentId){
+  if(!snapped.length) return [];
+  const direct=new Map();
+  snapped.forEach((sp,i)=>{
+    if(Number.isInteger(sp.originalIndex) && input[sp.originalIndex]){
+      direct.set(i,sp.originalIndex);
+    }
+  });
+  const known=[...direct.keys()];
+  function timingFor(outIndex){
+    if(direct.has(outIndex)){
+      const p=input[direct.get(outIndex)];
+      return {ts:p.ts||null,ele:Number.isFinite(p.ele)?p.ele:null};
+    }
+    let prev=null,next=null;
+    for(const k of known){
+      if(k<outIndex) prev=k;
+      if(k>outIndex){next=k;break;}
+    }
+    if(prev!=null && next!=null){
+      const a=input[direct.get(prev)],b=input[direct.get(next)];
+      if(a?.ts&&b?.ts){
+        const f=(outIndex-prev)/(next-prev);
+        const t=new Date(a.ts).getTime()+f*(new Date(b.ts).getTime()-new Date(a.ts).getTime());
+        const ele=(Number.isFinite(a.ele)&&Number.isFinite(b.ele))?a.ele+f*(b.ele-a.ele):null;
+        return {ts:new Date(t).toISOString(),ele};
+      }
+    }
+    if(prev!=null){
+      const p=input[direct.get(prev)];
+      return {ts:p?.ts||null,ele:Number.isFinite(p?.ele)?p.ele:null};
+    }
+    if(next!=null){
+      const p=input[direct.get(next)];
+      return {ts:p?.ts||null,ele:Number.isFinite(p?.ele)?p.ele:null};
+    }
+    return {ts:null,ele:null};
+  }
+  return snapped.map((sp,i)=>{
+    const loc=sp.location||{};
+    const tm=timingFor(i);
+    return {
+      lat:Number(loc.latitude),lng:Number(loc.longitude),
+      ts:tm.ts,ele:tm.ele,
+      source:"Google Roads API",
+      roadSegment:segmentId,
+      placeId:sp.placeId||null,
+      originalIndex:Number.isInteger(sp.originalIndex)?sp.originalIndex:null
+    };
+  }).filter(validCoord);
+}
+function dedupeSnappedPoints(points){
+  return points.filter((p,i,a)=>{
+    if(i===0) return true;
+    const q=a[i-1];
+    return Math.abs(p.lat-q.lat)>1e-7 || Math.abs(p.lng-q.lng)>1e-7 || p.ts!==q.ts;
+  });
+}
+async function snapTrackToRoads(track,{silent=false}={}){
+  if(!track?.points?.length || track.points.length<2) return track;
+  if(!roadsProxyConfigured()) throw new Error("Cloudflare Roads Proxy 尚未設定");
+  const segments=splitRoadInput(track.points);
+  if(!segments.length) throw new Error("沒有足夠連續軌跡可貼合");
+  roadsBusy=true;
+  if(!silent) setRoadsState(`貼合 ${ownerDisplayName(track.owner||"A")}…`,"busy");
+  let out=[];
+  let segNo=0;
+  for(const segment of segments){
+    const chunks=roadsChunks(segment,95);
+    for(const chunk of chunks){
+      const snapped=await roadsProxySnapChunk(chunk);
+      out.push(...normalizeRoadsChunk(chunk,snapped,`${track.id||track.name}-${segNo}`));
+    }
+    segNo++;
+  }
+  out=dedupeSnappedPoints(out);
+  if(out.length<2) throw new Error("Roads API 未回傳足夠道路點");
+  track.snappedPoints=out;
+  track.snapStatus="snapped";
+  track.snappedAt=new Date().toISOString();
+  track.snapError=null;
+  await saveTrack(track);
+  roadsBusy=false;
+  return track;
+}
+async function snapTrackWithUI(id){
+  const t=fpTracks.find(x=>x.id===id);
+  if(!t) return;
+  try{
+    setRoadsState(`正在貼合 ${ownerDisplayName(t.owner||"A")}…`,"busy");
+    await snapTrackToRoads(t,{silent:true});
+    setRoadsState(`已貼合 ${t.snappedPoints.length.toLocaleString("zh-TW")} 點`,"ok");
+    fpSetStatus(`${ownerDisplayName(t.owner||"A")} 的 ${t.name} 已完成 Roads API 道路貼合。`,"ok");
+  }catch(e){
+    t.snapStatus="failed";t.snapError=e.message||String(e);
+    await saveTrack(t);
+    setRoadsState("貼合失敗","err");
+    fpSetStatus(`Roads API 貼合失敗：${e.message||e}`,"err");
+  }finally{
+    roadsBusy=false;renderFootprint();
+  }
+}
+async function snapAllTracks({onlyMissing=false,quiet=false}={}){
+  if(roadsBusy) return;
+  if(!roadsProxyConfigured()){
+    setRoadsState("Proxy 未設定","err");
+    fpSetStatus("Roads API 需要 Cloudflare Proxy。","err");
+    return;
+  }
+  const targets=fpTracks.filter(t=>t.points?.length>1 && (!onlyMissing || !t.snappedPoints?.length));
+  if(!targets.length){
+    setRoadsState(fpTracks.some(t=>t.snappedPoints?.length)?"道路貼合已完成":"沒有可貼合足跡",
+                  fpTracks.some(t=>t.snappedPoints?.length)?"ok":"");
+    return;
+  }
+  roadsBusy=true;
+  let ok=0,fail=0;
+  for(let i=0;i<targets.length;i++){
+    const t=targets[i];
+    try{
+      setRoadsState(`貼合中 ${i+1}/${targets.length}`,"busy");
+      await snapTrackToRoads(t,{silent:true});ok++;
+    }catch(e){
+      t.snapStatus="failed";t.snapError=e.message||String(e);
+      await saveTrack(t);fail++;
+      console.warn("Roads API",t.name,e);
+    }
+  }
+  roadsBusy=false;
+  setRoadsState(fail?`完成 ${ok}｜失敗 ${fail}`:`已貼合 ${ok} 份足跡`,fail?"err":"ok");
+  if(!quiet) fpSetStatus(fail?`Roads API：${ok} 份成功、${fail} 份失敗；失敗資料仍使用原始足跡。`:`已完成 ${ok} 份旅行足跡的道路貼合。`,fail?"err":"ok");
   renderFootprint();
 }
 
@@ -2406,6 +2661,13 @@ document.getElementById("fpExportBtn")?.addEventListener("click",exportSelectedG
 document.getElementById("fpFitBtn")?.addEventListener("click",renderFootprint);
 document.getElementById("fpPlayBtn")?.addEventListener("click",startPlayback);
 document.getElementById("fpPauseBtn")?.addEventListener("click",pausePlayback);
+document.getElementById("roadsToggle")?.addEventListener("change",e=>{
+  fpUseRoadSnap=!!e.target.checked;
+  stopPlayback(true);hidePlaybackPhoto();renderFootprint();drawMoviePoster();
+  setRoadsState(fpUseRoadSnap?"使用貼合後路線":"顯示原始足跡",fpUseRoadSnap?"ok":"");
+});
+document.getElementById("roadsSnapAllBtn")?.addEventListener("click",()=>snapAllTracks({onlyMissing:false,quiet:false}));
+
 
 
 // ===== V7 旅行照片：EXIF + Timeline 停留點 + 類 Relive 回放 =====
@@ -2761,7 +3023,7 @@ function moviePhotos(){
 }
 function moviePoints(owner=null){
   return movieTracks().filter(t=>!owner || (t.owner||"A")===owner)
-    .flatMap(t=>t.points.map(p=>({...p,owner:t.owner||"A"})))
+    .flatMap(t=>trackDisplayPoints(t).map(p=>({...p,owner:t.owner||"A"})))
     .filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng))
     .sort((a,b)=>(a.ts&&b.ts)?new Date(a.ts)-new Date(b.ts):0);
 }
